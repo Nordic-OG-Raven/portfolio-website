@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nordic Raven Solutions - Portfolio Website
 
-## Getting Started
+Professional portfolio website showcasing AI/ML projects and data analytics solutions.
 
-First, run the development server:
+## Live Site
+[https://nordicravensolutions.com](https://nordicravensolutions.com)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+- **Framework**: Next.js 16 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Hosting**: Vercel (free tier)
+- **Domain**: nordicravensolutions.com (Cloudflare)
+
+## Features
+- 🎨 Modern, responsive design (mobile/tablet/desktop)
+- 🌙 Dark mode support (automatic based on system preference)
+- 📱 Mobile-first approach
+- ⚡ Optimized performance (Core Web Vitals)
+- 🔍 SEO optimized
+- ♿ Accessible (WCAG compliant)
+
+## Project Structure
+```
+portfolio/
+├── app/
+│   ├── components/
+│   │   ├── Header.tsx        # Navigation header
+│   │   ├── Hero.tsx          # Landing hero section
+│   │   ├── About.tsx         # About section
+│   │   ├── Projects.tsx      # Projects showcase grid
+│   │   ├── Contact.tsx       # Contact form
+│   │   └── Footer.tsx        # Footer
+│   ├── globals.css           # Global styles & Tailwind
+│   ├── layout.tsx            # Root layout & metadata
+│   └── page.tsx              # Main page assembly
+├── public/                   # Static assets
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
+```bash
+# Install dependencies
+npm install
 
-## Learn More
+# Run development server
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+# Open http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Development Commands
+```bash
+npm run dev      # Start dev server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment to Vercel
 
-## Deploy on Vercel
+### Option 1: Git-based Deployment (Recommended)
+1. Push code to GitHub/GitLab/Bitbucket
+2. Import project in Vercel dashboard
+3. Vercel auto-detects Next.js and deploys
+4. Every push triggers automatic redeployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Option 2: CLI Deployment
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Deploy
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+### Environment Variables
+No environment variables required for basic functionality.
+
+For contact form integration (future):
+- Add Formspree endpoint or similar service
+- Configure in `app/components/Contact.tsx`
+
+## Custom Domain Setup
+
+### Transfer Domain from Squarespace
+1. Unlock domain in Squarespace settings
+2. Get authorization code (EPP code)
+3. Transfer to Cloudflare Registrar (~$10/year)
+4. Update nameservers to Cloudflare
+
+### Connect Domain to Vercel
+1. In Vercel project settings → Domains
+2. Add `nordicravensolutions.com`
+3. Add DNS records in Cloudflare:
+   - A record: `@` → Vercel IP
+   - CNAME: `www` → `cname.vercel-dns.com`
+4. SSL certificate auto-provisions
+
+## Performance Optimizations
+- ✅ Image optimization with Next.js Image component
+- ✅ Font optimization (Geist fonts loaded efficiently)
+- ✅ Code splitting and lazy loading
+- ✅ Static generation for fast page loads
+- ✅ CDN edge caching on Vercel
+
+## Future Enhancements
+- [ ] Blog section for technical writeups
+- [ ] Case studies for each project
+- [ ] Newsletter signup integration
+- [ ] Analytics dashboard (Vercel Analytics or Plausible)
+- [ ] Testimonials section
+- [ ] More project showcases
+
+## Cost Breakdown
+- Domain: ~$10/year (~75 DKK/year)
+- Hosting: FREE (Vercel free tier)
+- **Total: ~75 DKK/year = ~19 DKK per 3 months**
+
+### Vercel Free Tier Limits
+- ✅ Unlimited bandwidth
+- ✅ Automatic SSL
+- ✅ Global CDN
+- ✅ 100 GB-hours compute time (plenty for portfolio)
+- ✅ Unlimited personal projects
+
+## Browser Support
+- Chrome/Edge (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Mobile browsers (iOS Safari, Chrome Android)
+
+## License
+All rights reserved © Nordic Raven Solutions
+
+## Contact
+- Website: [nordicravensolutions.com](https://nordicravensolutions.com)
+- Email: contact@nordicravensolutions.com
+- GitHub: [@jonas](https://github.com/jonas)
+
+---
+
+**Built with ❤️ using Next.js and Tailwind CSS**
