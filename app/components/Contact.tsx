@@ -14,13 +14,27 @@ export default function Contact() {
     e.preventDefault();
     setStatus('loading');
 
-    // TODO: Integrate with Formspree or similar service
-    // For now, just simulate submission
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+    try {
+      const response = await fetch('https://formspree.io/f/mdkpzggl', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setStatus('idle'), 3000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch (error) {
+      setStatus('error');
       setTimeout(() => setStatus('idle'), 3000);
-    }, 1000);
+    }
   };
 
   return (
@@ -153,6 +167,12 @@ export default function Contact() {
               {status === 'success' && (
                 <p className="text-green-600 dark:text-green-400 text-sm text-center">
                   Thanks! I&apos;ll get back to you soon.
+                </p>
+              )}
+              
+              {status === 'error' && (
+                <p className="text-red-600 dark:text-red-400 text-sm text-center">
+                  Something went wrong. Please try again or email me directly.
                 </p>
               )}
             </form>
