@@ -18,7 +18,7 @@ const projects = [
     tech: ['React', 'Vite', 'Tailwind CSS', 'Pyodide', 'sql.js', 'Gemini 1.5'],
     status: 'Live Demo',
     statusColor: 'bg-green-500',
-    link: 'https://tutor.nordicravensolutions.com',
+    link: 'https://codetutor.jonashaahr.com',
     demoNote: 'Real code execution in browser',
   },
   {
