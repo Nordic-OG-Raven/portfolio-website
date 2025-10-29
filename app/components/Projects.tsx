@@ -7,7 +7,7 @@ const projects = [
     tech: ['Python', 'LangChain', 'ChromaDB', 'OpenAI GPT-4', 'Streamlit', 'LCEL'],
     status: 'Live Demo',
     statusColor: 'bg-green-500',
-    link: 'https://currag.nordicravensolutions.com',
+    link: 'https://knowledgetutor.jonashaahr.com',
     demoNote: 'First visit may take 30-60s to wake up',
   },
   {
