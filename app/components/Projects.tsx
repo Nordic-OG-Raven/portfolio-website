@@ -43,6 +43,17 @@ const projects = [
     link: 'https://analyses.nordicravensolutions.com',
     demoNote: 'Interactive financial dashboard',
   },
+  {
+    id: 5,
+    title: 'FinSight',
+    subtitle: 'XBRL Financial Data Pipeline',
+    description: 'End-to-end ETL pipeline for SEC filings that extracts 10,000-40,000 financial facts per company. Features XBRL parsing with Arelle, normalization across US-GAAP/IFRS taxonomies, accounting identity validation, and PostgreSQL data warehouse. Pre-loaded companies load instantly; custom analysis takes 5-10 minutes.',
+    tech: ['Python', 'Flask', 'Arelle', 'PostgreSQL', 'Next.js', 'Recharts', 'Railway'],
+    status: 'In Development',
+    statusColor: 'bg-yellow-500',
+    link: '/finsight',
+    demoNote: 'Live ETL demo with quota system',
+  },
 ];
 
 export default function Projects() {
