@@ -38,7 +38,7 @@ export default function AInewsPage() {
 
         {/* PERFORMANCE METRICS */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-blue-50 p-4 rounded-lg text-center">
               <p className="text-gray-600 text-sm mb-1">Articles Processed</p>
               <p className="text-3xl font-bold text-blue-600">150 → 6</p>
@@ -46,10 +46,6 @@ export default function AInewsPage() {
             <div className="bg-green-50 p-4 rounded-lg text-center">
               <p className="text-gray-600 text-sm mb-1">Rejection Rate</p>
               <p className="text-3xl font-bold text-green-600">96%</p>
-            </div>
-            <div className="bg-purple-50 p-4 rounded-lg text-center">
-              <p className="text-gray-600 text-sm mb-1">Avg Quality Score</p>
-              <p className="text-3xl font-bold text-purple-600">6.1/10</p>
             </div>
             <div className="bg-yellow-50 p-4 rounded-lg text-center">
               <p className="text-gray-600 text-sm mb-1">Components</p>
