@@ -389,34 +389,36 @@ export default function MASFlow() {
   const nodeData = selectedNode ? nodeDetails[selectedNode as keyof typeof nodeDetails] : null;
 
   return (
-    <div style={{ width: '100%', height: '800px', pointerEvents: 'none' }}>
-      <div style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onNodeClick={onNodeClick}
-          fitView
-          minZoom={0.6}
-          maxZoom={0.6}
-          zoomOnScroll={false}
-          panOnScroll={false}
-          panOnDrag={false}
-          nodesDraggable={false}
-          nodesConnectable={false}
-          elementsSelectable={true}
-          defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
-          preventScrolling={false}
-        >
-          <Background />
-        </ReactFlow>
+    <>
+      <div style={{ width: '100%', height: '800px', pointerEvents: 'none' }}>
+        <div style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onNodeClick={onNodeClick}
+            fitView
+            minZoom={0.6}
+            maxZoom={0.6}
+            zoomOnScroll={false}
+            panOnScroll={false}
+            panOnDrag={false}
+            nodesDraggable={false}
+            nodesConnectable={false}
+            elementsSelectable={true}
+            defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
+            preventScrolling={false}
+          >
+            <Background />
+          </ReactFlow>
+        </div>
       </div>
 
       {/* Detail Modal */}
       {nodeData && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={closeModal}>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{ zIndex: 9999, pointerEvents: 'auto' }} onClick={closeModal}>
           <div className="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-start">
               <h2 className="text-2xl font-bold text-gray-900">{nodeData.title}</h2>
@@ -489,7 +491,6 @@ export default function MASFlow() {
           </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 }
