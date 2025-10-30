@@ -34,6 +34,17 @@ const projects = [
   },
   {
     id: 4,
+    title: 'FinSight',
+    subtitle: 'Business Intelligence & ETL Architecture',
+    description: 'End-to-end BI architecture with ETL pipeline to extract, prepare, visualize and analyze 10-40 thousand facts per SEC/ESEF filing. Features XBRL parsing with Arelle, normalization across US-GAAP/IFRS taxonomies, accounting identity validation, and PostgreSQL data warehouse. Interactive demo lets you analyze any publicly listed company.',
+    tech: ['Python', 'Flask', 'Arelle', 'PostgreSQL', 'Next.js', 'Recharts', 'Railway'],
+    status: 'In Development',
+    statusColor: 'bg-yellow-500',
+    link: '/finsight',
+    demoNote: 'Live ETL demo with quota system',
+  },
+  {
+    id: 5,
     title: 'Novo Nordisk Analysis',
     subtitle: 'Financial & Competitive Analysis',
     description: 'Strategic analysis of Novo Nordisk - Denmark\'s pharmaceutical leader and GLP-1 innovator. Features comprehensive financial metrics (profitability, liquidity, leverage, efficiency, growth), peer comparison with 5 competitors, and 5-year trend analysis with interactive visualizations.',
@@ -42,17 +53,6 @@ const projects = [
     statusColor: 'bg-green-500',
     link: 'https://analyses.nordicravensolutions.com',
     demoNote: 'Interactive financial dashboard',
-  },
-  {
-    id: 5,
-    title: 'FinSight',
-    subtitle: 'XBRL Financial Data Pipeline',
-    description: 'End-to-end ETL pipeline for SEC filings that extracts 10,000-40,000 financial facts per company. Features XBRL parsing with Arelle, normalization across US-GAAP/IFRS taxonomies, accounting identity validation, and PostgreSQL data warehouse. Pre-loaded companies load instantly; custom analysis takes 5-10 minutes.',
-    tech: ['Python', 'Flask', 'Arelle', 'PostgreSQL', 'Next.js', 'Recharts', 'Railway'],
-    status: 'In Development',
-    statusColor: 'bg-yellow-500',
-    link: '/finsight',
-    demoNote: 'Live ETL demo with quota system',
   },
 ];
 

@@ -40,7 +40,7 @@ export default function About() {
 
           <div className="grid md:grid-cols-3 gap-8 pt-8">
             <div className="text-center p-6 bg-white dark:bg-slate-800 rounded-lg shadow-md">
-              <div className="text-4xl font-bold text-primary mb-2">4+</div>
+              <div className="text-4xl font-bold text-primary mb-2">5+</div>
               <div className="text-sm text-secondary">Active Projects</div>
             </div>
             <div className="text-center p-6 bg-white dark:bg-slate-800 rounded-lg shadow-md">
