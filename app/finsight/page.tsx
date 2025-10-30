@@ -63,24 +63,8 @@ export default function FinSightPage() {
         }
       })
       .catch(err => {
-        console.warn('API not available, using mock data:', err);
-        // Fallback to mock data for development
-        const mockCompanies = [
-          {ticker: "NVO", name: "Novo Nordisk", years: [2024]},
-          {ticker: "NVDA", name: "NVIDIA", years: [2023, 2024]},
-          {ticker: "AAPL", name: "Apple", years: [2024]},
-          {ticker: "GOOGL", name: "Alphabet", years: [2024]},
-          {ticker: "MSFT", name: "Microsoft", years: [2024]},
-        ];
-        setPreloadedCompanies(mockCompanies);
-        setSelectedTicker(mockCompanies[0].ticker);
-        setSelectedYear(mockCompanies[0].years[0]);
-        setQuota({
-          custom_requests_used: 0,
-          custom_requests_limit: 10,
-          quota_available: true,
-          message: "0/10 used this month (API not connected)"
-        });
+        console.error('Failed to load companies:', err);
+        setError('Backend API is not available. The Flask API needs to be deployed to Railway.');
       });
   }, [API_BASE]);
 
@@ -497,6 +481,22 @@ export default function FinSightPage() {
           </div>
         )}
 
+        {/* Initial State - Show Pipeline Info */}
+        {!result && !loading && !error && (
+          <div className="bg-white rounded-lg shadow-md p-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Pipeline Stages</h3>
+            <div className="space-y-4 text-gray-700">
+              <ol className="list-decimal list-inside space-y-2 ml-4">
+                <li><strong>Ingestion</strong>: Download 10-K/20-F filings from SEC EDGAR</li>
+                <li><strong>XBRL Parsing</strong>: Extract ALL facts using Arelle (10k-40k per company)</li>
+                <li><strong>Normalization</strong>: Standardize units, currencies, taxonomies (US-GAAP, IFRS)</li>
+                <li><strong>Validation</strong>: Verify accounting identities and cross-statement consistency</li>
+                <li><strong>Storage</strong>: Load into PostgreSQL data warehouse with full provenance</li>
+                <li><strong>Analysis</strong>: Query, visualize, and export for downstream use</li>
+              </ol>
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-600">
