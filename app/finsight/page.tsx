@@ -50,7 +50,10 @@ export default function FinSightPage() {
   useEffect(() => {
     // Fetch companies list and quota on mount
     fetch(`${API_BASE}/api/companies`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('API not available');
+        return res.json();
+      })
       .then(data => {
         setPreloadedCompanies(data.preloaded || []);
         setQuota(data.quota);
@@ -59,7 +62,26 @@ export default function FinSightPage() {
           setSelectedYear(data.preloaded[0].years[0]);
         }
       })
-      .catch(err => console.error('Failed to load companies:', err));
+      .catch(err => {
+        console.warn('API not available, using mock data:', err);
+        // Fallback to mock data for development
+        const mockCompanies = [
+          {ticker: "NVO", name: "Novo Nordisk", years: [2024]},
+          {ticker: "NVDA", name: "NVIDIA", years: [2023, 2024]},
+          {ticker: "AAPL", name: "Apple", years: [2024]},
+          {ticker: "GOOGL", name: "Alphabet", years: [2024]},
+          {ticker: "MSFT", name: "Microsoft", years: [2024]},
+        ];
+        setPreloadedCompanies(mockCompanies);
+        setSelectedTicker(mockCompanies[0].ticker);
+        setSelectedYear(mockCompanies[0].years[0]);
+        setQuota({
+          custom_requests_used: 0,
+          custom_requests_limit: 10,
+          quota_available: true,
+          message: "0/10 used this month (API not connected)"
+        });
+      });
   }, [API_BASE]);
 
   useEffect(() => {
@@ -84,6 +106,12 @@ export default function FinSightPage() {
       if (selectedMode === 'preloaded') {
         // Fetch pre-loaded data (instant)
         const res = await fetch(`${API_BASE}/api/analyze/${selectedTicker}/${selectedYear}`);
+        
+        if (!res.ok && res.status === 404) {
+          // API not running
+          throw new Error('API not available. Backend needs to be deployed to Railway.');
+        }
+        
         const data = await res.json();
         
         if (res.ok) {
@@ -118,7 +146,11 @@ export default function FinSightPage() {
         }
       }
     } catch (err: any) {
-      setError(`Network error: ${err.message}`);
+      if (err.message.includes('Failed to fetch') || err.message.includes('fetch failed')) {
+        setError('Backend API is not available. The Flask API needs to be deployed to Railway to enable live analysis.');
+      } else {
+        setError(err.message || 'An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -154,11 +186,8 @@ export default function FinSightPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
             FinSight - Financial Analysis Pipeline
           </h1>
-          <p className="text-xl text-gray-600 text-center mb-4">
-            Comprehensive XBRL extraction from SEC filings
-          </p>
-          <p className="text-center text-gray-700">
-            End-to-end ETL pipeline extracting 10,000-40,000 financial facts per company
+          <p className="text-lg text-gray-700 text-center max-w-4xl mx-auto leading-relaxed">
+            End-to-end business intelligence architecture centered around an ETL pipeline to extract, prepare, visualize and analyze 10-40 thousand facts per SEC and EU ESEF filing. I built FinSight as a portfolio project to gather pipeline, data engineering, and analysis experience. And because it&apos;s just kind of fun to be honest 😊 Want to analyze a publicly listed company? Give it a go!
           </p>
         </div>
 
@@ -183,7 +212,7 @@ export default function FinSightPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              🔧 Custom Analysis (5-10 min)
+              🔧 Custom Analysis
             </button>
           </div>
 
@@ -243,8 +272,7 @@ export default function FinSightPage() {
                   </div>
                   <div className="ml-3">
                     <p className="text-sm text-yellow-700">
-                      <strong>Custom analysis takes 5-10 minutes</strong> to extract and process 10,000-40,000 financial facts from SEC filings.
-                      Limited to 10 custom requests per month due to free tier resources.
+                      Extracting, transforming and loading 10-40 thousand facts takes 5-15 minutes. To keep this website free, the number of custom queries is unfortunately limited to 10 per month in total.
                     </p>
                   </div>
                 </div>
@@ -469,35 +497,6 @@ export default function FinSightPage() {
           </div>
         )}
 
-        {/* Initial State - Show Info */}
-        {!result && !loading && !error && (
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">What is FinSight?</h3>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                FinSight is a comprehensive financial data extraction pipeline that processes SEC and EU ESEF filings
-                to build a structured data warehouse for analysis.
-              </p>
-              
-              <h4 className="font-semibold text-gray-900 mt-6 mb-2">Pipeline Stages:</h4>
-              <ol className="list-decimal list-inside space-y-2 ml-4">
-                <li><strong>Ingestion</strong>: Download 10-K/20-F filings from SEC EDGAR</li>
-                <li><strong>XBRL Parsing</strong>: Extract ALL facts using Arelle (10k-40k per company)</li>
-                <li><strong>Normalization</strong>: Standardize units, currencies, taxonomies (US-GAAP, IFRS)</li>
-                <li><strong>Validation</strong>: Verify accounting identities and cross-statement consistency</li>
-                <li><strong>Storage</strong>: Load into PostgreSQL data warehouse with full provenance</li>
-                <li><strong>Analysis</strong>: Query, visualize, and export for downstream use</li>
-              </ol>
-
-              <div className="bg-blue-50 p-4 rounded-lg mt-6">
-                <p className="text-sm text-blue-900">
-                  <strong>💡 Portfolio Showcase:</strong> This project demonstrates end-to-end data engineering,
-                  from raw document parsing to production-ready data warehouse with quality assurance.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-600">
