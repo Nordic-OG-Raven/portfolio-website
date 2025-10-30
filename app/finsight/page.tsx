@@ -498,9 +498,48 @@ export default function FinSightPage() {
           </div>
         )}
 
+        {/* Example Analyses Section */}
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg shadow-md p-8 mt-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Example Analyses</h3>
+          <p className="text-gray-700 mb-6">
+            See what FinSight can produce with Apache Superset dashboards built on this pipeline:
+          </p>
+          <div className="space-y-3">
+            <a 
+              href="https://analyses.nordicravensolutions.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center px-6 py-4 bg-white rounded-lg shadow hover:shadow-lg transition-all group"
+            >
+              <span className="text-2xl mr-4">📊</span>
+              <div className="flex-1">
+                <div className="font-semibold text-gray-900 group-hover:text-blue-600">Novo Nordisk - Pharma Industry Analysis</div>
+                <div className="text-sm text-gray-600">5-year trend analysis, peer comparison, comprehensive financial metrics</div>
+              </div>
+              <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            <div className="flex items-center px-6 py-4 bg-gray-100 rounded-lg opacity-60">
+              <span className="text-2xl mr-4">📊</span>
+              <div className="flex-1">
+                <div className="font-semibold text-gray-700">NVIDIA - Tech Sector Analysis</div>
+                <div className="text-sm text-gray-600">Coming soon</div>
+              </div>
+            </div>
+            <div className="flex items-center px-6 py-4 bg-gray-100 rounded-lg opacity-60">
+              <span className="text-2xl mr-4">📊</span>
+              <div className="flex-1">
+                <div className="font-semibold text-gray-700">Apple - Consumer Tech Analysis</div>
+                <div className="text-sm text-gray-600">Coming soon</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-600">
-          <p>Built with Arelle • PostgreSQL • Flask • Next.js</p>
+          <p>Built with Arelle • PostgreSQL • Flask • Next.js • Apache Superset</p>
           <p className="mt-1">
             <a href="https://github.com/Nordic-OG-Raven/FinSight" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
               View source code on GitHub →
