@@ -442,7 +442,7 @@ export default function MASFlow() {
                 </ul>
               </div>
 
-              {nodeData.code && (
+              {'code' in nodeData && nodeData.code && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <Code className="w-5 h-5" /> Code Example
@@ -453,7 +453,7 @@ export default function MASFlow() {
                 </div>
               )}
 
-              {nodeData.prompt && (
+              {'prompt' in nodeData && nodeData.prompt && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <Star className="w-5 h-5" /> LLM Prompt
