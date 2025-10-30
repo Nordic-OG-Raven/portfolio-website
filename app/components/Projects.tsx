@@ -29,7 +29,7 @@ const projects = [
     tech: ['Python', 'LangChain', 'RAG', 'ReACT', 'ChromaDB', 'LangSmith', 'Multi-Agent'],
     status: 'Case Study',
     statusColor: 'bg-blue-500',
-    link: 'https://ainews.nordicravensolutions.com',
+    link: 'https://ainews.jonashaahr.com',
     demoNote: 'Newsletter archive & methodology',
   },
   {
