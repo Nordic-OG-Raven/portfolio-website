@@ -45,15 +45,11 @@ export default function FinSightPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const API_BASE = typeof window !== 'undefined' 
-    ? (window.location.hostname === 'localhost' 
-      ? 'http://localhost:5000' 
-      : 'https://finsight-production-d5c1.up.railway.app')
-    : 'https://finsight-production-d5c1.up.railway.app';
+  const API_BASE = '/api/finsight';
 
   useEffect(() => {
     // Fetch companies list and quota on mount
-    fetch(`${API_BASE}/api/companies`)
+    fetch(`${API_BASE}?path=/api/companies`)
       .then(res => {
         if (!res.ok) throw new Error('API not available');
         return res.json();
@@ -93,7 +89,7 @@ export default function FinSightPage() {
     try {
       if (selectedMode === 'preloaded') {
         // Fetch pre-loaded data (instant)
-        const res = await fetch(`${API_BASE}/api/analyze/${selectedTicker}/${selectedYear}`);
+        const res = await fetch(`${API_BASE}?path=/api/analyze/${selectedTicker}/${selectedYear}`);
         
         if (!res.ok && res.status === 404) {
           // API not running
@@ -109,7 +105,7 @@ export default function FinSightPage() {
         }
       } else {
         // Run custom analysis
-        const res = await fetch(`${API_BASE}/api/analyze/custom`, {
+        const res = await fetch(`${API_BASE}?path=/api/analyze/custom`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ticker: customTicker, year: customYear })
@@ -120,7 +116,7 @@ export default function FinSightPage() {
         if (res.ok) {
           setResult(data);
           // Refresh quota
-          const quotaRes = await fetch(`${API_BASE}/api/quota`);
+          const quotaRes = await fetch(`${API_BASE}?path=/api/quota`);
           const quotaData = await quotaRes.json();
           setQuota(quotaData.quota);
         } else {
