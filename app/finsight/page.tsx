@@ -45,7 +45,7 @@ export default function FinSightPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const API_BASE = process.env.NEXT_PUBLIC_FINSIGHT_API || 
+  const API_BASE = (process.env.NEXT_PUBLIC_FINSIGHT_API || '').trim() || 
     (process.env.NODE_ENV === 'production' 
       ? 'https://finsight-production-d5c1.up.railway.app'
       : 'http://localhost:5000');
