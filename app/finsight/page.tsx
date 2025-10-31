@@ -45,7 +45,11 @@ export default function FinSightPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const API_BASE = 'https://finsight-production-d5c1.up.railway.app';
+  const API_BASE = typeof window !== 'undefined' 
+    ? (window.location.hostname === 'localhost' 
+      ? 'http://localhost:5000' 
+      : 'https://finsight-production-d5c1.up.railway.app')
+    : 'https://finsight-production-d5c1.up.railway.app';
 
   useEffect(() => {
     // Fetch companies list and quota on mount
