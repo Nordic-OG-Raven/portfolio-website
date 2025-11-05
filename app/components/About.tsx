@@ -45,16 +45,16 @@ export default function About() {
         <div className="space-y-6 text-lg text-slate-400 leading-relaxed">
           <div className="grid md:grid-cols-3 gap-6 pt-8">
             <Card hover={false} className="text-center">
-              <div className="text-4xl font-bold text-purple-700 mb-2">5+</div>
+              <div className="text-4xl font-bold text-slate-100 mb-2">5+</div>
               <div className="text-sm text-slate-400">Active Projects</div>
             </Card>
             <Card hover={false} className="text-center">
-              <div className="text-4xl font-bold text-purple-700 mb-2">AI/ML</div>
+              <div className="text-4xl font-bold text-slate-100 mb-2">AI/ML</div>
               <div className="text-sm text-slate-400">Core Focus</div>
             </Card>
             <Card hover={false} className="text-center">
-              <div className="text-4xl font-bold text-purple-700 mb-2">100%</div>
-              <div className="text-sm text-slate-400">Interactive Demos</div>
+              <div className="text-4xl font-bold text-slate-100 mb-2">Full-Stack</div>
+              <div className="text-sm text-slate-400">Projects</div>
             </Card>
           </div>
 

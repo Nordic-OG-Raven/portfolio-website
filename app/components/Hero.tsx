@@ -23,7 +23,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           >
-            AI-Powered Solutions for
+            Data & AI Powered Solutions for
             <span className="block text-purple-700 mt-2">Modern Business</span>
           </motion.h1>
 

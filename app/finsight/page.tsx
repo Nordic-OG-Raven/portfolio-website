@@ -199,7 +199,7 @@ export default function FinSightPage() {
                 : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
             }`}
           >
-            📊 Single Company Analysis
+            Single Company Analysis
           </button>
           <button
             onClick={() => setViewMode('warehouse')}
@@ -209,7 +209,7 @@ export default function FinSightPage() {
                 : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
             }`}
           >
-            📈 Data Warehouse Explorer
+            Data Warehouse Explorer
           </button>
         </div>
       </Card>
@@ -234,7 +234,7 @@ export default function FinSightPage() {
                   : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
               }`}
             >
-              📚 Pre-loaded Companies (Instant)
+              Pre-loaded Companies (Instant)
             </button>
             <button
               onClick={() => setSelectedMode('custom')}
@@ -244,7 +244,7 @@ export default function FinSightPage() {
                   : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
               }`}
             >
-              🔧 Custom Analysis
+              Custom Analysis
             </button>
           </div>
 
@@ -436,7 +436,7 @@ export default function FinSightPage() {
                   href="/novo-nordisk"
                   className="inline-flex items-center px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition-colors text-sm font-medium"
                 >
-                  📊 View Dashboard Showcase
+                  View Dashboard Showcase
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
@@ -482,7 +482,7 @@ export default function FinSightPage() {
                   href={`#statements-${result.company}-${result.year}`}
                   className="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-600 text-sm font-medium transition-colors"
                 >
-                  📊 View Statements
+                  View Statements
                 </Link>
               </div>
             </Card>
@@ -580,11 +580,11 @@ export default function FinSightPage() {
             <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20">
               <h3 className="text-lg font-bold text-slate-100 mb-3">About This Analysis</h3>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li>✅ Extracted {result.fact_count.toLocaleString()} financial facts from SEC XBRL filing</li>
-                <li>✅ Validated accounting identities (Assets = Liabilities + Equity)</li>
-                <li>✅ Normalized units and currencies for consistency</li>
-                <li>✅ Full provenance tracking for every data point</li>
-                <li>✅ Cross-statement validation completed</li>
+                <li>Extracted {result.fact_count.toLocaleString()} financial facts from SEC XBRL filing</li>
+                <li>Validated accounting identities (Assets = Liabilities + Equity)</li>
+                <li>Normalized units and currencies for consistency</li>
+                <li>Full provenance tracking for every data point</li>
+                <li>Cross-statement validation completed</li>
               </ul>
               <p className="text-xs text-slate-500 mt-4">
                 Source: SEC EDGAR • Format: XBRL • Processing: Arelle + Custom normalization
@@ -630,7 +630,6 @@ export default function FinSightPage() {
               href="/novo-nordisk"
               className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-purple-700/60 hover:shadow-lg transition-all group"
             >
-              <span className="text-2xl mr-4">📊</span>
               <div className="flex-1">
                 <div className="font-semibold text-slate-100 group-hover:text-purple-700">Novo Nordisk - Pharma Industry Analysis</div>
                 <div className="text-sm text-slate-400">Dashboard showcase: Market positioning, financial fundamentals, R&D efficiency</div>
@@ -640,14 +639,12 @@ export default function FinSightPage() {
               </svg>
             </Link>
             <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
-              <span className="text-2xl mr-4">📊</span>
               <div className="flex-1">
                 <div className="font-semibold text-slate-400">NVIDIA - Tech Sector Analysis</div>
                 <div className="text-sm text-slate-500">Coming soon</div>
               </div>
             </div>
             <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
-              <span className="text-2xl mr-4">📊</span>
               <div className="flex-1">
                 <div className="font-semibold text-slate-400">Apple - Consumer Tech Analysis</div>
                 <div className="text-sm text-slate-500">Coming soon</div>
