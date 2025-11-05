@@ -1,20 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Railway API URL - must be set in Vercel environment variables
-const RAILWAY_API = process.env.NEXT_PUBLIC_FINSIGHT_API;
-
-if (!RAILWAY_API) {
-  console.error('NEXT_PUBLIC_FINSIGHT_API environment variable is not set');
-}
+// Railway API URL - uses environment variable with fallback
+const RAILWAY_API = process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-production-d5c1.up.railway.app';
 
 export async function GET(request: NextRequest) {
-  if (!RAILWAY_API) {
-    return NextResponse.json(
-      { error: 'Backend API not configured. NEXT_PUBLIC_FINSIGHT_API environment variable is missing.' },
-      { status: 500 }
-    );
-  }
-
   const { searchParams } = new URL(request.url);
   const path = searchParams.get('path') || '';
   
@@ -37,13 +26,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!RAILWAY_API) {
-    return NextResponse.json(
-      { error: 'Backend API not configured. NEXT_PUBLIC_FINSIGHT_API environment variable is missing.' },
-      { status: 500 }
-    );
-  }
-
   const { searchParams } = new URL(request.url);
   const path = searchParams.get('path') || '';
   const body = await request.json();
