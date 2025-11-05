@@ -32,7 +32,7 @@ interface DataWarehouseViewProps {
 
 export default function DataWarehouseView({ companies, API_BASE }: DataWarehouseViewProps) {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  const [yearRange, setYearRange] = useState<[number, number]>([2023, 2024]);
+  const [selectedYear, setSelectedYear] = useState<number>(2024); // Single year for cross-company comparison
   const [granularity, setGranularity] = useState<number>(3); // 3=universal, 2=specific, 1=all
   const [availableMetrics, setAvailableMetrics] = useState<string[]>([]);
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([]);
@@ -41,6 +41,9 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
   const [data, setData] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // For cross-company comparison: rows = metrics, columns = companies (single year)
+  const isCrossCompanyView = selectedCompanies.length > 1;
 
   // Load available metrics when companies/year change
   useEffect(() => {
@@ -56,8 +59,8 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             companies: selectedCompanies,
-            start_year: yearRange[0],
-            end_year: yearRange[1],
+            start_year: selectedYear,
+            end_year: selectedYear, // Single year for comparison
           }),
         });
         const result = await res.json();
@@ -70,7 +73,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
     };
 
     fetchMetrics();
-  }, [selectedCompanies, yearRange, API_BASE]);
+  }, [selectedCompanies, selectedYear, API_BASE]);
 
   // Initialize with first few companies
   useEffect(() => {
@@ -94,8 +97,8 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             companies: selectedCompanies,
-            start_year: yearRange[0],
-            end_year: yearRange[1],
+            start_year: selectedYear,
+            end_year: selectedYear, // Single year for cross-company comparison
             concepts: selectedMetrics.length > 0 ? selectedMetrics : undefined,
             show_segments: showSegments,
             min_hierarchy_level: granularity,
@@ -226,28 +229,29 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
             </div>
           </div>
 
-          {/* Year Range */}
+          {/* Year Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Fiscal Year Range: {yearRange[0]} - {yearRange[1]}
+              {isCrossCompanyView 
+                ? `Fiscal Year (for comparison): ${selectedYear}`
+                : `Fiscal Year: ${selectedYear}`}
             </label>
-            <div className="space-y-2">
-              <input
-                type="range"
-                min="2020"
-                max="2025"
-                value={yearRange[0]}
-                onChange={(e) => setYearRange([Number(e.target.value), yearRange[1]])}
-                className="w-full"
-              />
-              <input
-                type="range"
-                min="2020"
-                max="2025"
-                value={yearRange[1]}
-                onChange={(e) => setYearRange([yearRange[0], Number(e.target.value)])}
-                className="w-full"
-              />
+            {isCrossCompanyView && (
+              <p className="text-xs text-gray-600 mb-2">
+                Cross-company comparison shows one year at a time. Use Single Company Analysis for multi-year trends.
+              </p>
+            )}
+            <input
+              type="range"
+              min="2020"
+              max="2025"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
+              className="w-full"
+            />
+            <div className="flex justify-between text-xs text-gray-600 mt-1">
+              <span>2020</span>
+              <span>2025</span>
             </div>
           </div>
         </div>
@@ -359,32 +363,184 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
           </div>
 
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Metric</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
-                  <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Value</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {data.slice(0, 100).map((row, idx) => (
-                  <tr key={idx}>
-                    <td className="px-4 py-2 text-sm">{row.company}</td>
-                    <td className="px-4 py-2 text-sm">{humanizeLabel(row.normalized_label)}</td>
-                    <td className="px-4 py-2 text-sm">{row.fiscal_year}</td>
-                    <td className="px-4 py-2 text-sm text-right font-mono">
-                      {formatNumber(row.value_numeric, row.unit_measure)}
-                    </td>
-                    <td className="px-4 py-2 text-sm">{row.unit_measure}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {data.length > 100 && (
-              <p className="text-sm text-gray-500 mt-2">Showing first 100 rows of {data.length.toLocaleString()}</p>
+            {isCrossCompanyView ? (
+              // Bloomberg format for cross-company: Rows = Metrics, Columns = Companies
+              (() => {
+                // Group by normalized_label, then by company
+                const metricsByLabel: Record<string, Record<string, DataRow>> = {};
+                
+                // Infer statement type for grouping
+                const inferStatementType = (label: string, periodType: string | null): string => {
+                  if (!label) return 'Other';
+                  const labelLower = label.toLowerCase();
+                  const isInstant = periodType === 'instant';
+                  
+                  if (isInstant || labelLower.includes('asset') || labelLower.includes('liabilit') || 
+                      labelLower.includes('equity') || labelLower.includes('cash') || labelLower.includes('debt')) {
+                    return 'Balance Sheet';
+                  }
+                  if (labelLower.includes('revenue') || labelLower.includes('income') || labelLower.includes('profit') ||
+                      labelLower.includes('earnings') || labelLower.includes('eps') || labelLower.includes('expense')) {
+                    return 'Income Statement';
+                  }
+                  if (labelLower.includes('cash_flow') || labelLower.includes('cashflow') || labelLower.includes('capex')) {
+                    return 'Cash Flow';
+                  }
+                  return 'Other';
+                };
+                
+                // Build map: label -> company -> row
+                data.forEach(row => {
+                  const label = row.normalized_label || '';
+                  if (!metricsByLabel[label]) {
+                    metricsByLabel[label] = {};
+                  }
+                  // If multiple rows for same label+company, take first (should be same value)
+                  if (!metricsByLabel[label][row.company]) {
+                    metricsByLabel[label][row.company] = row;
+                  }
+                });
+                
+                // Group by statement type
+                const byStatementType: Record<string, string[]> = {};
+                Object.keys(metricsByLabel).forEach(label => {
+                  const firstRow = Object.values(metricsByLabel[label])[0];
+                  const stmtType = inferStatementType(label, firstRow.period_label);
+                  if (!byStatementType[stmtType]) {
+                    byStatementType[stmtType] = [];
+                  }
+                  byStatementType[stmtType].push(label);
+                });
+                
+                // Sort labels within each statement type
+                Object.keys(byStatementType).forEach(stmtType => {
+                  byStatementType[stmtType].sort();
+                });
+                
+                return Object.entries(byStatementType).map(([stmtType, labels]) => (
+                  <div key={stmtType} className="mb-8 bg-white rounded-lg shadow-md p-6">
+                    <h4 className="text-lg font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+                      {stmtType} - {selectedYear}
+                    </h4>
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-100">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider sticky left-0 bg-gray-100 z-10">
+                            Metric
+                          </th>
+                          {selectedCompanies.map(ticker => {
+                            const company = companies.find(c => c.ticker === ticker);
+                            return (
+                              <th key={ticker} className="px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[120px]">
+                                {company?.name || ticker}
+                              </th>
+                            );
+                          })}
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                            Unit
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {labels.map(label => {
+                          const firstRow = Object.values(metricsByLabel[label])[0];
+                          const isTotal = firstRow.hierarchy_level === null || (firstRow.hierarchy_level && firstRow.hierarchy_level >= 3);
+                          const indent = firstRow.hierarchy_level ? Math.max(0, 4 - firstRow.hierarchy_level) * 16 : 0;
+                          
+                          return (
+                            <tr 
+                              key={label}
+                              className={isTotal ? 'bg-gray-50 font-semibold hover:bg-gray-100' : 'hover:bg-gray-50'}
+                            >
+                              <td 
+                                className={`px-4 py-3 text-sm font-medium text-gray-900 sticky left-0 z-10 ${isTotal ? 'bg-gray-50' : 'bg-white'}`}
+                                style={{ paddingLeft: `${16 + indent}px` }}
+                              >
+                                {humanizeLabel(label)}
+                              </td>
+                              {selectedCompanies.map(ticker => {
+                                const row = metricsByLabel[label]?.[ticker];
+                                return (
+                                  <td 
+                                    key={ticker} 
+                                    className="px-4 py-3 text-sm text-gray-900 text-right font-mono font-medium"
+                                  >
+                                    {row ? formatNumber(row.value_numeric, row.unit_measure) : '-'}
+                                  </td>
+                                );
+                              })}
+                              <td className="px-4 py-3 text-sm text-gray-700">
+                                {firstRow.unit_measure}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                ));
+              })()
+            ) : (
+              // Single company view: show data grouped by statement type
+              (() => {
+                const grouped: Record<string, DataRow[]> = {};
+                
+                const inferStatementType = (label: string, periodType: string | null): string => {
+                  if (!label) return 'Other';
+                  const labelLower = label.toLowerCase();
+                  const isInstant = periodType === 'instant';
+                  
+                  if (isInstant || labelLower.includes('asset') || labelLower.includes('liabilit') || 
+                      labelLower.includes('equity') || labelLower.includes('cash') || labelLower.includes('debt')) {
+                    return 'Balance Sheet';
+                  }
+                  if (labelLower.includes('revenue') || labelLower.includes('income') || labelLower.includes('profit') ||
+                      labelLower.includes('earnings') || labelLower.includes('eps') || labelLower.includes('expense')) {
+                    return 'Income Statement';
+                  }
+                  if (labelLower.includes('cash_flow') || labelLower.includes('cashflow') || labelLower.includes('capex')) {
+                    return 'Cash Flow';
+                  }
+                  return 'Other';
+                };
+                
+                data.forEach(row => {
+                  const stmtType = inferStatementType(row.normalized_label || '', row.period_label || null);
+                  if (!grouped[stmtType]) grouped[stmtType] = [];
+                  grouped[stmtType].push(row);
+                });
+                
+                return Object.entries(grouped).map(([stmtType, rows]) => (
+                  <div key={stmtType} className="mb-6 bg-gray-50 rounded-lg p-4">
+                    <h5 className="text-md font-semibold text-gray-800 mb-3">{stmtType} ({rows.length} items)</h5>
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-200">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase">Metric</th>
+                          <th className="px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase">Value</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase">Unit</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {rows.slice(0, 100).map((row, idx) => (
+                          <tr key={idx} className="hover:bg-gray-100">
+                            <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                              {humanizeLabel(row.normalized_label)}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-right font-mono font-medium text-gray-900">
+                              {formatNumber(row.value_numeric, row.unit_measure)}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-700">{row.unit_measure}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {rows.length > 100 && (
+                      <p className="text-sm text-gray-600 mt-2">Showing first 100 of {rows.length} items</p>
+                    )}
+                  </div>
+                ));
+              })()
             )}
           </div>
         </div>

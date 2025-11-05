@@ -85,17 +85,57 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
     if (!items || items.length === 0) return null;
 
     const isExpanded = expandedSections.has(statementKey);
-    const filteredItems = showDetails 
-      ? items 
-      : items.filter(item => item.hierarchy_level && item.hierarchy_level >= 3);
-
-    // Group items by hierarchy for better organization
-    const groupedItems = filteredItems.reduce((acc, item) => {
-      const level = item.hierarchy_level || 4;
-      if (!acc[level]) acc[level] = [];
-      acc[level].push(item);
-      return acc;
-    }, {} as Record<number, StatementItem[]>);
+    
+    // Bloomberg format: Group by normalized_label, then organize periods as columns
+    // First, collect all unique periods and sort them (most recent first)
+    const allPeriods = new Set<string>();
+    items.forEach(item => {
+      if (item.period_date) {
+        allPeriods.add(item.period_date);
+      }
+    });
+    const sortedPeriods = Array.from(allPeriods).sort().reverse(); // Most recent first
+    
+    // Group items by normalized_label
+    const itemsByLabel: Record<string, StatementItem[]> = {};
+    items.forEach(item => {
+      const label = item.normalized_label;
+      if (!itemsByLabel[label]) {
+        itemsByLabel[label] = [];
+      }
+      itemsByLabel[label].push(item);
+    });
+    
+    // Create a map: label -> period -> value
+    const labelPeriodMap: Record<string, Record<string, StatementItem>> = {};
+    Object.keys(itemsByLabel).forEach(label => {
+      labelPeriodMap[label] = {};
+      itemsByLabel[label].forEach(item => {
+        const period = item.period_date || 'unknown';
+        // If multiple items for same label+period, take the first (should be same value)
+        if (!labelPeriodMap[label][period]) {
+          labelPeriodMap[label][period] = item;
+        }
+      });
+    });
+    
+    // Filter by hierarchy if showDetails is false
+    const filteredLabels = showDetails 
+      ? Object.keys(itemsByLabel)
+      : Object.keys(itemsByLabel).filter(label => {
+          const firstItem = itemsByLabel[label][0];
+          return firstItem.hierarchy_level === null || (firstItem.hierarchy_level && firstItem.hierarchy_level >= 3);
+        });
+    
+    // Sort labels: totals first (by hierarchy), then alphabetically
+    const sortedLabels = filteredLabels.sort((a, b) => {
+      const itemA = itemsByLabel[a][0];
+      const itemB = itemsByLabel[b][0];
+      const levelA = itemA.hierarchy_level ?? 0;
+      const levelB = itemB.hierarchy_level ?? 0;
+      if (levelA !== levelB) return levelB - levelA; // Higher level first
+      return a.localeCompare(b);
+    });
 
     return (
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -131,49 +171,56 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
         {isExpanded && (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider sticky left-0 bg-gray-100 z-10">
                     Line Item
                   </th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Value
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {sortedPeriods.map(period => (
+                    <th key={period} className="px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[120px]">
+                      {new Date(period).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+                    </th>
+                  ))}
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
                     Unit
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {Object.keys(groupedItems)
-                  .sort((a, b) => Number(b) - Number(a)) // Sort by hierarchy level descending
-                  .map(level => 
-                    groupedItems[Number(level)].map((item, idx) => {
-                      const indent = getIndentation(item.hierarchy_level);
-                      const isTotal = item.hierarchy_level && item.hierarchy_level >= 3;
-                      
-                      return (
-                        <tr 
-                          key={`${item.normalized_label}-${idx}`}
-                          className={isTotal ? 'bg-gray-50 font-semibold' : 'hover:bg-gray-50'}
-                        >
+                {sortedLabels.map(label => {
+                  const firstItem = itemsByLabel[label][0];
+                  const indent = getIndentation(firstItem.hierarchy_level);
+                  const isTotal = firstItem.hierarchy_level === null || (firstItem.hierarchy_level && firstItem.hierarchy_level >= 3);
+                  const unit = firstItem.unit;
+                  
+                  return (
+                    <tr 
+                      key={label}
+                      className={isTotal ? 'bg-gray-50 font-semibold hover:bg-gray-100' : 'hover:bg-gray-50'}
+                    >
+                      <td 
+                        className={`px-4 py-3 text-sm font-medium text-gray-900 sticky left-0 z-10 ${isTotal ? 'bg-gray-50' : 'bg-white'}`}
+                        style={{ paddingLeft: `${16 + indent}px` }}
+                      >
+                        {humanizeLabel(label)}
+                      </td>
+                      {sortedPeriods.map(period => {
+                        const item = labelPeriodMap[label]?.[period];
+                        return (
                           <td 
-                            className="px-4 py-3 text-sm text-gray-900"
-                            style={{ paddingLeft: `${16 + indent}px` }}
+                            key={period} 
+                            className="px-4 py-3 text-sm text-gray-900 text-right font-mono font-medium"
                           >
-                            {humanizeLabel(item.normalized_label)}
+                            {item ? formatNumber(item.value, item.unit) : '-'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-right font-mono">
-                            {formatNumber(item.value, item.unit)}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-500">
-                            {item.unit}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )
-                }
+                        );
+                      })}
+                      <td className="px-4 py-3 text-sm text-gray-700">
+                        {unit}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -2,12 +2,12 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-900 dark:bg-black text-slate-300 py-12 px-6">
+    <footer className="bg-slate-950 border-t border-slate-800 text-slate-300 py-12 px-6">
       <div className="container mx-auto max-w-6xl">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4">Nordic Raven Solutions</h3>
+            <h3 className="text-2xl font-bold text-slate-100 mb-4">Nordic Raven Solutions</h3>
             <p className="text-slate-400 leading-relaxed">
               AI-powered solutions for modern business intelligence and data analytics.
             </p>
@@ -15,20 +15,20 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold text-slate-100 mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-slate-400 hover:text-primary transition-colors">
+                <a href="#about" className="text-slate-400 hover:text-purple-700 transition-colors">
                   About
                 </a>
               </li>
               <li>
-                <a href="#projects" className="text-slate-400 hover:text-primary transition-colors">
+                <a href="#projects" className="text-slate-400 hover:text-purple-700 transition-colors">
                   Projects
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-slate-400 hover:text-primary transition-colors">
+                <a href="#contact" className="text-slate-400 hover:text-purple-700 transition-colors">
                   Contact
                 </a>
               </li>
@@ -37,13 +37,13 @@ export default function Footer() {
 
           {/* Connect */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Connect</h4>
+            <h4 className="text-lg font-semibold text-slate-100 mb-4">Connect</h4>
             <div className="flex space-x-4">
               <a
                 href="https://github.com/Nordic-OG-Raven"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-slate-800 hover:bg-primary rounded-lg flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-slate-800 hover:bg-purple-700 rounded-lg flex items-center justify-center transition-colors"
                 aria-label="GitHub"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/in/jh98/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-slate-800 hover:bg-primary rounded-lg flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-slate-800 hover:bg-purple-700 rounded-lg flex items-center justify-center transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
