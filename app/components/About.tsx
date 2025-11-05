@@ -32,12 +32,12 @@ export default function About() {
 
           {/* Bio Text */}
           <div className="space-y-4 text-lg text-slate-400 leading-relaxed flex-1">
-            <p className="text-xl font-medium text-slate-100 italic">
-              "404 error bio not yet found (...) I mean I like Data Science, AI, building stuff, but I still need to work on expressing that eloquently."
+            <p className="text-xl font-medium text-slate-100">
+              I created Nordic Raven Solutions 🐦‍⬛ as a freelance service back in 2023 as a freetime project with the mission of continuous learning and having fun while doing so.
             </p>
 
             <p>
-              In the meantime: I am a freshly graduated BI student. I built a portfolio to showcase my determination to apply my skills outside of the classroom too. 
+              Honorary collaborations include Paper Check and my University Dormitory. What started as a way to explore data science and AI outside the classroom has grown into a collection of projects that showcase what I can build when curiosity meets determination.
             </p>
           </div>
         </motion.div>
