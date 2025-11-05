@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Railway API URL - uses environment variable with fallback
-const RAILWAY_API = process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-production-d5c1.up.railway.app';
+const RAILWAY_API = (process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-production-d5c1.up.railway.app').replace(/\/$/, '');
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
     
-    const response = await fetch(`${RAILWAY_API}${path}`, {
+    const url = `${RAILWAY_API}${path.startsWith('/') ? path : '/' + path}`;
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +54,8 @@ export async function POST(request: NextRequest) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 600000); // 10min timeout for long-running requests
     
-    const response = await fetch(`${RAILWAY_API}${path}`, {
+    const url = `${RAILWAY_API}${path.startsWith('/') ? path : '/' + path}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
