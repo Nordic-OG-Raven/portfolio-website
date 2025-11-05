@@ -54,7 +54,13 @@ export default function FinSightPage() {
     // Fetch companies list and quota on mount
     fetch(`${API_BASE}?path=/api/companies`)
       .then(res => {
-        if (!res.ok) throw new Error('API not available');
+        if (!res.ok) {
+          // Don't set error for 404/500 - might be temporary
+          if (res.status >= 500) {
+            throw new Error(`Backend error (${res.status}) - please try again`);
+          }
+          throw new Error(`API returned ${res.status}`);
+        }
         return res.json();
       })
       .then(data => {
@@ -64,10 +70,16 @@ export default function FinSightPage() {
           setSelectedTicker(data.preloaded[0].ticker);
           setSelectedYear(data.preloaded[0].years[0]);
         }
+        setError(null); // Clear any previous errors
       })
       .catch(err => {
         console.error('Failed to load companies:', err);
-        setError('Backend API is not available. The Flask API needs to be deployed to Railway.');
+        // Only show error if it's a network error, not a temporary server error
+        if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+          setError('Backend API is not available. The Flask API needs to be deployed to Railway.');
+        } else {
+          setError(`Connection issue: ${err.message}. Please try again.`);
+        }
       });
   }, [API_BASE]);
 
@@ -133,7 +145,7 @@ export default function FinSightPage() {
         }
       }
     } catch (err: any) {
-      if (err.message.includes('Failed to fetch') || err.message.includes('fetch failed')) {
+      if (err.message.includes('Failed to fetch') || err.message.includes('fetch failed') || err.message.includes('NetworkError')) {
         setError('Backend API is not available. The Flask API needs to be deployed to Railway to enable live analysis.');
       } else {
         setError(err.message || 'An unexpected error occurred');
