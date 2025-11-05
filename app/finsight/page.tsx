@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import DataWarehouseView from './DataWarehouseView';
+import FinancialStatements from './FinancialStatements';
 
 interface Company {
   ticker: string;
@@ -462,6 +463,19 @@ export default function FinSightPage() {
               )}
             </div>
 
+            {/* Financial Statements Toggle */}
+            <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-gray-900">View Full Financial Statements</h3>
+                <Link
+                  href={`#statements-${result.company}-${result.year}`}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium"
+                >
+                  📊 View Statements
+                </Link>
+              </div>
+            </div>
+
             {/* Detailed Metrics Table */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Financial Metrics</h3>
@@ -512,6 +526,15 @@ export default function FinSightPage() {
               <p className="text-xs text-gray-600 mt-4">
                 Source: SEC EDGAR • Format: XBRL • Processing: Arelle + Custom normalization
               </p>
+            </div>
+
+            {/* Full Financial Statements */}
+            <div id={`statements-${result.company}-${result.year}`} className="mt-8">
+              <FinancialStatements 
+                ticker={result.company} 
+                year={result.year} 
+                API_BASE={API_BASE}
+              />
             </div>
           </div>
         )}

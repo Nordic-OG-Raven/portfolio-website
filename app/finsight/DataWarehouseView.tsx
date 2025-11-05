@@ -89,26 +89,31 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
     setError(null);
 
     try {
-      const res = await fetch(`${API_BASE}?path=/api/data`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companies: selectedCompanies,
-          start_year: yearRange[0],
-          end_year: yearRange[1],
-          concepts: selectedMetrics.length > 0 ? selectedMetrics : undefined,
-          show_segments: showSegments,
-          min_hierarchy_level: granularity,
-          show_all_concepts: showAllConcepts,
-        }),
-      });
+        const res = await fetch(`${API_BASE}?path=/api/data`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            companies: selectedCompanies,
+            start_year: yearRange[0],
+            end_year: yearRange[1],
+            concepts: selectedMetrics.length > 0 ? selectedMetrics : undefined,
+            show_segments: showSegments,
+            min_hierarchy_level: granularity,
+            show_all_concepts: showAllConcepts,
+          }),
+        });
 
-      const result = await res.json();
-      if (result.success) {
-        setData(result.data || []);
-      } else {
-        setError(result.error || 'Failed to load data');
-      }
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({ error: `Backend returned ${res.status}` }));
+          throw new Error(errorData.error || `Backend returned ${res.status}`);
+        }
+
+        const result = await res.json();
+        if (result.success) {
+          setData(result.data || []);
+        } else {
+          setError(result.error || 'Failed to load data');
+        }
     } catch (err: any) {
       setError(err.message || 'Failed to fetch data');
     } finally {
@@ -202,7 +207,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
             </label>
             <div className="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
               {companies.map(company => (
-                <label key={company.ticker} className="flex items-center space-x-2 p-2 hover:bg-gray-50">
+                <label key={company.ticker} className="flex items-center space-x-2 p-2 hover:bg-gray-50 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.ticker)}
@@ -215,7 +220,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                     }}
                     className="rounded"
                   />
-                  <span className="text-sm">{company.name} ({company.ticker})</span>
+                  <span className="text-sm text-gray-900 font-medium">{company.name} ({company.ticker})</span>
                 </label>
               ))}
             </div>
@@ -271,7 +276,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
             </label>
             <div className="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
               {availableMetrics.map(metric => (
-                <label key={metric} className="flex items-center space-x-2 p-1 hover:bg-gray-50">
+                <label key={metric} className="flex items-center space-x-2 p-1 hover:bg-gray-50 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={selectedMetrics.includes(metric)}
@@ -284,7 +289,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                     }}
                     className="rounded"
                   />
-                  <span className="text-sm">{humanizeLabel(metric)}</span>
+                  <span className="text-sm text-gray-900">{humanizeLabel(metric)}</span>
                 </label>
               ))}
             </div>
