@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Railway API URL - uses environment variable with fallback
-const RAILWAY_API = (process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-production-d5c1.up.railway.app').replace(/\/$/, '');
+let RAILWAY_API = process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-production-d5c1.up.railway.app';
+// Ensure URL has protocol
+if (!RAILWAY_API.startsWith('http://') && !RAILWAY_API.startsWith('https://')) {
+  RAILWAY_API = `https://${RAILWAY_API}`;
+}
+// Remove trailing slash
+RAILWAY_API = RAILWAY_API.replace(/\/$/, '');
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
