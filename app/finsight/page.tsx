@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import DataWarehouseView from './DataWarehouseView';
 
 interface Company {
   ticker: string;
@@ -44,6 +45,7 @@ export default function FinSightPage() {
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'single' | 'warehouse'>('single');
 
   const API_BASE = '/api/finsight';
 
@@ -174,6 +176,41 @@ export default function FinSightPage() {
             End-to-end business intelligence architecture centered around an ETL pipeline to extract, prepare, visualize and analyze 10-40 thousand facts per SEC and EU ESEF filing. I built FinSight as a portfolio project to gather pipeline, data engineering, and analysis experience. And because it&apos;s just kind of fun to be honest 😊 Want to analyze a publicly listed company? Give it a go!
           </p>
         </div>
+
+        {/* View Mode Selector */}
+        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+          <div className="flex gap-4">
+            <button
+              onClick={() => setViewMode('single')}
+              className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+                viewMode === 'single'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              📊 Single Company Analysis
+            </button>
+            <button
+              onClick={() => setViewMode('warehouse')}
+              className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+                viewMode === 'warehouse'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              📈 Data Warehouse Explorer
+            </button>
+          </div>
+        </div>
+
+        {/* Data Warehouse View */}
+        {viewMode === 'warehouse' && (
+          <DataWarehouseView companies={preloadedCompanies} API_BASE={API_BASE} />
+        )}
+
+        {/* Single Company View */}
+        {viewMode === 'single' && (
+          <>
 
         {/* Mode Selector */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -383,17 +420,15 @@ export default function FinSightPage() {
 
               {/* Link to Superset */}
               {result.company === 'NVO' && (
-                <a
-                  href="https://jonashaahr.com/novo-nordisk"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/novo-nordisk"
                   className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
                 >
                   📊 View Full Superset Dashboard
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                </a>
+                </Link>
               )}
             </div>
 
@@ -536,6 +571,9 @@ export default function FinSightPage() {
             </div>
           </div>
         </div>
+
+          </>
+        )}
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-600">
