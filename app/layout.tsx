@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description: "AI-powered solutions for business intelligence and data analysis. Showcasing interactive projects including RAG systems, coding tutors, and data analytics.",
   keywords: ["AI", "Machine Learning", "Data Analysis", "RAG", "Portfolio"],
   authors: [{ name: "Nordic Raven Solutions" }],
+  icons: {
+    icon: '/logo.jpg',
+    apple: '/logo.jpg',
+    shortcut: '/logo.jpg',
+  },
   openGraph: {
     title: "Nordic Raven Solutions",
     description: "AI-powered solutions for business intelligence and data analysis",

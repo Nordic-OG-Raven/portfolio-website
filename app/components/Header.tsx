@@ -20,7 +20,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <Image src="/logo.jpg" alt="Nordic Raven Solutions" width={40} height={40} className="w-10 h-10 rounded-lg" />
-            <span className="text-xl font-bold text-slate-100">Nordic Raven Solutions 🐦‍⬛</span>
+            <span className="text-xl font-bold text-slate-100">Nordic Raven Solutions</span>
           </Link>
 
           {/* Desktop Navigation */}

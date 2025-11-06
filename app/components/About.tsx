@@ -33,11 +33,15 @@ export default function About() {
           {/* Bio Text */}
           <div className="space-y-4 text-lg text-slate-400 leading-relaxed flex-1">
             <p className="text-xl font-medium text-slate-100">
-              I created Nordic Raven Solutions 🐦‍⬛ as a freelance service back in 2023 as a freetime project with the mission of continuous learning and having fun while doing so.
+              What started as a way to explore data science and AI outside the classroom has grown into a collection of projects that showcase what can be built when enjoyment and curiosity meet determination.
             </p>
 
             <p>
-              Honorary collaborations include Paper Check and my University Dormitory. What started as a way to explore data science and AI outside the classroom has grown into a collection of projects that showcase what I can build when curiosity meets determination.
+              Nordic Raven Solutions 🐦‍⬛ was born back in 2023 during my studies as a freetime project with the undertaking of fun and continuous learning. Honorary collaborations include Paper Check and my University Dormitory.
+            </p>
+
+            <p>
+              I have since graduated with my Masters in Business Intelligence from Aarhus University (Oct. 2025), and have since built a portfolio to showcase my determination to apply my skills outside of the classroom too.
             </p>
           </div>
         </motion.div>
@@ -53,8 +57,8 @@ export default function About() {
               <div className="text-sm text-slate-400">Core Focus</div>
             </Card>
             <Card hover={false} className="text-center">
-              <div className="text-4xl font-bold text-slate-100 mb-2">Full-Stack</div>
-              <div className="text-sm text-slate-400">Projects</div>
+              <div className="text-4xl font-bold text-slate-100 mb-2">Python/SQL</div>
+              <div className="text-sm text-slate-400">Core Languages</div>
             </Card>
           </div>
 
