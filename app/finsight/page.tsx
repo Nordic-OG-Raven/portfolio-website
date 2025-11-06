@@ -53,6 +53,8 @@ export default function FinSightPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'single' | 'warehouse'>('single');
+  const [tablePage, setTablePage] = useState<Record<string, number>>({});
+  const ITEMS_PER_PAGE = 50;
 
   const API_BASE = '/api/finsight';
 
@@ -164,16 +166,60 @@ export default function FinSightPage() {
   const formatNumber = (value: number | null, unit: string = 'USD') => {
     if (value === null) return 'N/A';
     
+    // Normalize unit: "pure" → "%" for percentages
+    const normalizedUnit = unit === 'pure' ? '%' : unit;
+    
     // Format large numbers with B/M suffix
     const absValue = Math.abs(value);
+    let formatted: string;
     if (absValue >= 1e9) {
-      return `${(value / 1e9).toFixed(2)}B ${unit}`;
+      formatted = `${(value / 1e9).toFixed(2)}B`;
     } else if (absValue >= 1e6) {
-      return `${(value / 1e6).toFixed(2)}M ${unit}`;
+      formatted = `${(value / 1e6).toFixed(2)}M`;
     } else if (absValue >= 1e3) {
-      return `${(value / 1e3).toFixed(2)}K ${unit}`;
+      formatted = `${(value / 1e3).toFixed(2)}K`;
+    } else {
+      // For percentages, show more decimals; for currency, show 2
+      formatted = normalizedUnit === '%' ? `${value.toFixed(2)}` : `${value.toFixed(2)}`;
     }
-    return `${value.toFixed(2)} ${unit}`;
+    
+    // Always append unit after the number
+    return `${formatted} ${normalizedUnit}`;
+  };
+
+  const exportMetricsCSV = () => {
+    if (!result) return;
+    
+    const rows: string[][] = [['Line Item', 'Value', 'Unit', 'Period']];
+    Object.entries(result.metrics).forEach(([key, metric]) => {
+      rows.push([
+        key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        metric.value !== null ? String(metric.value) : 'N/A',
+        metric.unit,
+        metric.period_end ? new Date(metric.period_end).toLocaleDateString() : 'N/A'
+      ]);
+    });
+    
+    const csv = rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${result.company}_${result.year}_metrics.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportMetricsJSON = () => {
+    if (!result) return;
+    const json = JSON.stringify(result.metrics, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${result.company}_${result.year}_metrics.json`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -474,23 +520,38 @@ export default function FinSightPage() {
               )}
             </div>
 
-            {/* Financial Statements Toggle */}
+            {/* Financial Statements Link */}
             <Card className="mb-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-slate-100">View Full Financial Statements</h3>
+                <h3 className="text-lg font-bold text-slate-100">Financial Statements</h3>
                 <Link
                   href={`#statements-${result.company}-${result.year}`}
                   className="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-600 text-sm font-medium transition-colors"
                 >
-                  View Statements
+                  View Full Statements
                 </Link>
               </div>
             </Card>
 
             {/* Financial Metrics - Organized by Statement Type (Bloomberg-style) */}
             <div className="space-y-6">
+              {/* Export Buttons */}
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={exportMetricsCSV}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                >
+                  📥 Export CSV
+                </button>
+                <button
+                  onClick={exportMetricsJSON}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                >
+                  📥 Export JSON
+                </button>
+              </div>
               {(() => {
-                // Group metrics by statement type
+                // Group metrics by statement type - proper order (not starting with Other)
                 const grouped: Record<string, Array<[string, FinancialMetric]>> = {
                   'Income Statement': [],
                   'Balance Sheet': [],
@@ -511,8 +572,11 @@ export default function FinSightPage() {
                   }
                 });
                 
-                return Object.entries(grouped).map(([statementType, metrics]) => {
-                  if (metrics.length === 0) return null;
+                // Render in proper order: Income Statement → Balance Sheet → Cash Flow → Other
+                const statementOrder = ['Income Statement', 'Balance Sheet', 'Cash Flow', 'Other'];
+                return statementOrder.map((statementType) => {
+                  const metrics = grouped[statementType];
+                  if (!metrics || metrics.length === 0) return null;
                   
                   // Sort by hierarchy level (totals first) then alphabetically
                   const sorted = metrics.sort((a, b) => {
@@ -522,28 +586,58 @@ export default function FinSightPage() {
                     return a[0].localeCompare(b[0]);
                   });
                   
+                  const pageKey = `table-${statementType}`;
+                  const currentPage = tablePage[pageKey] || 0;
+                  const startIdx = currentPage * ITEMS_PER_PAGE;
+                  const endIdx = startIdx + ITEMS_PER_PAGE;
+                  const paginatedItems = sorted.slice(startIdx, endIdx);
+                  const totalPages = Math.ceil(sorted.length / ITEMS_PER_PAGE);
+                  
                   return (
                     <Card key={statementType} className="overflow-hidden">
-                      <h3 className="text-lg font-bold text-slate-100 mb-4 border-b-2 border-slate-700 pb-2">
-                        {statementType} ({metrics.length} items)
-                      </h3>
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-bold text-slate-100 border-b-2 border-slate-700 pb-2 flex-1">
+                          {statementType} ({metrics.length} items)
+                        </h3>
+                        {totalPages > 1 && (
+                          <div className="flex items-center gap-2 ml-4">
+                            <button
+                              onClick={() => setTablePage({...tablePage, [pageKey]: Math.max(0, currentPage - 1)})}
+                              disabled={currentPage === 0}
+                              className="px-3 py-1 bg-slate-700 text-slate-100 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                            >
+                              ←
+                            </button>
+                            <span className="text-sm text-slate-400">
+                              Page {currentPage + 1} of {totalPages}
+                            </span>
+                            <button
+                              onClick={() => setTablePage({...tablePage, [pageKey]: Math.min(totalPages - 1, currentPage + 1)})}
+                              disabled={currentPage >= totalPages - 1}
+                              className="px-3 py-1 bg-slate-700 text-slate-100 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                            >
+                              →
+                            </button>
+                          </div>
+                        )}
+                      </div>
                       <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-slate-700">
                           <thead className="bg-slate-800">
                             <tr>
-                              <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider">
                                 Line Item
                               </th>
-                              <th className="px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase tracking-wider">
                                 Value
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider">
                                 Period
                               </th>
                             </tr>
                           </thead>
                           <tbody className="bg-slate-800 divide-y divide-slate-700">
-                            {sorted.map(([key, metric], idx) => {
+                            {paginatedItems.map(([key, metric], idx) => {
                               const isTotal = metric.hierarchy_level && metric.hierarchy_level >= 3;
                               const indent = metric.hierarchy_level ? Math.max(0, 4 - metric.hierarchy_level) * 16 : 0;
                               
@@ -553,15 +647,17 @@ export default function FinSightPage() {
                                   className={isTotal ? 'bg-slate-700 font-semibold hover:bg-slate-600' : 'hover:bg-slate-700'}
                                 >
                                   <td 
-                                    className="px-4 py-3 text-sm font-medium text-slate-100"
+                                    className="px-2 md:px-4 py-3 text-xs md:text-sm font-medium text-slate-100"
                                     style={{ paddingLeft: `${16 + indent}px` }}
                                   >
                                     {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                                   </td>
-                                  <td className="px-4 py-3 text-sm text-slate-100 text-right font-mono font-medium">
+                                  <td className={`px-2 md:px-4 py-3 text-xs md:text-sm text-right font-mono font-medium ${
+                                    metric.value !== null && metric.value < 0 ? 'text-red-400' : 'text-slate-100'
+                                  }`}>
                                     {formatNumber(metric.value, metric.unit)}
                                   </td>
-                                  <td className="px-4 py-3 text-sm text-slate-400">
+                                  <td className="px-2 md:px-4 py-3 text-xs md:text-sm text-slate-400">
                                     {metric.period_end ? new Date(metric.period_end).toLocaleDateString() : 'N/A'}
                                   </td>
                                 </tr>

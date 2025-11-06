@@ -126,11 +126,25 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
 
   const formatNumber = (value: number | null, unit: string = 'USD') => {
     if (value === null) return 'N/A';
+    
+    // Normalize unit: "pure" → "%" for percentages
+    const normalizedUnit = unit === 'pure' ? '%' : unit;
+    
+    // Format large numbers with B/M suffix
     const absValue = Math.abs(value);
-    if (absValue >= 1e9) return `${(value / 1e9).toFixed(2)}B ${unit}`;
-    if (absValue >= 1e6) return `${(value / 1e6).toFixed(2)}M ${unit}`;
-    if (absValue >= 1e3) return `${(value / 1e3).toFixed(2)}K ${unit}`;
-    return `${value.toFixed(2)} ${unit}`;
+    let formatted: string;
+    if (absValue >= 1e9) {
+      formatted = `${(value / 1e9).toFixed(2)}B`;
+    } else if (absValue >= 1e6) {
+      formatted = `${(value / 1e6).toFixed(2)}M`;
+    } else if (absValue >= 1e3) {
+      formatted = `${(value / 1e3).toFixed(2)}K`;
+    } else {
+      formatted = normalizedUnit === '%' ? `${value.toFixed(2)}` : `${value.toFixed(2)}`;
+    }
+    
+    // Always append unit after the number
+    return `${formatted} ${normalizedUnit}`;
   };
 
   const humanizeLabel = (label: string) => {
@@ -460,10 +474,13 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                               </td>
                               {selectedCompanies.map(ticker => {
                                 const row = metricsByLabel[label]?.[ticker];
+                                const value = row?.value_numeric;
                                 return (
                                   <td 
                                     key={ticker} 
-                                    className="px-4 py-3 text-sm text-gray-900 text-right font-mono font-medium"
+                                    className={`px-4 py-3 text-sm text-right font-mono font-medium ${
+                                      value !== null && value !== undefined && value < 0 ? 'text-red-600' : 'text-gray-900'
+                                    }`}
                                   >
                                     {row ? formatNumber(row.value_numeric, row.unit_measure) : '-'}
                                   </td>
@@ -527,7 +544,11 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                             <td className="px-4 py-3 text-sm font-medium text-gray-900">
                               {humanizeLabel(row.normalized_label)}
                             </td>
-                            <td className="px-4 py-3 text-sm text-right font-mono font-medium text-gray-900">
+                            <td className={`px-4 py-3 text-sm text-right font-mono font-medium ${
+                              row.value_numeric !== null && row.value_numeric !== undefined && row.value_numeric < 0 
+                                ? 'text-red-600' 
+                                : 'text-gray-900'
+                            }`}>
                               {formatNumber(row.value_numeric, row.unit_measure)}
                             </td>
                             <td className="px-4 py-3 text-sm text-gray-700">{row.unit_measure}</td>
