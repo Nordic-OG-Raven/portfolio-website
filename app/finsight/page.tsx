@@ -49,6 +49,7 @@ export default function FinSightPage() {
   const [customTicker, setCustomTicker] = useState<string>('');
   const [customYear, setCustomYear] = useState<number>(2024);
   const [loading, setLoading] = useState(false);
+  const [loadingCompanies, setLoadingCompanies] = useState(true);
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +61,7 @@ export default function FinSightPage() {
 
   useEffect(() => {
     // Fetch companies list and quota on mount
+    setLoadingCompanies(true);
     fetch(`${API_BASE}?path=/api/companies`)
       .then(res => {
         if (!res.ok) {
@@ -88,6 +90,9 @@ export default function FinSightPage() {
         } else {
           setError(`Connection issue: ${err.message}. Please try again.`);
         }
+      })
+      .finally(() => {
+        setLoadingCompanies(false);
       });
   }, [API_BASE]);
 
@@ -268,6 +273,20 @@ export default function FinSightPage() {
         {/* Single Company View */}
         {viewMode === 'single' && (
           <>
+          {/* Loading Screen Overlay for Initial Companies Load */}
+          {loadingCompanies && (
+            <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center">
+              <div className="bg-slate-800 rounded-lg p-8 shadow-xl max-w-md w-full mx-4">
+                <div className="flex flex-col items-center">
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-700 mb-4"></div>
+                  <h3 className="text-xl font-bold text-slate-100 mb-2">Loading Companies</h3>
+                  <p className="text-sm text-slate-400 text-center">
+                    Fetching available companies and data from the backend...
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
         {/* Mode Selector */}
         <Card className="mb-6">
@@ -308,13 +327,18 @@ export default function FinSightPage() {
                     const company = preloadedCompanies.find(c => c.ticker === e.target.value);
                     if (company) setSelectedYear(company.years[0]);
                   }}
-                  className="w-full px-4 py-2 border border-slate-700 rounded-lg bg-slate-800 text-slate-100 focus:ring-2 focus:ring-purple-700 focus:border-transparent"
+                  disabled={loadingCompanies || preloadedCompanies.length === 0}
+                  className="w-full px-4 py-2 border border-slate-700 rounded-lg bg-slate-800 text-slate-100 focus:ring-2 focus:ring-purple-700 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {preloadedCompanies.map(company => (
-                    <option key={company.ticker} value={company.ticker}>
-                      {company.name} ({company.ticker})
-                    </option>
-                  ))}
+                  {preloadedCompanies.length === 0 ? (
+                    <option value="">Loading companies...</option>
+                  ) : (
+                    preloadedCompanies.map(company => (
+                      <option key={company.ticker} value={company.ticker}>
+                        {company.name} ({company.ticker})
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
 
@@ -325,13 +349,18 @@ export default function FinSightPage() {
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="w-full px-4 py-2 border border-slate-700 rounded-lg bg-slate-800 text-slate-100 focus:ring-2 focus:ring-purple-700 focus:border-transparent"
+                  disabled={loadingCompanies || !selectedTicker || preloadedCompanies.length === 0}
+                  className="w-full px-4 py-2 border border-slate-700 rounded-lg bg-slate-800 text-slate-100 focus:ring-2 focus:ring-purple-700 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {preloadedCompanies
-                    .find(c => c.ticker === selectedTicker)
-                    ?.years.map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
+                  {loadingCompanies || !selectedTicker ? (
+                    <option value="">Select a company first</option>
+                  ) : (
+                    preloadedCompanies
+                      .find(c => c.ticker === selectedTicker)
+                      ?.years.map(year => (
+                        <option key={year} value={year}>{year}</option>
+                      ))
+                  )}
                 </select>
               </div>
             </div>
@@ -533,7 +562,17 @@ export default function FinSightPage() {
               </div>
             </Card>
 
-            {/* Financial Metrics - Organized by Statement Type (Bloomberg-style) */}
+            {/* Full Financial Statements - NEW HIERARCHICAL VIEW */}
+            <div id={`statements-${result.company}-${result.year}`} className="mt-8">
+              <FinancialStatements 
+                ticker={result.company} 
+                year={result.year} 
+                API_BASE={API_BASE}
+              />
+            </div>
+
+            {/* Financial Metrics - OLD FLAT LIST (HIDDEN BY DEFAULT - UNCOMMENT TO SHOW) */}
+            {false && (
             <div className="space-y-6">
               {/* Export Buttons */}
               <div className="flex justify-end gap-2">
@@ -559,7 +598,7 @@ export default function FinSightPage() {
                   'Other': []
                 };
                 
-                Object.entries(result.metrics).forEach(([key, metric]) => {
+                Object.entries(result?.metrics || {}).forEach(([key, metric]) => {
                   const stmtType = metric.statement_type || 'other';
                   if (stmtType === 'income_statement') {
                     grouped['Income Statement'].push([key, metric]);
@@ -671,6 +710,7 @@ export default function FinSightPage() {
                 }).filter(Boolean);
               })()}
             </div>
+            )}
 
             {/* Pipeline Info */}
             <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20">
@@ -687,14 +727,6 @@ export default function FinSightPage() {
               </p>
             </Card>
 
-            {/* Full Financial Statements */}
-            <div id={`statements-${result.company}-${result.year}`} className="mt-8">
-              <FinancialStatements 
-                ticker={result.company} 
-                year={result.year} 
-                API_BASE={API_BASE}
-              />
-            </div>
           </div>
         )}
 
