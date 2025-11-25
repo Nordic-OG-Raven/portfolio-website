@@ -9,6 +9,17 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const projects = [
   {
+    id: 0,
+    title: 'House Prices Prediction',
+    subtitle: 'Real Estate Economics Meets Machine Learning',
+    description: 'Kaggle competition solution combining hedonic pricing theory with modern ML. Achieved top-tier performance (CV Log-RMSE: 0.111909) through theory-driven feature engineering, 8-model hybrid ensemble, and disciplined 2-level stacking. Features include spatial equilibrium modeling, diminishing marginal utility transforms, and domain-specific features.',
+    tech: ['Python', 'scikit-learn', 'XGBoost', 'LightGBM', 'CatBoost', 'Ensemble Learning', 'Real Estate Economics'],
+    status: 'Kaggle Competition',
+    statusVariant: 'success' as const,
+    link: '/kaggle-house-prices',
+    demoNote: 'Top-tier performance with theory-grounded approach',
+  },
+  {
     id: 1,
     title: 'CodePractice.AI',
     subtitle: 'Interactive Coding Tutor',
@@ -129,7 +140,7 @@ export default function Projects() {
                     rel={project.link.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className="block"
                   >
-                    <Button variant="primary" className="w-full justify-center">
+                    <Button variant="primary" className="w-full justify-center whitespace-nowrap">
                       View Project
                       {project.link.startsWith('http') && (
                         <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
