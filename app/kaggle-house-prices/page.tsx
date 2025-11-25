@@ -12,10 +12,11 @@ export default function KaggleHousePricesPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
           House Prices Prediction
         </h1>
-        <p className="text-lg text-slate-400 max-w-3xl leading-relaxed">
-          Real Estate Economics Meets Machine Learning. A Kaggle competition solution combining 
-          hedonic pricing theory with modern ML techniques. Achieved top-tier performance through 
-          theory-driven feature engineering, 8-model hybrid ensemble, and disciplined stacking.
+        <p className="text-lg text-slate-400 max-w-3xl leading-relaxed text-justify">
+          Real Estate Economics Meets Machine Learning. In my first Kaggle competition, I combined 
+          hedonic pricing theory with modern ML techniques, achieving top 8.1% performance (rank 476/5,887) 
+          within 3 days. The approach demonstrated that grounding ML in domain theory provides a clear 
+          roadmap for feature engineering, reducing the need for extensive trial-and-error experimentation.
         </p>
       </div>
 
