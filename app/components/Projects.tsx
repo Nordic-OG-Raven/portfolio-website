@@ -22,8 +22,8 @@ const projects = [
   {
     id: 1,
     title: 'CodePractice.AI',
-    subtitle: 'Interactive Coding Tutor',
-    description: 'A mobile-first web app for practicing Python and SQL with AI-powered feedback and real code execution. Features 5 practice categories (Data Engineering, Analytics Engineering, Data Analysis, Data Science, Custom Topics), intelligent hints, and progress tracking with localStorage persistence.',
+    subtitle: 'Full-Stack AI-Powered Data Tutoring Platform',
+    description: 'A mobile-first web app for practicing Python and SQL with AI-powered feedback and real code execution. Features 6+ practice categories (Data Engineering, Analytics Engineering, Data Analysis, Data Science, Custom Topics), intelligent hints, and progress tracking with localStorage persistence.',
     tech: ['React', 'Vite', 'Tailwind CSS', 'Pyodide', 'sql.js', 'Gemini 1.5'],
     status: 'Live Demo',
     statusVariant: 'success' as const,
@@ -138,15 +138,10 @@ export default function Projects() {
                     href={project.link}
                     target={project.link.startsWith('http') ? '_blank' : undefined}
                     rel={project.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="block"
+                    className="block w-full"
                   >
-                    <Button variant="primary" className="w-full justify-center whitespace-nowrap">
+                    <Button variant="primary" className="w-full justify-center">
                       View Project
-                      {project.link.startsWith('http') && (
-                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      )}
                     </Button>
                   </a>
                 </div>
