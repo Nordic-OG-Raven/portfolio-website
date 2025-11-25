@@ -175,7 +175,7 @@ export default function Projects() {
                         <div key={category}>
                           <span className="text-xs font-medium text-slate-300">{category}:</span>
                           <div className="flex flex-wrap gap-1.5 mt-1">
-                            {tools.map((tool) => (
+                            {tools.map((tool: string) => (
                               <span
                                 key={tool}
                                 className="text-xs px-2 py-0.5 bg-slate-700 text-slate-300 rounded"
