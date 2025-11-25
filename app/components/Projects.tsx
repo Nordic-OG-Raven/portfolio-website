@@ -12,8 +12,13 @@ const projects = [
     id: 0,
     title: 'House Prices Prediction',
     subtitle: 'Real Estate Economics Meets Machine Learning',
-    description: 'Kaggle competition solution combining hedonic pricing theory with modern ML. Achieved top-tier performance (CV Log-RMSE: 0.111909) through theory-driven feature engineering, 8-model hybrid ensemble, and disciplined 2-level stacking. Features include spatial equilibrium modeling, diminishing marginal utility transforms, and domain-specific features.',
-    tech: ['Python', 'scikit-learn', 'XGBoost', 'LightGBM', 'CatBoost', 'Ensemble Learning', 'Real Estate Economics'],
+    headline: 'House Prices Prediction: Core Data Science / ML (Kaggle Competition)',
+    focus: 'Core Data Science / ML. Achieved top 8.1% performance (rank 476/5,887) in a Kaggle competition by combining hedonic pricing theory with modern ML techniques. Built an 8-model hybrid ensemble with 2-level stacking, demonstrating how domain knowledge guides feature engineering and reduces trial-and-error.',
+    keySkills: ['Ensemble Learning', 'Feature Engineering', 'scikit-learn', 'XGBoost', 'LightGBM', 'CatBoost'],
+    fullStackTools: {
+      'ML/AI': ['scikit-learn', 'XGBoost', 'LightGBM', 'CatBoost', 'Ensemble Learning'],
+      'Back-end': ['Python'],
+    },
     status: 'Kaggle Competition',
     statusVariant: 'success' as const,
     link: '/kaggle-house-prices',
@@ -23,8 +28,14 @@ const projects = [
     id: 1,
     title: 'CodePractice.AI',
     subtitle: 'Full-Stack AI-Powered Data Tutoring Platform',
-    description: 'A mobile-first web app for practicing Python and SQL with AI-powered feedback and real code execution. Features 6+ practice categories (Data Engineering, Analytics Engineering, Data Analysis, Data Science, Custom Topics), intelligent hints, and progress tracking with localStorage persistence.',
-    tech: ['React', 'Vite', 'Tailwind CSS', 'Pyodide', 'sql.js', 'Gemini 1.5'],
+    headline: 'CodePractice.AI: Generative AI / Browser-Native ML (Live Demo)',
+    focus: 'Generative AI / Browser-Native ML. Built a mobile-first application using Gemini 1.5 to provide intelligent, real-time feedback on user-submitted Python and SQL code. Enables full code execution in the browser without backend dependencies.',
+    keySkills: ['Gen-AI (Gemini 1.5)', 'NLP', 'Data Execution in Browser'],
+    fullStackTools: {
+      'ML/AI': ['Gemini 1.5'],
+      'Back-end': ['Python', 'Pyodide', 'SQL.js'],
+      'Front-end': ['React', 'Vite', 'Tailwind CSS'],
+    },
     status: 'Live Demo',
     statusVariant: 'success' as const,
     link: 'https://codetutor.jonashaahr.com',
@@ -34,8 +45,13 @@ const projects = [
     id: 2,
     title: 'AI News Digest',
     subtitle: 'Multi-Agent News Curation System',
-    description: 'Advanced multi-agent system with RAG & ReACT that fetches, filters, and curates AI tech news. Features RAG-based deduplication, ReACT agents with tool use for quality scoring, LangSmith observability, and weekly themed execution (ML Monday, Business Briefing, Ethics Friday, Data Science Saturday).',
-    tech: ['Python', 'LangChain', 'RAG', 'ReACT', 'ChromaDB', 'LangSmith', 'Multi-Agent'],
+    headline: 'AI News Digest: Advanced LLM Orchestration / MLOps (Case Study)',
+    focus: 'Advanced LLM Orchestration / MLOps. Developed a multi-agent system (ReACT/RAG) for automated, quality-scored curation of AI research news, complete with LangSmith observability. Features RAG-based deduplication, ReACT agents with tool use, and weekly themed execution.',
+    keySkills: ['Multi-Agent Systems', 'RAG', 'ReACT', 'LangChain', 'MLOps/Observability (LangSmith)'],
+    fullStackTools: {
+      'ML/AI': ['LangChain', 'RAG', 'ReACT', 'ChromaDB'],
+      'Back-end': ['Python'],
+    },
     status: 'Case Study',
     statusVariant: 'info' as const,
     link: '/ainews',
@@ -45,8 +61,14 @@ const projects = [
     id: 3,
     title: 'FinSight',
     subtitle: 'Business Intelligence & ETL Architecture',
-    description: 'End-to-end BI architecture with ETL pipeline to extract, prepare, visualize and analyze 10-40 thousand facts per SEC/ESEF filing. Features XBRL parsing with Arelle, normalization across US-GAAP/IFRS taxonomies, accounting identity validation, and PostgreSQL data warehouse. Interactive demo lets you analyze any publicly listed company.',
-    tech: ['Python', 'Flask', 'Arelle', 'PostgreSQL', 'Next.js', 'Recharts', 'Railway'],
+    headline: 'FinSight: Data Engineering / Business Intelligence (In Development)',
+    focus: 'Data Engineering / Business Intelligence. Created a robust ETL pipeline that extracts, normalizes, and validates financial facts (XBRL) from thousands of SEC/ESEF filings into a PostgreSQL warehouse. Interactive demo enables analysis of any publicly listed company.',
+    keySkills: ['ETL/ELT', 'Data Modeling', 'PostgreSQL', 'XBRL Parsing (Arelle)'],
+    fullStackTools: {
+      'Back-end': ['Python', 'Flask', 'Arelle', 'PostgreSQL'],
+      'Front-end': ['Next.js', 'Recharts'],
+      'Deployment': ['Railway'],
+    },
     status: 'In Development',
     statusVariant: 'warning' as const,
     link: '/finsight',
@@ -56,8 +78,13 @@ const projects = [
     id: 4,
     title: 'Novo Nordisk Analysis',
     subtitle: 'Financial & Competitive Analysis',
-    description: 'Strategic analysis of Novo Nordisk - Denmark\'s pharmaceutical leader and GLP-1 innovator. Comprehensive financial metrics, peer comparison, and 5-year trend analysis. Dashboard showcases market positioning, financial fundamentals, R&D efficiency, and innovation returns.',
-    tech: ['Python', 'yfinance', 'Apache Superset', 'PostgreSQL', 'Data Viz'],
+    headline: 'Novo Nordisk Analysis: Business Intelligence / Data Visualization (Portfolio Showcase)',
+    focus: 'Business Intelligence / Data Visualization. Strategic analysis of Novo Nordisk with comprehensive financial metrics, peer comparison, and 5-year trend analysis. Dashboard showcases market positioning, financial fundamentals, R&D efficiency, and innovation returns.',
+    keySkills: ['Financial Analysis', 'Data Visualization', 'PostgreSQL', 'Business Intelligence'],
+    fullStackTools: {
+      'Back-end': ['Python', 'yfinance', 'PostgreSQL'],
+      'Data Viz': ['Apache Superset'],
+    },
     status: 'Portfolio Showcase',
     statusVariant: 'info' as const,
     link: '/novo-nordisk',
@@ -67,8 +94,14 @@ const projects = [
     id: 5,
     title: 'CurRag',
     subtitle: 'RAG System for University Notes',
-    description: 'A Retrieval-Augmented Generation (RAG) system for querying university lecture notes using LangChain, ChromaDB, and OpenAI. Features semantic search with natural language queries and a Streamlit web interface for exploring your notes.',
-    tech: ['Python', 'LangChain', 'ChromaDB', 'OpenAI GPT-4', 'Streamlit', 'LCEL'],
+    headline: 'CurRag: RAG / Retrieval Systems (Live Demo)',
+    focus: 'RAG / Retrieval Systems. Built a Retrieval-Augmented Generation system for querying university lecture notes using LangChain, ChromaDB, and OpenAI. Features semantic search with natural language queries and a Streamlit web interface.',
+    keySkills: ['RAG', 'LangChain', 'ChromaDB', 'OpenAI GPT-4'],
+    fullStackTools: {
+      'ML/AI': ['LangChain', 'ChromaDB', 'OpenAI GPT-4', 'LCEL'],
+      'Back-end': ['Python'],
+      'Front-end': ['Streamlit'],
+    },
     status: 'Live Demo',
     statusVariant: 'success' as const,
     link: 'https://knowledgetutor.jonashaahr.com',
@@ -107,23 +140,53 @@ export default function Projects() {
                     <h3 className="text-2xl font-bold text-slate-100">{project.title}</h3>
                     <Badge variant={project.statusVariant}>{project.status}</Badge>
                   </div>
-                  <p className="text-sm text-purple-700 font-medium">{project.subtitle}</p>
+                  <p className="text-sm text-purple-700 font-medium mb-2">{project.subtitle}</p>
+                  <p className="text-xs text-slate-500 italic">{project.headline}</p>
                 </div>
 
                 {/* Project Body */}
                 <div className="flex-1 space-y-4">
-                  <p className="text-slate-400 leading-relaxed">{project.description}</p>
+                  {/* Focus - What hiring manager sees first */}
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-200 mb-2">Focus</h4>
+                    <p className="text-slate-400 leading-relaxed text-sm">{project.focus}</p>
+                  </div>
 
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-xs px-3 py-1 bg-slate-700 text-slate-300 rounded-md"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  {/* Key Skills */}
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-200 mb-2">Key Skills</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.keySkills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="text-xs px-2 py-1 bg-purple-900/30 text-purple-300 rounded-md border border-purple-700/30"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Full Stack Tools */}
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-200 mb-2">Tech Stack</h4>
+                    <div className="space-y-2">
+                      {Object.entries(project.fullStackTools).map(([category, tools]) => (
+                        <div key={category}>
+                          <span className="text-xs font-medium text-slate-300">{category}:</span>
+                          <div className="flex flex-wrap gap-1.5 mt-1">
+                            {tools.map((tool) => (
+                              <span
+                                key={tool}
+                                className="text-xs px-2 py-0.5 bg-slate-700 text-slate-300 rounded"
+                              >
+                                {tool}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Demo Note */}

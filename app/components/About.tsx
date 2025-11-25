@@ -49,7 +49,7 @@ export default function About() {
         <div className="space-y-6 text-lg text-slate-400 leading-relaxed">
           <div className="grid md:grid-cols-3 gap-6 pt-8">
             <Card hover={false} className="text-center">
-              <div className="text-4xl font-bold text-slate-100 mb-2">5+</div>
+              <div className="text-4xl font-bold text-slate-100 mb-2">6+</div>
               <div className="text-sm text-slate-400">Active Projects</div>
             </Card>
             <Card hover={false} className="text-center">
@@ -71,33 +71,30 @@ export default function About() {
                   <thead>
                     <tr className="border-b-2 border-slate-700">
                       <th className="py-3 px-4 font-semibold text-slate-100 w-1/4">Category</th>
-                      <th className="py-3 px-4 font-semibold text-slate-100">Technologies</th>
+                      <th className="py-3 px-4 font-semibold text-slate-100 w-2/5">Technologies</th>
+                      <th className="py-3 px-4 font-semibold text-slate-100">What It Means</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-400">
                     <tr className="border-b border-slate-800">
-                      <td className="py-3 px-4 font-medium text-slate-100">Programming</td>
-                      <td className="py-3 px-4">Python, R, SQL, JavaScript, HTML</td>
+                      <td className="py-3 px-4 font-medium text-slate-100">Generative AI / LLMs</td>
+                      <td className="py-3 px-4">LangChain, RAG, ReACT, Gemini 1.5, OpenAI GPT-4, QLoRA (Fine-tuning), Transformers, NLP</td>
+                      <td className="py-3 px-4 text-sm">Specializing in cutting-edge Gen-AI and Agentic Systems to unlock new business value and automation.</td>
                     </tr>
                     <tr className="border-b border-slate-800">
-                      <td className="py-3 px-4 font-medium text-slate-100">Data Science & AI/ML</td>
-                      <td className="py-3 px-4">scikit-learn, TensorFlow, Keras, XGBoost, Transformers, FinBERT, LangChain, RAG, QLoRA, GPT, MLOps</td>
+                      <td className="py-3 px-4 font-medium text-slate-100">ML Engineering / MLOps</td>
+                      <td className="py-3 px-4">Docker, Git, FastAPI, LangSmith, Azure, GCP, Railway</td>
+                      <td className="py-3 px-4 text-sm">Full-Lifecycle MLOps: Adept at building, deploying, monitoring, and scaling models from proof-of-concept to production.</td>
                     </tr>
                     <tr className="border-b border-slate-800">
-                      <td className="py-3 px-4 font-medium text-slate-100">Data Engineering & Viz</td>
-                      <td className="py-3 px-4">Docker, Git, Power BI, Superset, R Shiny, Streamlit</td>
-                    </tr>
-                    <tr className="border-b border-slate-800">
-                      <td className="py-3 px-4 font-medium text-slate-100">Cloud & Integration</td>
-                      <td className="py-3 px-4">Google Cloud Platform, Microsoft Azure, Power Automate, APIs, Web Scraping</td>
-                    </tr>
-                    <tr className="border-b border-slate-800">
-                      <td className="py-3 px-4 font-medium text-slate-100">Databases</td>
-                      <td className="py-3 px-4">PostgreSQL, SQLite, ChromaDB, NoSQL, ER Modeling, Dimensional Modeling</td>
+                      <td className="py-3 px-4 font-medium text-slate-100">Core Data Science / ML</td>
+                      <td className="py-3 px-4">Python, scikit-learn, TensorFlow, XGBoost, FinBERT, Classification/Regression</td>
+                      <td className="py-3 px-4 text-sm">Core Data Science Competence: Strong foundation in classic and complex models (e.g., XGBoost, FinBERT) for robust predictive analysis.</td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-4 font-medium text-slate-100">Business Analytics</td>
-                      <td className="py-3 px-4">Forecasting, Time Series, Customer Analytics, Marketing Analytics, Strategic Analytics</td>
+                      <td className="py-3 px-4 font-medium text-slate-100">Data Engineering / BI</td>
+                      <td className="py-3 px-4">PostgreSQL, SQL, ETL/ELT, Arelle (XBRL), Apache Superset, Power BI</td>
+                      <td className="py-3 px-4 text-sm">End-to-End Data Readiness: Proficient in ETL/ELT, infrastructure, and ensuring the data quality required for reliable DS/ML applications.</td>
                     </tr>
                   </tbody>
                 </table>
