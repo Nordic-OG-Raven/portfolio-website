@@ -12,7 +12,7 @@ export default function KaggleHousePricesPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
           House Prices Prediction
         </h1>
-        <p className="text-lg text-slate-400 max-w-3xl">
+        <p className="text-lg text-slate-400 max-w-3xl leading-relaxed">
           Real Estate Economics Meets Machine Learning. A Kaggle competition solution combining 
           hedonic pricing theory with modern ML techniques. Achieved top-tier performance through 
           theory-driven feature engineering, 8-model hybrid ensemble, and disciplined stacking.
@@ -21,30 +21,25 @@ export default function KaggleHousePricesPage() {
 
       {/* Key Results Section */}
       <Card className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-100 mb-4">Key Results</h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <h2 className="text-2xl font-bold text-slate-100 mb-6">Key Results</h2>
+        <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-slate-100 mb-2">Performance</h3>
-            <ul className="list-disc list-inside space-y-1 text-slate-400">
-              <li>Cross-Validation Log-RMSE: <span className="text-green-400 font-semibold">0.111909</span></li>
+            <h3 className="text-lg font-semibold text-slate-100 mb-3">Performance</h3>
+            <ul className="list-disc list-inside space-y-2 text-slate-400">
+              <li>
+                Average prediction error: <span className="text-green-400 font-semibold">~11.8%</span> 
+                <span className="text-slate-500 text-sm ml-2">(Log-RMSE: 0.111909)</span>
+              </li>
               <li>Final Feature Count: 254 features</li>
-              <li>Ensemble Architecture: 8-model hybrid</li>
+              <li>Ensemble Architecture: 8-model hybrid with 2-level stacking</li>
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-slate-100 mb-2">Methodology</h3>
-            <ul className="list-disc list-inside space-y-1 text-slate-400">
-              <li>2-level stacking with Ridge meta-model</li>
-              <li>Theory-driven feature engineering</li>
-              <li>Domain-aware missing value imputation</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-slate-100 mb-2">Models</h3>
-            <ul className="list-disc list-inside space-y-1 text-slate-400">
-              <li>Linear: Ridge, LASSO, ElasticNet, BayesianRidge, KernelRidge</li>
-              <li>Tree-based: XGBoost, LightGBM, CatBoost</li>
-              <li>Meta: Ridge stacking + weighted blending</li>
+            <h3 className="text-lg font-semibold text-slate-100 mb-3">Methodology</h3>
+            <ul className="list-disc list-inside space-y-2 text-slate-400">
+              <li>2-level stacking with Ridge meta-model for optimal model combination</li>
+              <li>Theory-driven feature engineering based on hedonic pricing principles</li>
+              <li>Domain-aware missing value imputation treating structural absence vs. unknown data</li>
             </ul>
           </div>
         </div>
@@ -102,26 +97,42 @@ export default function KaggleHousePricesPage() {
         <h2 className="text-2xl font-bold text-slate-100 mb-4">Ensemble Architecture</h2>
         <div className="space-y-4 text-slate-400">
           <p>
-            The solution uses a <strong className="text-slate-100">disciplined 2-level stacking approach</strong>:
+            The solution uses a <strong className="text-slate-100">disciplined 2-level stacking approach</strong> 
+            combining 8 diverse models to capture different aspects of the hedonic pricing function.
           </p>
-          <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>
-              <strong className="text-slate-100">Level 1 (Base Models):</strong> 8 diverse models including 
-              regularized linear models (Ridge, LASSO, ElasticNet, BayesianRidge, KernelRidge) and tree-based 
-              models (XGBoost, LightGBM, CatBoost, GradientBoosting). Each model captures different aspects of 
-              the hedonic pricing function.
-            </li>
-            <li>
-              <strong className="text-slate-100">Level 2 (Meta-Model):</strong> Ridge regression (alpha=2) 
-              trained on out-of-fold predictions. This simple meta-model prevents overfitting while learning 
-              optimal combinations of base model outputs.
-            </li>
-            <li>
-              <strong className="text-slate-100">Final Blend:</strong> Weighted combination of Level 2 stacking 
-              output, tree-based model average, and linear model average. This hybrid approach balances the 
-              complementary strengths of different model families.
-            </li>
-          </ul>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-slate-100 mb-2">Level 1: Base Models (8 models)</h3>
+            <ul className="list-disc list-inside space-y-1 ml-4 mb-3">
+              <li>
+                <strong className="text-slate-100">Linear Models:</strong> Ridge, LASSO, ElasticNet, BayesianRidge, KernelRidge
+              </li>
+              <li>
+                <strong className="text-slate-100">Tree-based Models:</strong> XGBoost, LightGBM, CatBoost, GradientBoosting
+              </li>
+            </ul>
+            <p className="text-sm ml-4">
+              Each model captures different aspects of the hedonic pricing function - linear models approximate 
+              the additive attribute values, while tree models capture complex interactions between structural and 
+              locational attributes.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-slate-100 mb-2">Level 2: Meta-Model</h3>
+            <p className="ml-4">
+              Ridge regression (alpha=2) trained on out-of-fold predictions. This simple meta-model prevents 
+              overfitting while learning optimal combinations of base model outputs.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-slate-100 mb-2">Final Blend</h3>
+            <p className="ml-4">
+              Weighted combination of Level 2 stacking output, tree-based model average, and linear model average. 
+              This hybrid approach balances the complementary strengths of different model families.
+            </p>
+          </div>
         </div>
       </Card>
 
