@@ -4,15 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-950 border-t border-slate-800 text-slate-300 py-12 px-6">
       <div className="container mx-auto max-w-6xl">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
-          <div>
-            <h3 className="text-2xl font-bold text-slate-100 mb-4">Jonas</h3>
-            <p className="text-slate-400 leading-relaxed">
-              AI-powered solutions for modern business intelligence and data analytics.
-            </p>
-          </div>
-
+        <div className="grid md:grid-cols-2 gap-8 mb-8">
           {/* Quick Links */}
           <div>
             <h4 className="text-lg font-semibold text-slate-100 mb-4">Quick Links</h4>
