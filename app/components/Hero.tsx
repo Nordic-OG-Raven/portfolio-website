@@ -61,14 +61,14 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           >
-            <div className="relative w-64 h-80 md:w-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative w-80 h-96 md:w-96 md:h-[32rem] lg:w-[28rem] lg:h-[36rem] rounded-lg overflow-hidden shadow-2xl">
               <Image
                 src="/profile.jpg"
                 alt="Jonas Haahr"
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 768px) 256px, 320px"
+                sizes="(max-width: 768px) 320px, (max-width: 1024px) 384px, 448px"
               />
             </div>
           </motion.div>
