@@ -128,17 +128,15 @@ export default function AnimatedBackground() {
     <>
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 w-full h-full pointer-events-none"
+        className="fixed inset-0 w-full h-full pointer-events-none bg-slate-950"
         style={{ 
-          background: '#1A202C',
           zIndex: 0
         }}
       />
       {/* Dark overlay for readability - minimal opacity to let animation show */}
       <div 
-        className="fixed inset-0 w-full h-full pointer-events-none"
+        className="fixed inset-0 w-full h-full pointer-events-none bg-slate-950/10"
         style={{ 
-          background: 'rgba(26, 32, 44, 0.1)',
           zIndex: 1
         }}
       />

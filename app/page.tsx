@@ -8,7 +8,7 @@ import AnimatedBackground from './components/AnimatedBackground';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#1A202C] relative">
+    <div className="min-h-screen bg-slate-950 relative">
       <AnimatedBackground />
       <div className="relative z-10">
         <Header />
