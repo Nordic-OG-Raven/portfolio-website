@@ -3,44 +3,10 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from './ui/Button';
-import { useEffect, useState } from 'react';
 
 export default function Hero() {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Calculate dynamic gradient based on scroll position
-  const gradientIntensity = Math.min(scrollY / 1000, 0.3); // Max 30% intensity
-  const hueShift = scrollY * 0.1; // Subtle hue shift
-
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
-      {/* Dynamic gradient background */}
-      <div 
-        className="absolute inset-0 transition-all duration-300 ease-out"
-        style={{
-          background: `linear-gradient(${135 + hueShift * 0.1}deg, 
-            rgba(126, 34, 206, ${0.1 + gradientIntensity}) 0%, 
-            rgba(15, 23, 42, 1) 50%, 
-            rgba(15, 23, 42, 1) 100%)`,
-        }}
-      />
       
       <div className="container mx-auto max-w-6xl relative z-10">
         <motion.div 
