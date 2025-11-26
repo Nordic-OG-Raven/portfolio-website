@@ -59,7 +59,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-          <p>&copy; {currentYear} Jonas. All rights reserved.</p>
+          <p>&copy; {currentYear} Jonas. All rights of my own identify, face and portfolio are reserved, obviously:D</p>
         </div>
       </div>
     </footer>

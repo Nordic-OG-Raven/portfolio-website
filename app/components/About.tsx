@@ -22,7 +22,7 @@ export default function About() {
           {/* Profile Photo */}
           <div className="flex-shrink-0 mx-auto md:mx-0">
             <Image 
-              src="/profile.jpg" 
+              src="/friend-and-i.png" 
               alt="Jonas Haahr" 
               width={200} 
               height={200} 
@@ -37,11 +37,11 @@ export default function About() {
             </p>
 
             <p>
-              With the goal of continuous learning and fun, a friend and I co-founded Nordic Raven Solutions, a data consultancy back in 2023 during our studies. Honorary collaborations include Paper Check and my University Dormitory.
+              With the goal of continuous learning and fun, during our studies back in april 2024 a friend and I co-founded Nordic Raven Solutions, a data consultancy. Honorary collaborations include Paper Check and my University Dormitory.
             </p>
 
             <p>
-              Since then I have both graduated with my Masters in Business Intelligence from Aarhus University (Oct. 2025), and built a portfolio to showcase my determination to apply my skills outside of the classroom too.
+              Since then I have graduated with my Masters in Business Intelligence from Aarhus University (Oct. 2025), and built a portfolio to showcase my determination to apply my skills outside of the classroom too.
             </p>
           </div>
         </motion.div>

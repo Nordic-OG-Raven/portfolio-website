@@ -36,7 +36,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             >
-              Contemporary data generalist. Inspired by the creative challenge.
+              A contemporary data generalist, inspired by the creative challenge.
             </motion.p>
 
             {/* CTA Button */}

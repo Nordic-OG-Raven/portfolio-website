@@ -84,7 +84,6 @@ export default function Projects() {
     <Section 
       id="projects" 
       title="My Latest Projects"
-      subtitle="Take a look at my recent work"
     >
       <div className="container mx-auto max-w-7xl">
         <motion.div 
