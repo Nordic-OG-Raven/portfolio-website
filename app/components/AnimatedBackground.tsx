@@ -31,12 +31,12 @@ export default function AnimatedBackground() {
     window.addEventListener('resize', resizeCanvas);
 
     // Initialize nodes
-    const nodeCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 15000));
+    const nodeCount = Math.min(80, Math.floor((canvas.width * canvas.height) / 10000));
     nodesRef.current = Array.from({ length: nodeCount }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
     }));
 
     // Handle scroll for parallax and pulse effect
@@ -70,8 +70,8 @@ export default function AnimatedBackground() {
 
       // Calculate pulse intensity based on scroll
       const scrollPulse = Math.min(scrollYRef.current / 500, 0.3);
-      const baseOpacity = 0.15;
-      const pulseOpacity = baseOpacity + scrollPulse * 0.1;
+      const baseOpacity = 0.25;
+      const pulseOpacity = baseOpacity + scrollPulse * 0.15;
 
       // Draw connections
       ctx.strokeStyle = `rgba(66, 153, 225, ${pulseOpacity})`; // Accent Primary with low opacity
@@ -84,8 +84,8 @@ export default function AnimatedBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           // Only draw connections within a certain distance
-          if (distance < 150) {
-            const opacity = (1 - distance / 150) * pulseOpacity;
+          if (distance < 180) {
+            const opacity = (1 - distance / 180) * pulseOpacity;
             ctx.strokeStyle = `rgba(66, 153, 225, ${opacity})`;
             ctx.beginPath();
             ctx.moveTo(nodesRef.current[i].x, nodesRef.current[i].y);
@@ -98,9 +98,9 @@ export default function AnimatedBackground() {
       // Draw nodes with pulse effect
       const nodeGlow = 1 + scrollPulse * 0.5;
       nodesRef.current.forEach((node) => {
-        ctx.fillStyle = `rgba(66, 153, 225, ${pulseOpacity * 0.8})`;
+        ctx.fillStyle = `rgba(66, 153, 225, ${pulseOpacity})`;
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 2 * nodeGlow, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, 2.5 * nodeGlow, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -122,11 +122,20 @@ export default function AnimatedBackground() {
     <>
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 w-full h-full pointer-events-none z-0"
-        style={{ background: '#1A202C' }}
+        className="fixed inset-0 w-full h-full pointer-events-none"
+        style={{ 
+          background: '#1A202C',
+          zIndex: 0
+        }}
       />
       {/* Dark overlay for readability */}
-      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 bg-[rgba(26,32,44,0.5)]" />
+      <div 
+        className="fixed inset-0 w-full h-full pointer-events-none"
+        style={{ 
+          background: 'rgba(26, 32, 44, 0.4)',
+          zIndex: 1
+        }}
+      />
     </>
   );
 }
