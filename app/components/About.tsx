@@ -37,11 +37,11 @@ export default function About() {
             </p>
 
             <p>
-              Jonas was born back in 2023 during my studies as a freetime project with the undertaking of fun and continuous learning. Honorary collaborations include Paper Check and my University Dormitory.
+              With the goal of continuous learning and fun, a friend and I co-founded Nordic Raven Solutions, a data consultancy back in 2023 during our studies. Honorary collaborations include Paper Check and my University Dormitory.
             </p>
 
             <p>
-              I have since graduated with my Masters in Business Intelligence from Aarhus University (Oct. 2025), and have since built a portfolio to showcase my determination to apply my skills outside of the classroom too.
+              Since then I have both graduated with my Masters in Business Intelligence from Aarhus University (Oct. 2025), and built a portfolio to showcase my determination to apply my skills outside of the classroom too.
             </p>
           </div>
         </motion.div>
