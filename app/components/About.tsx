@@ -37,7 +37,7 @@ export default function About() {
             </p>
 
             <p>
-              Nordic Raven Solutions 🐦‍⬛ was born back in 2023 during my studies as a freetime project with the undertaking of fun and continuous learning. Honorary collaborations include Paper Check and my University Dormitory.
+              Jonas was born back in 2023 during my studies as a freetime project with the undertaking of fun and continuous learning. Honorary collaborations include Paper Check and my University Dormitory.
             </p>
 
             <p>
@@ -63,7 +63,7 @@ export default function About() {
           </div>
 
           <div className="pt-8">
-            <h3 className="text-2xl font-semibold text-slate-100 mb-4">Tech Stack</h3>
+            <h3 className="text-2xl font-semibold text-slate-100 mb-4">What I love doing</h3>
             
             <Card hover={false}>
               <div className="overflow-x-auto">

@@ -13,20 +13,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nordic Raven Solutions - Portfolio",
+  title: "Jonas - Portfolio",
   description: "AI-powered solutions for business intelligence and data analysis. Showcasing interactive projects including RAG systems, coding tutors, and data analytics.",
   keywords: ["AI", "Machine Learning", "Data Analysis", "RAG", "Portfolio"],
-  authors: [{ name: "Nordic Raven Solutions" }],
+  authors: [{ name: "Jonas" }],
   icons: {
     icon: '/logo.jpg',
     apple: '/logo.jpg',
     shortcut: '/logo.jpg',
   },
   openGraph: {
-    title: "Nordic Raven Solutions",
+    title: "Jonas",
     description: "AI-powered solutions for business intelligence and data analysis",
     url: "https://nordicravensolutions.com",
-    siteName: "Nordic Raven Solutions",
+    siteName: "Jonas",
     locale: "en_US",
     type: "website",
   },

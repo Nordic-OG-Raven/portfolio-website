@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="text-2xl font-bold text-slate-100 mb-4">Nordic Raven Solutions</h3>
+            <h3 className="text-2xl font-bold text-slate-100 mb-4">Jonas</h3>
             <p className="text-slate-400 leading-relaxed">
               AI-powered solutions for modern business intelligence and data analytics.
             </p>
@@ -67,7 +67,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-          <p>&copy; {currentYear} Nordic Raven Solutions. All rights reserved.</p>
+          <p>&copy; {currentYear} Jonas. All rights reserved.</p>
         </div>
       </div>
     </footer>

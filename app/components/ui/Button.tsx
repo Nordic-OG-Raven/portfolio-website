@@ -12,7 +12,7 @@ export function Button({
   children, 
   ...props 
 }: ButtonProps) {
-  const baseClasses = 'px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variants = {
     primary: 'bg-purple-700 text-white hover:bg-purple-600 hover:shadow-lg active:scale-95',

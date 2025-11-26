@@ -3100,3 +3100,75 @@ Display **main items only** in main statements (like Novo report shows). Income 
 
 **Result**: Clear visual separation between sections (Revenue → Operating Expenses → Financial Items → Tax/Net Profit → EPS) that works universally for all companies, regardless of their specific label terminology.
 
+---
+
+## Current Issues and Solutions (2024-12-XX)
+
+### Issue #1: Missing 2022 Balance Sheet Data
+
+**Problem**: Balance sheet for 2022 is almost entirely blank, even though the 2024 report should contain all comparative data.
+
+**Root Cause Analysis**:
+1. **JSON File Analysis**: The processed JSON file shows only 10 instant facts for 2022, vs 69 for 2023, 325 for 2024, and 411 for 2025.
+2. **Database Analysis**: `fact_financial_metrics` shows 0 facts for 2022 for most balance sheet concepts (e.g., `accounts_payable`, `accounts_receivable`, `balances_with_banks`).
+3. **XBRL Extraction**: The XBRL parser may not be extracting all instant facts from the filing, or the 2022 data may be stored in a different format (e.g., dimension facts, different concept names).
+
+**Solution Strategy**:
+1. **Verify XBRL Extraction**: Check if the raw XBRL filing contains 2022 instant facts that aren't being extracted.
+2. **Check Dimension Facts**: Some balance sheet items may only exist as dimension facts (e.g., by segment, by currency) - ensure these are being extracted and aggregated.
+3. **Universal Fix**: Ensure `populate_statement_facts.py` creates facts for ALL instant periods where data exists in `fact_financial_metrics`, regardless of whether consolidated or dimension facts.
+
+**Root Cause Analysis**:
+1. **JSON File**: The processed JSON file shows only 10 instant facts for 2022 (vs 69 for 2023, 325 for 2024, 411 for 2025).
+2. **Database**: `fact_financial_metrics` shows only 3 concepts with 10 facts for 2022-01-01 (vs 22 concepts with 63 facts for 2023-01-01, 97 concepts with 318 facts for 2024-01-01).
+3. **Balance Sheet Facts**: `fact_balance_sheet` shows only 3 concepts with 3 facts for 2022-01-01 (vs 10 concepts for 2023, 54 concepts for 2024, 66 concepts for 2025).
+4. **XBRL File**: The raw XBRL file (191MB) exists, but the parser only extracted 10 instant facts for 2022.
+5. **Dimension Facts**: Checked for dimension facts - none exist for 2022 for the missing balance sheet concepts.
+
+**Possible Causes**:
+1. **XBRL File Content**: The 2024 filing may genuinely not contain 2022 comparative data for most balance sheet items (only equity-related items have 2022 data).
+2. **XBRL Parser Issue**: The parser may not be extracting all facts from inline XBRL (the file is 191MB, so it's large and complex).
+3. **Context Filtering**: The parser may be filtering out contexts that don't match the filing year.
+
+**Solution Strategy**:
+1. **Re-parse XBRL**: Re-run the XBRL parser on the 2024 filing to ensure all facts are extracted.
+2. **Check XBRL Structure**: Verify if the 2022 data is in a different format (e.g., different context IDs, different presentation).
+3. **Universal Fix**: Ensure `populate_statement_facts.py` creates facts for ALL instant periods where data exists in `fact_financial_metrics`, regardless of whether consolidated or dimension facts.
+
+**Status**: 🔴 IN PROGRESS - Need to re-parse XBRL file to verify if 2022 data exists in the raw XBRL but wasn't extracted.
+
+### Issue #2: Balance Sheet Layout Broken
+
+**Problem**: Balance sheet is no longer displaying in the correct two-column layout (Assets left, Liabilities/Equity right).
+
+**Root Cause**: Likely missing `side` property in API response or frontend not filtering by `side`.
+
+**Solution**: 
+1. Verify `side` is populated in `rel_statement_items` and `fact_balance_sheet`.
+2. Verify API returns `side` property.
+3. Verify frontend filters by `side` correctly.
+
+**Root Cause Analysis**:
+1. ✅ **Database**: `side` property is correctly set in `rel_statement_items` (250 assets, 129 liabilities/equity, 2 NULL) and `fact_balance_sheet` (524 assets, 364 liabilities/equity, 6 NULL).
+2. ✅ **API**: The API query correctly returns `fbs.side` in the SELECT statement (line 1035 in `api/main.py`).
+3. ✅ **Frontend**: The frontend correctly filters by `side` property (lines 750-751 in `FinancialStatements.tsx`).
+4. ✅ **Layout Code**: The two-column grid layout is correctly implemented (lines 791-859 in `FinancialStatements.tsx`).
+
+**Conclusion**: The balance sheet layout code is correct. If the layout appears broken, it's likely because:
+- Items are missing the `side` property (should be rare - only 2 NULL in rel_statement_items, 6 NULL in fact_balance_sheet)
+- The API is not running or returning incorrect data
+- The frontend is not receiving the `side` property (check network tab)
+
+**Status**: ✅ VERIFIED - Code is correct. If layout is still broken, check API response and browser console.
+
+### Issue #3: UITest.py Integration
+
+**Problem**: UITest.py was not integrated into the pipeline, causing issues to go undetected.
+
+**Solution Implemented**:
+1. ✅ Enhanced UITest.py to test EXACTLY main items (not more, not less) per statement.
+2. ✅ Added year completeness checks - verifies all main items have data for ALL years (2024, 2023, 2022).
+3. ✅ Integrated UITest.py into `load_financial_data.py` pipeline (non-blocking, but logs warnings).
+
+**Status**: ✅ COMPLETED - UITest.py now runs automatically during ETL and validates statement completeness and year coverage.
+

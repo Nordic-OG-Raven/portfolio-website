@@ -614,7 +614,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
             {fiscalYearEnd && (
               <p className="text-xs text-gray-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
             )}
@@ -624,22 +624,22 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
               return <p className="text-sm text-gray-600 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
             })()}
           </div>
-          <button
-            onClick={() => {
-              const newExpanded = new Set(expandedSections);
-              if (isExpanded) {
-                newExpanded.delete(statementKey);
-              } else {
-                newExpanded.add(statementKey);
-              }
-              setExpandedSections(newExpanded);
-            }}
-            className="text-blue-600 hover:text-blue-800 text-sm"
-          >
-            {isExpanded ? '▼ Collapse' : '▶ Expand'}
-          </button>
+            <button
+              onClick={() => {
+                const newExpanded = new Set(expandedSections);
+                if (isExpanded) {
+                  newExpanded.delete(statementKey);
+                } else {
+                  newExpanded.add(statementKey);
+                }
+                setExpandedSections(newExpanded);
+              }}
+              className="text-blue-600 hover:text-blue-800 text-sm"
+            >
+              {isExpanded ? '▼ Collapse' : '▶ Expand'}
+            </button>
         </div>
-        
+
         {isExpanded && (
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -716,15 +716,15 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                             // Only highlight the Total column for the current year
                             const shouldHighlight = isCurrentYear && comp.key === null;
                             
-                            return (
-                              <td 
+                        return (
+                          <td 
                                 key={`${y}-${comp.key}`} 
                                 className={`px-4 py-3 text-right ${isHeader ? 'font-semibold text-blue-900' : 'text-gray-700'} ${
                                   shouldHighlight ? 'bg-purple-100' : ''
                                 }`}
                               >
                                 {isHeader ? '' : formatNumber(value, unit)}
-                              </td>
+                          </td>
                             );
                           })
                         );

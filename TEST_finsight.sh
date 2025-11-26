@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 # Paths
 PROJECT_ROOT="/Users/jonas/Website/portfolio"
 FINSIGHT_API="/Users/jonas/FinSight/api"
-VENV_PATH="/Users/jonas/Thesis/.venv"
+VENV_PATH="/Users/jonas/FinSight/.venv"
 FLASK_PORT=5001
 NEXTJS_PORT=3000
 
