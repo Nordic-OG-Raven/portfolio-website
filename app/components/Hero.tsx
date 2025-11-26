@@ -36,12 +36,12 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             >
-              Contemporary business and economics grounded data generalist. Inspired by the creative challenges.
+              Contemporary data generalist. Inspired by the creative challenge.
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA Button */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 pt-4"
+              className="pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
@@ -49,11 +49,6 @@ export default function Hero() {
               <a href="#projects">
                 <Button variant="primary" className="text-lg px-8 py-4">
                   MY PROJECTS
-                </Button>
-              </a>
-              <a href="#contact">
-                <Button variant="secondary" className="text-lg px-8 py-4">
-                  Get in Touch
                 </Button>
               </a>
             </motion.div>
