@@ -72,7 +72,7 @@ export default function Footer() {
             >
               <svg
                 className={`w-5 h-5 transition-colors ${
-                  heartClicked ? 'text-white fill-white' : 'text-red-500 fill-red-500'
+                  heartClicked ? 'text-red-500 fill-red-500' : 'text-white fill-none'
                 }`}
                 viewBox="0 0 24 24"
                 fill="none"
