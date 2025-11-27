@@ -66,7 +66,8 @@ export default function About() {
             <h3 className="text-2xl font-semibold text-slate-100 mb-4">What I love doing</h3>
             
             <Card hover={false}>
-              <div className="overflow-x-auto">
+              {/* Desktop: Table view */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b-2 border-slate-700">
@@ -98,6 +99,30 @@ export default function About() {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+
+              {/* Mobile: Card view */}
+              <div className="md:hidden space-y-4">
+                <div className="border-b border-slate-800 pb-4">
+                  <h4 className="font-semibold text-slate-100 mb-2">Generative AI / LLMs</h4>
+                  <p className="text-slate-400 text-sm mb-2"><strong className="text-slate-300">Technologies:</strong> LangChain, RAG, ReACT, Gemini 1.5, OpenAI GPT-4, QLoRA (Fine-tuning), Transformers, NLP</p>
+                  <p className="text-slate-400 text-sm"><strong className="text-slate-300">What It Means:</strong> Specializing in cutting-edge Gen-AI and Agentic Systems to unlock new business value and automation.</p>
+                </div>
+                <div className="border-b border-slate-800 pb-4">
+                  <h4 className="font-semibold text-slate-100 mb-2">ML Engineering / MLOps</h4>
+                  <p className="text-slate-400 text-sm mb-2"><strong className="text-slate-300">Technologies:</strong> Docker, Git, FastAPI, LangSmith, Azure, GCP, Railway</p>
+                  <p className="text-slate-400 text-sm"><strong className="text-slate-300">What It Means:</strong> Full-Lifecycle MLOps: Adept at building, deploying, monitoring, and scaling models from proof-of-concept to production.</p>
+                </div>
+                <div className="border-b border-slate-800 pb-4">
+                  <h4 className="font-semibold text-slate-100 mb-2">Core Data Science / ML</h4>
+                  <p className="text-slate-400 text-sm mb-2"><strong className="text-slate-300">Technologies:</strong> Python, scikit-learn, TensorFlow, XGBoost, FinBERT, Classification/Regression</p>
+                  <p className="text-slate-400 text-sm"><strong className="text-slate-300">What It Means:</strong> Core Data Science Competence: Strong foundation in classic and complex models (e.g., XGBoost, FinBERT) for robust predictive analysis.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-100 mb-2">Data Engineering / BI</h4>
+                  <p className="text-slate-400 text-sm mb-2"><strong className="text-slate-300">Technologies:</strong> PostgreSQL, SQL, ETL/ELT, Arelle (XBRL), Apache Superset, Power BI</p>
+                  <p className="text-slate-400 text-sm"><strong className="text-slate-300">What It Means:</strong> End-to-End Data Readiness: Proficient in ETL/ELT, infrastructure, and ensuring the data quality required for reliable DS/ML applications.</p>
+                </div>
               </div>
             </Card>
           </div>
