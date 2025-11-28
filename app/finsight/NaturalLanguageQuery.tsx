@@ -139,10 +139,44 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
         return renderTable();
       }
 
-      const chartData = data.map(row => ({
-        ...row,
-        [timeCol]: row[timeCol] || 'N/A',
-      }));
+      // Deduplicate by time column - group by time and take first value (or average if multiple)
+      const groupedData = new Map();
+      data.forEach(row => {
+        const timeKey = row[timeCol];
+        if (timeKey !== null && timeKey !== undefined) {
+          if (!groupedData.has(timeKey)) {
+            groupedData.set(timeKey, { ...row });
+          } else {
+            // If multiple values for same time, use the first non-null value or average
+            const existing = groupedData.get(timeKey);
+            valueCols.forEach(col => {
+              if (row[col] !== null && row[col] !== undefined) {
+                if (existing[col] === null || existing[col] === undefined) {
+                  existing[col] = row[col];
+                } else if (typeof row[col] === 'number' && typeof existing[col] === 'number') {
+                  // Average if both are numbers (handles duplicates)
+                  existing[col] = (existing[col] + row[col]) / 2;
+                }
+              }
+            });
+          }
+        }
+      });
+
+      const chartData = Array.from(groupedData.values())
+        .map(row => ({
+          ...row,
+          [timeCol]: row[timeCol] || 'N/A',
+        }))
+        .sort((a, b) => {
+          // Sort by time column
+          const aVal = a[timeCol];
+          const bVal = b[timeCol];
+          if (typeof aVal === 'number' && typeof bVal === 'number') {
+            return aVal - bVal;
+          }
+          return String(aVal).localeCompare(String(bVal));
+        });
 
       return (
         <Card className="p-6">
