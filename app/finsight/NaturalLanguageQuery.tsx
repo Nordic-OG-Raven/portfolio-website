@@ -59,7 +59,15 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
       }
 
       setResult(data);
-      setSelectedFormat(data.result_type); // Auto-select detected format
+      // Auto-select format, but map 'number' and 'list' to 'table', and 'time_series' to 'chart'
+      const formatMap: Record<string, string> = {
+        'number': 'table',
+        'list': 'table',
+        'time_series': 'chart',
+        'single_row': 'table',
+      };
+      const mappedFormat = formatMap[data.result_type] || data.result_type;
+      setSelectedFormat(mappedFormat);
     } catch (err: any) {
       setError(err.message || 'Failed to execute query');
     } finally {
@@ -93,34 +101,6 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
       return (
         <Card className="p-6">
           <p className="text-slate-400">No results found.</p>
-        </Card>
-      );
-    }
-
-    // Number display
-    if (displayFormat === 'number' && data.length === 1 && columns.length === 1) {
-      const value = data[0][columns[0]];
-      return (
-        <Card className="p-8 text-center">
-          <div className="text-6xl font-bold text-purple-400 mb-2">
-            {formatValue(value)}
-          </div>
-          <div className="text-slate-400 text-sm">{columns[0]}</div>
-        </Card>
-      );
-    }
-
-    // List display
-    if (displayFormat === 'list' && columns.length === 1) {
-      return (
-        <Card className="p-6">
-          <ul className="space-y-2">
-            {data.map((row, idx) => (
-              <li key={idx} className="text-slate-300">
-                {formatValue(row[columns[0]])}
-              </li>
-            ))}
-          </ul>
         </Card>
       );
     }
@@ -326,7 +306,7 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
               <div className="flex items-center gap-4">
                 <span className="text-slate-400 text-sm">Display as:</span>
                 <div className="flex gap-2">
-                  {['table', 'chart', 'number', 'list'].map((format) => (
+                  {['table', 'chart'].map((format) => (
                     <button
                       key={format}
                       onClick={() => setSelectedFormat(format)}
