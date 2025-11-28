@@ -53,6 +53,11 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
         throw new Error(data.error || `API error: ${response.status}`);
       }
 
+      // Check if there's an error in the response data
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       setResult(data);
       setSelectedFormat(data.result_type); // Auto-select detected format
     } catch (err: any) {
