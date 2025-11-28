@@ -28,14 +28,16 @@ export async function GET(request: NextRequest) {
     
     clearTimeout(timeoutId);
     
+    const data = await response.json();
+    
     if (!response.ok) {
+      // Forward the backend error message if available
       return NextResponse.json(
-        { error: `Backend returned ${response.status}` },
+        data.error ? { error: data.error } : { error: `Backend returned ${response.status}` },
         { status: response.status }
       );
     }
     
-    const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error: any) {
     if (error.name === 'AbortError') {
@@ -72,14 +74,16 @@ export async function POST(request: NextRequest) {
     
     clearTimeout(timeoutId);
     
+    const data = await response.json();
+    
     if (!response.ok) {
+      // Forward the backend error message if available
       return NextResponse.json(
-        { error: `Backend returned ${response.status}` },
+        data.error ? { error: data.error } : { error: `Backend returned ${response.status}` },
         { status: response.status }
       );
     }
     
-    const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error: any) {
     if (error.name === 'AbortError') {
