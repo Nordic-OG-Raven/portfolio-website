@@ -53,8 +53,8 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
         throw new Error(data.error || `API error: ${response.status}`);
       }
 
-      // Check if there's an error in the response data
-      if (data.error) {
+      // Check if there's an error in the response data (only if error is not null/undefined)
+      if (data.error && data.error !== null) {
         throw new Error(data.error);
       }
 
