@@ -240,6 +240,21 @@ export default function FinSightPage() {
         </p>
       </div>
 
+      {/* Pipeline Stages - Always Visible */}
+      <Card className="mb-8">
+        <h3 className="text-xl font-bold text-slate-100 mb-4">Pipeline Stages</h3>
+        <div className="space-y-4 text-slate-400">
+          <ol className="list-decimal list-inside space-y-2 ml-4">
+            <li><strong>Ingestion</strong>: Download 10-K/20-F filings from SEC EDGAR</li>
+            <li><strong>XBRL Parsing</strong>: Extract ALL facts using Arelle (10k-40k per company)</li>
+            <li><strong>Normalization</strong>: Standardize units, currencies, taxonomies (US-GAAP, IFRS)</li>
+            <li><strong>Validation</strong>: Verify accounting identities and cross-statement consistency</li>
+            <li><strong>Storage</strong>: Load into PostgreSQL data warehouse with full provenance</li>
+            <li><strong>Analysis</strong>: Query, visualize, and export for downstream use</li>
+          </ol>
+        </div>
+      </Card>
+
       {/* Natural Language Query - First Option */}
       {viewMode === 'natural_language' && (
         <NaturalLanguageQuery API_BASE={API_BASE} />
@@ -746,61 +761,44 @@ export default function FinSightPage() {
           </div>
         )}
 
-        {/* Initial State - Show Pipeline Info */}
-        {!result && !loading && !error && (
-          <Card>
-            <h3 className="text-xl font-bold text-slate-100 mb-4">Pipeline Stages</h3>
-            <div className="space-y-4 text-slate-400">
-              <ol className="list-decimal list-inside space-y-2 ml-4">
-                <li><strong>Ingestion</strong>: Download 10-K/20-F filings from SEC EDGAR</li>
-                <li><strong>XBRL Parsing</strong>: Extract ALL facts using Arelle (10k-40k per company)</li>
-                <li><strong>Normalization</strong>: Standardize units, currencies, taxonomies (US-GAAP, IFRS)</li>
-                <li><strong>Validation</strong>: Verify accounting identities and cross-statement consistency</li>
-                <li><strong>Storage</strong>: Load into PostgreSQL data warehouse with full provenance</li>
-                <li><strong>Analysis</strong>: Query, visualize, and export for downstream use</li>
-              </ol>
-            </div>
-          </Card>
-        )}
-
-        {/* Example Analyses Section */}
-        <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20 mt-8">
-          <h3 className="text-2xl font-bold text-slate-100 mb-4">Example Analyses</h3>
-          <p className="text-slate-400 mb-6">
-            See what FinSight can produce with Apache Superset dashboards built on this pipeline:
-          </p>
-          <div className="space-y-3">
-            <Link 
-              href="/novo-nordisk"
-              className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-purple-700/60 hover:shadow-lg transition-all group"
-            >
-              <div className="flex-1">
-                <div className="font-semibold text-slate-100 group-hover:text-purple-700">Novo Nordisk - Pharma Industry Analysis</div>
-                <div className="text-sm text-slate-400">Dashboard showcase: Market positioning, financial fundamentals, R&D efficiency</div>
-              </div>
-              <svg className="w-5 h-5 text-slate-400 group-hover:text-purple-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </Link>
-            <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
-              <div className="flex-1">
-                <div className="font-semibold text-slate-400">NVIDIA - Tech Sector Analysis</div>
-                <div className="text-sm text-slate-500">Coming soon</div>
-              </div>
-            </div>
-            <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
-              <div className="flex-1">
-                <div className="font-semibold text-slate-400">Apple - Consumer Tech Analysis</div>
-                <div className="text-sm text-slate-500">Coming soon</div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
           </>
         )}
 
-        {/* Footer */}
+      {/* Example Analyses Section - Always Visible */}
+      <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20 mt-8">
+        <h3 className="text-2xl font-bold text-slate-100 mb-4">Example Analyses</h3>
+        <p className="text-slate-400 mb-6">
+          See what FinSight can produce with Apache Superset dashboards built on this pipeline:
+        </p>
+        <div className="space-y-3">
+          <Link 
+            href="/novo-nordisk"
+            className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-purple-700/60 hover:shadow-lg transition-all group"
+          >
+            <div className="flex-1">
+              <div className="font-semibold text-slate-100 group-hover:text-purple-700">Novo Nordisk - Pharma Industry Analysis</div>
+              <div className="text-sm text-slate-400">Dashboard showcase: Market positioning, financial fundamentals, R&D efficiency</div>
+            </div>
+            <svg className="w-5 h-5 text-slate-400 group-hover:text-purple-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </Link>
+          <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
+            <div className="flex-1">
+              <div className="font-semibold text-slate-400">NVIDIA - Tech Sector Analysis</div>
+              <div className="text-sm text-slate-500">Coming soon</div>
+            </div>
+          </div>
+          <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
+            <div className="flex-1">
+              <div className="font-semibold text-slate-400">Apple - Consumer Tech Analysis</div>
+              <div className="text-sm text-slate-500">Coming soon</div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Footer */}
         <div className="mt-8 text-center text-sm text-slate-400">
           <p>Built with Arelle • PostgreSQL • Flask • Next.js • Apache Superset</p>
           <p className="mt-1">
