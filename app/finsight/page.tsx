@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import DataWarehouseView from './DataWarehouseView';
 import FinancialStatements from './FinancialStatements';
+import NaturalLanguageQuery from './NaturalLanguageQuery';
 import { LayoutShell } from '../components/LayoutShell';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -53,7 +54,7 @@ export default function FinSightPage() {
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'single' | 'warehouse'>('single');
+  const [viewMode, setViewMode] = useState<'natural_language' | 'single' | 'warehouse'>('natural_language');
   const [tablePage, setTablePage] = useState<Record<string, number>>({});
   const ITEMS_PER_PAGE = 50;
 
@@ -239,9 +240,24 @@ export default function FinSightPage() {
         </p>
       </div>
 
+      {/* Natural Language Query - First Option */}
+      {viewMode === 'natural_language' && (
+        <NaturalLanguageQuery API_BASE={API_BASE} />
+      )}
+
       {/* View Mode Selector */}
       <Card className="mb-6">
         <div className="flex gap-4">
+          <button
+            onClick={() => setViewMode('natural_language')}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+              viewMode === 'natural_language'
+                ? 'bg-purple-700 text-white hover:bg-purple-600'
+                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+            }`}
+          >
+            Natural Language Query
+          </button>
           <button
             onClick={() => setViewMode('single')}
             className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
