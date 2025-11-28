@@ -263,17 +263,17 @@ export default function FinSightPage() {
       </Card>
 
       {/* Database Limitations Explanation */}
-      <Card className="mb-8 bg-slate-800/50 border-slate-700">
-        <p className="text-slate-300 mb-4">
-          <strong className="text-slate-100">Limited Company Coverage:</strong> This is a free-to-use portfolio project, and database storage is limited. As a result, the number of companies in the database is restricted. You can request custom analyses for additional companies (up to 10 per month), but pre-loaded data is limited to a curated set of companies.
+      <div className="mb-6 text-sm text-slate-400">
+        <p>
+          <strong className="text-slate-300">Limited Company Coverage:</strong> This is a free-to-use portfolio project, and database storage is limited. As a result, the number of companies in the database is restricted. You can request custom analyses for additional companies (up to 10 per month), but pre-loaded data is limited to a curated set of companies.{' '}
+          <button
+            onClick={() => setShowCompaniesModal(true)}
+            className="text-purple-400 hover:text-purple-300 underline transition-colors"
+          >
+            Click here to view available companies and reports
+          </button>
         </p>
-        <Button
-          onClick={() => setShowCompaniesModal(true)}
-          className="bg-purple-700 text-white hover:bg-purple-600 px-6 py-2 rounded-lg font-medium transition-colors"
-        >
-          View Available Companies & Reports
-        </Button>
-      </Card>
+      </div>
 
       {/* Natural Language Query - First Option */}
       {viewMode === 'natural_language' && (
