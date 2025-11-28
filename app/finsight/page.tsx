@@ -15,6 +15,12 @@ interface Company {
   ticker: string;
   name: string;
   years: number[];
+  years_detail?: Array<{
+    year: number;
+    quarters?: number[];
+    filing_types?: string[];
+    reporting_frequencies?: string[];
+  }>;
 }
 
 interface QuotaInfo {
@@ -842,18 +848,49 @@ export default function FinSightPage() {
                           <p className="text-sm text-slate-400">Ticker: {company.ticker}</p>
                         </div>
                       </div>
-                      <div className="mt-3">
-                        <p className="text-sm text-slate-400 mb-2">Available Years:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {company.years.map((year) => (
-                            <span
-                              key={year}
-                              className="px-3 py-1 bg-purple-700/30 text-purple-300 rounded-md text-sm font-medium border border-purple-700/50"
-                            >
-                              {year}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="mt-3 space-y-3">
+                        {company.years_detail && company.years_detail.length > 0 ? (
+                          company.years_detail.map((yearDetail) => (
+                            <div key={yearDetail.year} className="mb-3">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="text-sm font-semibold text-slate-200">{yearDetail.year}</span>
+                                {yearDetail.filing_types && yearDetail.filing_types.length > 0 && (
+                                  <span className="text-xs text-slate-500">
+                                    ({yearDetail.filing_types.join(', ')})
+                                  </span>
+                                )}
+                              </div>
+                              {yearDetail.quarters && yearDetail.quarters.length > 0 ? (
+                                <div className="flex flex-wrap gap-2">
+                                  {yearDetail.quarters.map((quarter) => (
+                                    <span
+                                      key={quarter}
+                                      className="px-2 py-1 bg-purple-700/30 text-purple-300 rounded text-xs font-medium border border-purple-700/50"
+                                    >
+                                      Q{quarter}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-xs text-slate-500 italic">Annual report only</span>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <div>
+                            <p className="text-sm text-slate-400 mb-2">Available Years:</p>
+                            <div className="flex flex-wrap gap-2">
+                              {company.years.map((year) => (
+                                <span
+                                  key={year}
+                                  className="px-3 py-1 bg-purple-700/30 text-purple-300 rounded-md text-sm font-medium border border-purple-700/50"
+                                >
+                                  {year}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
