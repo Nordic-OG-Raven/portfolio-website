@@ -75,6 +75,17 @@ const projects = [
     statusVariant: 'success' as const,
     link: 'https://knowledgetutor.jonashaahr.com',
   },
+  {
+    id: 6,
+    title: 'Ejendomsopslag',
+    subtitle: 'Real-Time Danish Property Data Enrichment',
+    description: 'Built a real-time property lookup tool that enriches any Danish address with data from five government and public sources — BBR building records, historical sale prices, and energy certificates — including reverse-engineering two undocumented APIs where no official access existed. Deployed with full test coverage, structured logging, and GraphQL/REST integration against Denmark\'s national data-distribution platform.',
+    image: '/ejendomsopslag.png',
+    skills: ['Python', 'Streamlit', 'GraphQL', 'REST API Integration', 'Reverse Engineering', 'pytest', 'BeautifulSoup', 'Danish Open Data'],
+    status: 'Live Demo',
+    statusVariant: 'success' as const,
+    link: 'https://bde-ejendomsopslag.streamlit.app',
+  },
 ];
 
 export default function Projects() {
