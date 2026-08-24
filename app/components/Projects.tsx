@@ -11,9 +11,9 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 const projects = [
   {
     id: 7,
-    title: 'AI Job Search Pipeline',
-    subtitle: 'Reliability Engineering, Not Just a Scraper',
-    description: 'A daily job-scanning pipeline across 8 portals with LLM-based fit evaluation — rebuilt for reliability after a real production backlog of 1,111 unevaluated postings. Batched evaluation (~5x fewer process spawns), adaptive memory scaling instead of hard failure, self-healing deduplication, and two independent code reviews acted on, not just filed away.',
+    title: 'AI Job Search & Career Toolkit',
+    subtitle: 'From Daily Scanning to Tailored Applications to Interview Prep',
+    description: 'An end-to-end system that scans 8 job portals across 5 countries daily, mines years of old CVs into one fact-checked master profile, drafts tailored applications grounded strictly in it, preps for the resulting interviews, and ranks the highest-ROI way to spend spare time based on what employers are actually asking for. Built for real, ongoing use — including a full reliability pass after a genuine production backlog.',
     image: '/job-search.jpg',
     skills: ['Python', 'SQLite', 'Claude API', 'Bun/TypeScript', 'Process Management', 'launchd', 'Prompt Engineering'],
     status: 'Open Source',
