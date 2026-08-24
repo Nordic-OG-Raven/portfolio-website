@@ -44,6 +44,17 @@ const projects = [
   },
   {
     id: 3,
+    title: 'Ejendomsopslag',
+    subtitle: 'Real-Time Danish Property Data Enrichment',
+    description: 'Built a real-time property lookup tool that enriches any Danish address with data from five government and public sources — BBR building records, historical sale prices, and energy certificates — including reverse-engineering two undocumented APIs where no official access existed. Deployed with full test coverage, structured logging, and GraphQL/REST integration against Denmark\'s national data-distribution platform.',
+    image: '/ejendomsopslag.png',
+    skills: ['Python', 'Streamlit', 'GraphQL', 'REST API Integration', 'Reverse Engineering', 'pytest', 'BeautifulSoup', 'Danish Open Data'],
+    status: 'Live Demo',
+    statusVariant: 'success' as const,
+    link: 'https://bde-ejendomsopslag.streamlit.app',
+  },
+  {
+    id: 4,
     title: 'FinSight',
     subtitle: 'Business Intelligence & ETL Architecture',
     description: 'Created a robust ETL pipeline that extracts, normalizes, and validates financial facts (XBRL) from thousands of SEC/ESEF filings into a PostgreSQL warehouse. Interactive demo enables analysis of any publicly listed company.',
@@ -54,7 +65,7 @@ const projects = [
     link: '/finsight',
   },
   {
-    id: 4,
+    id: 5,
     title: 'Novo Nordisk Analysis',
     subtitle: 'Financial & Competitive Analysis',
     description: 'Strategic analysis of Novo Nordisk with comprehensive financial metrics, peer comparison, and 5-year trend analysis. Dashboard showcases market positioning, financial fundamentals, R&D efficiency, and innovation returns.',
@@ -65,7 +76,7 @@ const projects = [
     link: '/novo-nordisk',
   },
   {
-    id: 5,
+    id: 6,
     title: 'CurRag',
     subtitle: 'RAG System for University Notes',
     description: 'Built a Retrieval-Augmented Generation system for querying university lecture notes using LangChain, ChromaDB, and OpenAI. Features semantic search with natural language queries and a Streamlit web interface.',
@@ -74,17 +85,6 @@ const projects = [
     status: 'Live Demo',
     statusVariant: 'success' as const,
     link: 'https://knowledgetutor.jonashaahr.com',
-  },
-  {
-    id: 6,
-    title: 'Ejendomsopslag',
-    subtitle: 'Real-Time Danish Property Data Enrichment',
-    description: 'Built a real-time property lookup tool that enriches any Danish address with data from five government and public sources — BBR building records, historical sale prices, and energy certificates — including reverse-engineering two undocumented APIs where no official access existed. Deployed with full test coverage, structured logging, and GraphQL/REST integration against Denmark\'s national data-distribution platform.',
-    image: '/ejendomsopslag.png',
-    skills: ['Python', 'Streamlit', 'GraphQL', 'REST API Integration', 'Reverse Engineering', 'pytest', 'BeautifulSoup', 'Danish Open Data'],
-    status: 'Live Demo',
-    statusVariant: 'success' as const,
-    link: 'https://bde-ejendomsopslag.streamlit.app',
   },
 ];
 
