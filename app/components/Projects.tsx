@@ -71,7 +71,7 @@ const projects = [
     description: 'Created a robust ETL pipeline that extracts, normalizes, and validates financial facts (XBRL) from thousands of SEC/ESEF filings into a PostgreSQL warehouse. Interactive demo enables analysis of any publicly listed company.',
     image: '/finsight.png',
     skills: ['ETL/ELT', 'Data Modeling', 'PostgreSQL', 'XBRL Parsing (Arelle)', 'Python', 'Flask', 'Next.js', 'Recharts'],
-    status: 'In Development',
+    status: 'Offline (paid hosting cancelled)',
     statusVariant: 'warning' as const,
     link: '/finsight',
   },
