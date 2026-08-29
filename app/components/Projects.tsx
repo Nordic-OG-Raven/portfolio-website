@@ -13,7 +13,7 @@ const projects = [
     id: 8,
     title: 'DK1/DK2 Power Price Forecasting',
     subtitle: 'Day-Ahead Forecasting + Backtested Divergence Strategy',
-    description: 'Built a day-ahead electricity price forecasting pipeline for the Danish power market using Energinet\'s free API, with walk-forward (not shuffled) cross-validation and leakage-checked features. The forecasting model clearly beats a seasonal-naive baseline (55% RMSE reduction). Extended it into a backtested day-ahead-vs-imbalance-price trading signal — which does not show a repeatable edge, reported plainly in the notebooks rather than dressed up. Full analysis, code, and reasoning in the notebooks on GitHub.',
+    description: 'Built a day-ahead electricity price forecasting pipeline for the Danish power market using Energinet\'s free API, with walk-forward (not shuffled) cross-validation and leakage-checked features. The forecasting model clearly beats a seasonal-naive baseline (55% RMSE reduction). Extended it into a backtested day-ahead-vs-imbalance-price trading signal that does not show a repeatable edge, reported plainly in the notebooks rather than dressed up. Full analysis, code, and reasoning in the notebooks on GitHub.',
     image: '/energy-price-series.png',
     skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Python', 'Energinet API'],
     status: 'Research Project',

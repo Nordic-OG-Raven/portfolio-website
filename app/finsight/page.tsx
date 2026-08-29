@@ -252,7 +252,7 @@ export default function FinSightPage() {
         <div className="flex items-start gap-3">
           <Badge variant="warning">Offline</Badge>
           <p className="text-sm text-slate-400 leading-relaxed">
-            The live backend (Railway) and its PostgreSQL warehouse are currently offline — I cancelled
+            The live backend (Railway) and its PostgreSQL warehouse are currently offline. I cancelled
             the paid hosting behind this project rather than keep it running as a recurring cost. The
             queries, analysis, and data warehouse explorer below won&apos;t return live results right now.
             The pipeline design, methodology, and screenshots are still here as a record of the project.
