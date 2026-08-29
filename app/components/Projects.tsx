@@ -18,7 +18,7 @@ const projects = [
     skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Python', 'Energinet API'],
     status: 'Research Project',
     statusVariant: 'info' as const,
-    link: 'https://github.com/Nordic-OG-Raven/dk-power-price-forecasting',
+    link: 'https://github.com/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb',
   },
   {
     id: 7,
