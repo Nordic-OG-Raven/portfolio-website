@@ -18,7 +18,13 @@ const projects = [
     skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Python', 'Energinet API'],
     status: 'Research Project',
     statusVariant: 'info' as const,
-    link: 'https://github.com/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb',
+    link: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb',
+    notebooks: [
+      { label: '01 Data Exploration', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb' },
+      { label: '02 Day-Ahead Forecast', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/02_day_ahead_forecast.ipynb' },
+      { label: '03 Imbalance Divergence Model', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/03_imbalance_divergence_model.ipynb' },
+      { label: '04 Backtest Strategy', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/04_backtest_strategy.ipynb' },
+    ],
   },
   {
     id: 7,
@@ -174,18 +180,36 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* CTA Button */}
+                {/* CTA Button(s) */}
                 <div className="px-4 pb-4">
-                  <a
-                    href={project.link}
-                    target={project.link.startsWith('http') ? '_blank' : undefined}
-                    rel={project.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="block w-full"
-                  >
-                    <Button variant="primary" className="w-full justify-center">
-                      View Project
-                    </Button>
-                  </a>
+                  {project.notebooks ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      {project.notebooks.map((nb) => (
+                        <a
+                          key={nb.url}
+                          href={nb.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block"
+                        >
+                          <Button variant="secondary" className="w-full justify-center text-xs px-2 py-2">
+                            {nb.label}
+                          </Button>
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <a
+                      href={project.link}
+                      target={project.link.startsWith('http') ? '_blank' : undefined}
+                      rel={project.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className="block w-full"
+                    >
+                      <Button variant="primary" className="w-full justify-center">
+                        View Project
+                      </Button>
+                    </a>
+                  )}
                 </div>
               </Card>
             </motion.div>
