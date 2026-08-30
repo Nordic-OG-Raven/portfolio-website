@@ -18,12 +18,12 @@ const projects = [
     skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Python', 'Energinet API'],
     status: 'Research Project',
     statusVariant: 'info' as const,
-    link: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/54689ef/notebooks/01_data_exploration.ipynb',
+    link: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb',
     notebooks: [
-      { label: '01 Data Exploration', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/54689ef/notebooks/01_data_exploration.ipynb' },
-      { label: '02 Day-Ahead Forecast', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/54689ef/notebooks/02_day_ahead_forecast.ipynb' },
-      { label: '03 Imbalance Divergence Model', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/54689ef/notebooks/03_imbalance_divergence_model.ipynb' },
-      { label: '04 Backtest Strategy', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/54689ef/notebooks/04_backtest_strategy.ipynb' },
+      { label: '01 Data Exploration', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb' },
+      { label: '02 Day-Ahead Forecast', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/02_day_ahead_forecast.ipynb' },
+      { label: '03 Imbalance Divergence Model', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/03_imbalance_divergence_model.ipynb' },
+      { label: '04 Backtest Strategy', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/04_backtest_strategy.ipynb' },
     ],
   },
   {
