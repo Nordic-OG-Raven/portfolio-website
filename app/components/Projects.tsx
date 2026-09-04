@@ -13,18 +13,12 @@ const projects = [
     id: 8,
     title: 'DK1/DK2 Power Price Forecasting',
     subtitle: 'Day-Ahead Forecasting + Backtested Divergence Strategy',
-    description: 'Built a day-ahead electricity price forecasting pipeline for the Danish power market using Energinet\'s free API, with walk-forward (not shuffled) cross-validation and leakage-checked features. The forecasting model clearly beats a seasonal-naive baseline (55% RMSE reduction). Extended it into a backtested day-ahead-vs-imbalance-price trading signal that does not show a repeatable edge, reported plainly in the notebooks rather than dressed up. Full analysis, code, and reasoning in the notebooks on GitHub.',
+    description: 'Built a day-ahead electricity price forecasting pipeline for the Danish power market using Energinet\'s free API, with walk-forward (not shuffled) cross-validation and leakage-checked features (55% RMSE reduction over seasonal-naive). Extended it into a backtested day-ahead-vs-imbalance-price trading strategy: an initial honest negative result led to richer regulation-state features that turned into a real, statistically significant edge, stress-tested with a blind holdout, Combinatorial Purged CV, tail-risk/Extreme Value Theory analysis, and cross-zone replication (DK1 + DK2). Full reasoning, including the negative results and corrections along the way, in the notebooks on GitHub.',
     image: '/energy-price-series.png',
-    skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Python', 'Energinet API'],
+    skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'CPCV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Tail-Risk/EVT', 'Python', 'Energinet API'],
     status: 'Research Project',
     statusVariant: 'info' as const,
-    link: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb',
-    notebooks: [
-      { label: '01 Data Exploration', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/01_data_exploration.ipynb' },
-      { label: '02 Day-Ahead Forecast', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/02_day_ahead_forecast.ipynb' },
-      { label: '03 Imbalance Divergence Model', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/03_imbalance_divergence_model.ipynb' },
-      { label: '04 Backtest Strategy', url: 'https://colab.research.google.com/github/Nordic-OG-Raven/dk-power-price-forecasting/blob/master/notebooks/04_backtest_strategy.ipynb' },
-    ],
+    link: 'https://github.com/Nordic-OG-Raven/dk-power-price-forecasting/tree/master/notebooks',
   },
   {
     id: 7,
@@ -180,36 +174,18 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* CTA Button(s) */}
+                {/* CTA Button */}
                 <div className="px-4 pb-4">
-                  {project.notebooks ? (
-                    <div className="grid grid-cols-2 gap-2">
-                      {project.notebooks.map((nb) => (
-                        <a
-                          key={nb.url}
-                          href={nb.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block"
-                        >
-                          <Button variant="secondary" className="w-full justify-center text-xs px-2 py-2">
-                            {nb.label}
-                          </Button>
-                        </a>
-                      ))}
-                    </div>
-                  ) : (
-                    <a
-                      href={project.link}
-                      target={project.link.startsWith('http') ? '_blank' : undefined}
-                      rel={project.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="block w-full"
-                    >
-                      <Button variant="primary" className="w-full justify-center">
-                        View Project
-                      </Button>
-                    </a>
-                  )}
+                  <a
+                    href={project.link}
+                    target={project.link.startsWith('http') ? '_blank' : undefined}
+                    rel={project.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    className="block w-full"
+                  >
+                    <Button variant="primary" className="w-full justify-center">
+                      View Project
+                    </Button>
+                  </a>
                 </div>
               </Card>
             </motion.div>
