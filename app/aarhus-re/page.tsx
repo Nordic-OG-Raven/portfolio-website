@@ -2,6 +2,7 @@
 
 import { LayoutShell } from '../components/LayoutShell';
 import { Card } from '../components/ui/Card';
+import ListingsSearch from './ListingsSearch';
 
 export default function AarhusRePage() {
   return (
@@ -114,6 +115,9 @@ export default function AarhusRePage() {
           government&apos;s own model development,&quot; not &quot;beats the current system.&quot;
         </p>
       </Card>
+
+      {/* INTERACTIVE SEARCH */}
+      <ListingsSearch />
 
       {/* THE BUG HUNT */}
       <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20 mb-8">
