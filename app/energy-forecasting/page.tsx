@@ -240,19 +240,41 @@ export default function EnergyForecastingPage() {
         ))}
       </div>
 
-      {/* BIGGEST LESSON */}
+      {/* BIGGER PICTURE */}
       <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20 mb-8">
-        <h3 className="text-lg font-semibold text-slate-100 mb-2">The Single Biggest Lesson</h3>
-        <p className="text-slate-400 text-sm leading-relaxed">
-          Every time a result looked unusually good, the right response was to go find out why
-          before trusting it, not to accept it. That instinct caught a real, if modest, lag-shift
-          concern, a formula error in a well-established published financial ML technique, a
-          whole-project-scale resolution mismatch that had silently inflated every 15-minute dollar
-          figure by 4x, and a confound inside one of the project&apos;s own robustness checks that
-          had been getting the causality story backward for one of the two price zones. None of
-          these were found by assuming the code was correct — all of them were found by actively
-          trying to break results the project had already declared trustworthy.
-        </p>
+        <h3 className="text-lg font-semibold text-slate-100 mb-2">Does This Kind of Strategy Actually Work?</h3>
+        <div className="text-slate-400 text-sm leading-relaxed space-y-3">
+          <p>
+            Trading the gap between the day-ahead price and the real-time imbalance price is a
+            well-known idea in energy markets, but it&apos;s rarely tested this rigorously end to
+            end on public data alone. The answer here is a qualified yes: the edge is real, not an
+            artifact of one clever model or a lucky backtest window. It held up under a blind
+            holdout, fifteen independently resampled test paths, and an unmodified replication in a
+            second, physically different price zone. Its source is intuitive, too — grid imbalance
+            is persistent minute to minute, so recent regulation activity is genuinely informative
+            about what happens next, a real physical mechanism rather than a statistical
+            coincidence.
+          </p>
+          <p>
+            But real doesn&apos;t mean free money. The same short-lag mechanism that makes the edge
+            trustworthy also caps how large it can get before market impact takes over, and it
+            comes bundled with real, structurally unavoidable tail risk: a handful of instantaneous
+            price shocks that no amount of public data can currently predict in advance. A viable
+            version of this strategy looks less like &quot;find the signal, deploy it&quot; and more
+            like a risk-management discipline — sizing positions off the worst case a statistical
+            tail model implies, not the best case a backtest happens to show.
+          </p>
+          <p>
+            The more interesting structural finding is about market microstructure, not modeling.
+            Rebuilding the same strategy at the market&apos;s actual 15-minute settlement resolution,
+            instead of the hourly averages this project started with, revealed a meaningfully
+            stronger edge than the coarser view ever showed. Hourly aggregation wasn&apos;t just
+            imprecise, it was actively destroying signal that the real-time market carries. That&apos;s
+            a broader lesson for modeling any market that settles faster than the data conventionally
+            used to study it: the resolution you choose isn&apos;t a neutral implementation detail —
+            it can determine whether you find the edge at all.
+          </p>
+        </div>
       </Card>
 
       {/* CTA */}
