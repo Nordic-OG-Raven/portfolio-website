@@ -119,36 +119,6 @@ export default function AarhusRePage() {
       {/* INTERACTIVE SEARCH */}
       <ListingsSearch />
 
-      {/* THE BUG HUNT */}
-      <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20 mb-8">
-        <h3 className="text-lg font-semibold text-slate-100 mb-2">
-          An Improvement That Looked Real, Then Looked Fake, Then Was Real
-        </h3>
-        <div className="text-slate-400 text-sm leading-relaxed space-y-3">
-          <p>
-            One experiment tested whether pulling point-in-time-correct building attributes via a
-            bitemporal GraphQL query — instead of applying today&apos;s BBR registry state
-            retroactively to historical sales — would improve accuracy. The first run showed a
-            slight net regression. From first principles that&apos;s suspicious: more-accurate data
-            shouldn&apos;t make a model worse.
-          </p>
-          <p>
-            It didn&apos;t hold up under audit. Three real bugs: a multi-unit address aggregation
-            step that silently discarded all but one arbitrarily-chosen unit for 17.8% of training
-            rows instead of correctly medianing across all of them; a fallback that substituted an
-            unjustified guess instead of leaving uncorrected rows alone; and the same address-lookup
-            bug in the data-collection script itself, silently skipping 8.8% of the buildings it
-            should have queried.
-          </p>
-          <p>
-            Fixed and re-run properly — including matching the original pipeline&apos;s
-            status-filtering rule exactly, which meant re-crawling everything a second time rather
-            than cutting the corner — the correction produced a real, modest net improvement. The
-            reflex to distrust a suspicious result and audit it rather than publish it stands.
-          </p>
-        </div>
-      </Card>
-
       {/* NOTE */}
       <div className="text-center text-sm text-slate-500 mb-8">
         Private repository — proprietary model, not open-sourced like this site&apos;s other
