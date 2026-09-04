@@ -10,6 +10,16 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const projects = [
   {
+    id: 9,
+    title: 'Aarhus RE Scanner',
+    subtitle: 'Automated Property Valuation, Benchmarked Against the Government',
+    description: 'Solo-built automated valuation model for Aarhus residential real estate — a 5-model stacking ensemble on a hedonic log-price target, validated on a strict temporal holdout. Benchmarked against the accuracy figures from Denmark\'s own tax-authority model-development process (2014 Engberg-udvalget, 2016 ICE refinement): this model\'s house predictions land within ±20% of the real sale price 81.3% of the time, beating every documented iteration of the government\'s own development-stage numbers. Includes a real bug-hunt story: a suspicious A/B regression that turned out to be three real data-pipeline bugs, not a bad hypothesis.',
+    skills: ['LightGBM', 'XGBoost', 'CatBoost', 'Stacking Ensemble', 'GraphQL', 'Temporal Holdout Validation', 'Python', 'Datafordeler API'],
+    status: 'Portfolio Showcase',
+    statusVariant: 'info' as const,
+    link: '/aarhus-re',
+  },
+  {
     id: 8,
     title: 'DK1/DK2 Power Price Forecasting',
     subtitle: 'Day-Ahead Forecasting + Backtested Divergence Strategy',
@@ -135,15 +145,21 @@ export default function Projects() {
             >
               <Card className="flex flex-col h-full">
                 {/* Project Image */}
-                <div className="relative w-full h-48 mb-4 overflow-hidden rounded-t-lg">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
+                {project.image ? (
+                  <div className="relative w-full h-48 mb-4 overflow-hidden rounded-t-lg">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-48 mb-4 rounded-t-lg bg-slate-800 flex items-center justify-center">
+                    <span className="text-slate-600 text-sm">No preview yet</span>
+                  </div>
+                )}
 
                 {/* Project Content */}
                 <div className="flex-1 px-4 pb-4">
