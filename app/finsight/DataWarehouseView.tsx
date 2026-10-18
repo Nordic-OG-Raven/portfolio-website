@@ -278,7 +278,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
           <select
             value={granularity}
             onChange={(e) => setGranularity(Number(e.target.value))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white"
           >
             <option value={3}>Universal metrics (totals like Total Assets)</option>
             <option value={2}>Specific metrics (section breakdowns)</option>
@@ -323,7 +323,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
               onChange={(e) => setShowSegments(e.target.checked)}
               className="rounded"
             />
-            <span className="text-sm">Show segment breakdowns</span>
+            <span className="text-sm text-gray-800">Show segment breakdowns</span>
           </label>
           <label className="flex items-center space-x-2">
             <input
@@ -332,7 +332,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
               onChange={(e) => setShowAllConcepts(e.target.checked)}
               className="rounded"
             />
-            <span className="text-sm">Auditor view (show all concepts including duplicates)</span>
+            <span className="text-sm text-gray-800">Auditor view (show all concepts including duplicates)</span>
           </label>
         </div>
 
