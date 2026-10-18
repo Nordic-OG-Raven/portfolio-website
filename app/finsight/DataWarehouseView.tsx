@@ -23,7 +23,17 @@ interface DataRow {
   data_type: string | null;
   period_label: string | null;
   period_end: string | null;
+  statement_type: string | null;
 }
+
+// Backend statement_type -> display section, in statement order.
+const STMT_NAMES: Record<string, string> = {
+  income_statement: 'Income Statement',
+  comprehensive_income: 'Comprehensive Income',
+  balance_sheet: 'Balance Sheet',
+  cash_flow: 'Cash Flow',
+};
+const STMT_ORDER = ['Income Statement', 'Comprehensive Income', 'Balance Sheet', 'Cash Flow', 'Other'];
 
 interface DataWarehouseViewProps {
   companies: Company[];
@@ -150,6 +160,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
   const humanizeLabel = (label: string) => {
     return label
       .replace(/_/g, ' ')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')   // split CamelCase standard labels (e.g. CashAndCashEquivalents)
       .replace(/\b\w/g, l => l.toUpperCase());
   };
 
@@ -280,10 +291,14 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
             onChange={(e) => setGranularity(Number(e.target.value))}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white"
           >
-            <option value={3}>Universal metrics (totals like Total Assets)</option>
-            <option value={2}>Specific metrics (section breakdowns)</option>
-            <option value={1}>Very specific metrics (all line items)</option>
+            <option value={3}>Standardized — comparable across companies</option>
+            <option value={1}>All line items (as filed, includes gaps)</option>
           </select>
+          <p className="text-xs text-gray-600 mt-1">
+            Standardized maps each filer&apos;s concepts to a common vocabulary (incl. IFRS↔US-GAAP),
+            so rows line up; &ldquo;all line items&rdquo; shows everything as reported, with gaps where
+            companies tag things differently.
+          </p>
         </div>
 
         {/* Metrics Selection */}
@@ -419,7 +434,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                 const byStatementType: Record<string, string[]> = {};
                 Object.keys(metricsByLabel).forEach(label => {
                   const firstRow = Object.values(metricsByLabel[label])[0];
-                  const stmtType = inferStatementType(label, firstRow.period_label);
+                  const stmtType = STMT_NAMES[firstRow.statement_type || ''] || inferStatementType(label, firstRow.period_label);
                   if (!byStatementType[stmtType]) {
                     byStatementType[stmtType] = [];
                   }
@@ -431,7 +446,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                   byStatementType[stmtType].sort();
                 });
                 
-                return Object.entries(byStatementType).map(([stmtType, labels]) => (
+                return Object.entries(byStatementType).sort((a, b) => STMT_ORDER.indexOf(a[0]) - STMT_ORDER.indexOf(b[0])).map(([stmtType, labels]) => (
                   <div key={stmtType} className="mb-8 bg-white rounded-lg shadow-md p-6">
                     <h4 className="text-lg font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
                       {stmtType} - {selectedYear}
@@ -522,12 +537,12 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                 };
                 
                 data.forEach(row => {
-                  const stmtType = inferStatementType(row.normalized_label || '', row.period_label || null);
+                  const stmtType = STMT_NAMES[row.statement_type || ''] || inferStatementType(row.normalized_label || '', row.period_label || null);
                   if (!grouped[stmtType]) grouped[stmtType] = [];
                   grouped[stmtType].push(row);
                 });
-                
-                return Object.entries(grouped).map(([stmtType, rows]) => (
+
+                return Object.entries(grouped).sort((a, b) => STMT_ORDER.indexOf(a[0]) - STMT_ORDER.indexOf(b[0])).map(([stmtType, rows]) => (
                   <div key={stmtType} className="mb-6 bg-gray-50 rounded-lg p-4">
                     <h5 className="text-md font-semibold text-gray-800 mb-3">{stmtType} ({rows.length} items)</h5>
                     <table className="min-w-full divide-y divide-gray-200">
