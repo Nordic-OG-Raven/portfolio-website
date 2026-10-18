@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Railway API URL - uses environment variable with fallback
-let RAILWAY_API = process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-production-d5c1.up.railway.app';
+// FinSight backend URL — env var with fallback to the live Fly.io API (Neon-backed).
+let FINSIGHT_API = process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-api-verdant-log-1735.fly.dev';
 // Ensure URL has protocol
-if (!RAILWAY_API.startsWith('http://') && !RAILWAY_API.startsWith('https://')) {
-  RAILWAY_API = `https://${RAILWAY_API}`;
+if (!FINSIGHT_API.startsWith('http://') && !FINSIGHT_API.startsWith('https://')) {
+  FINSIGHT_API = `https://${FINSIGHT_API}`;
 }
 // Remove trailing slash
-RAILWAY_API = RAILWAY_API.replace(/\/$/, '');
+FINSIGHT_API = FINSIGHT_API.replace(/\/$/, '');
+const RAILWAY_API = FINSIGHT_API;  // keep the name used below
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
