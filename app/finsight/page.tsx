@@ -6,6 +6,7 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 import DataWarehouseView from './DataWarehouseView';
 import FinancialStatements from './FinancialStatements';
 import NaturalLanguageQuery from './NaturalLanguageQuery';
+import Forecast from './Forecast';
 import { LayoutShell } from '../components/LayoutShell';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -60,7 +61,7 @@ export default function FinSightPage() {
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'natural_language' | 'single' | 'warehouse'>('natural_language');
+  const [viewMode, setViewMode] = useState<'natural_language' | 'single' | 'warehouse' | 'forecast'>('natural_language');
   const [tablePage, setTablePage] = useState<Record<string, number>>({});
   const [showCompaniesModal, setShowCompaniesModal] = useState(false);
   const ITEMS_PER_PAGE = 50;
@@ -326,12 +327,27 @@ export default function FinSightPage() {
           >
             Data Warehouse Explorer
           </button>
+          <button
+            onClick={() => setViewMode('forecast')}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+              viewMode === 'forecast'
+                ? 'bg-purple-700 text-white hover:bg-purple-600'
+                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+            }`}
+          >
+            Earnings Forecast
+          </button>
         </div>
       </Card>
 
         {/* Data Warehouse View */}
         {viewMode === 'warehouse' && (
           <DataWarehouseView companies={preloadedCompanies} API_BASE={API_BASE} />
+        )}
+
+        {/* Earnings Forecast View */}
+        {viewMode === 'forecast' && (
+          <Forecast API_BASE={API_BASE} />
         )}
 
         {/* Single Company View */}
