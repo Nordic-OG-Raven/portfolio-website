@@ -11,7 +11,7 @@ const TRACKED = ['NVDA', 'AMZN', 'AVGO', 'MSFT', 'GOOGL', 'AAPL', 'JPM'];
 interface Pending {
   fiscal_year: number;
   quarter: number;
-  metric: 'revenue' | 'eps';
+  metric: 'revenue' | 'eps' | 'revenue_q4';
   forecast: number;
   interval_80?: [number, number];
   consensus: number | null;
@@ -20,7 +20,7 @@ interface Pending {
 interface History {
   fiscal_year: number;
   quarter: number;
-  metric: 'revenue' | 'eps';
+  metric: 'revenue' | 'eps' | 'revenue_q4';
   forecast: number;
   actual: number | null;
   consensus: number | null;
@@ -43,7 +43,8 @@ interface Props { API_BASE: string; }
 const fmtB = (v: number) => `$${(v / 1e9).toFixed(1)}B`;
 const fmtEps = (v: number) => `$${v.toFixed(2)}`;
 const fmtVal = (metric: string, v: number | null) =>
-  v == null ? '—' : metric === 'revenue' ? fmtB(v) : fmtEps(v);
+  v == null ? '—' : metric.startsWith('revenue') ? fmtB(v) : fmtEps(v);
+const metricLabel = (m: string) => (m === 'revenue_q4' ? 'Q4 revenue' : m);
 const qLabel = (fy: number, q: number) => `FY${fy} Q${q}`;
 
 export default function Forecast({ API_BASE }: Props) {
@@ -74,8 +75,10 @@ export default function Forecast({ API_BASE }: Props) {
 
   const pendingRev = data?.pending.find((p) => p.metric === 'revenue');
   const pendingEps = data?.pending.find((p) => p.metric === 'eps');
+  const pendingQ4 = data?.pending.find((p) => p.metric === 'revenue_q4');
   const revAcc = data?.accuracy?.revenue;
   const epsAcc = data?.accuracy?.eps;
+  const q4Acc = data?.accuracy?.revenue_q4;
 
   // revenue forecast-vs-actual over the graded quarters, oldest-first, for the chart
   const revHistory = (data?.history ?? [])
@@ -169,6 +172,18 @@ export default function Forecast({ API_BASE }: Props) {
                   </p>
                 </div>
               )}
+              {pendingQ4 && (
+                <div className="rounded-lg bg-slate-800/60 p-5">
+                  <div className="text-sm text-slate-400 mb-1">Q4 revenue (holiday/annual quarter)</div>
+                  <div className="text-3xl font-bold text-slate-100">{fmtB(pendingQ4.forecast)}</div>
+                  {pendingQ4.interval_80 && (
+                    <div className="text-sm text-slate-400 mt-2">
+                      80% interval {fmtB(pendingQ4.interval_80[0])} – {fmtB(pendingQ4.interval_80[1])}
+                    </div>
+                  )}
+                  <div className="text-xs text-slate-600 mt-2">model: {pendingQ4.model}</div>
+                </div>
+              )}
             </div>
           </Card>
 
@@ -204,6 +219,15 @@ export default function Forecast({ API_BASE }: Props) {
               ) : (
                 <div className="rounded-lg bg-slate-800/40 p-5 flex items-center">
                   <p className="text-sm text-slate-500">Revenue-only coverage for {data.ticker}.</p>
+                </div>
+              )}
+              {q4Acc && (
+                <div className="rounded-lg bg-slate-800/60 p-5">
+                  <div className="text-sm text-slate-400 mb-1">Q4 revenue error (MAPE)</div>
+                  <div className="text-3xl font-bold text-slate-100">{q4Acc.our_mape?.toFixed(1)}%</div>
+                  <div className="text-xs text-slate-500 mt-2">
+                    over {q4Acc.n} holiday/annual quarters (leakage-safe, annual-minus-YTD)
+                  </div>
                 </div>
               )}
             </div>
@@ -252,7 +276,7 @@ export default function Forecast({ API_BASE }: Props) {
                     .map((h, i) => (
                       <tr key={i} className="border-b border-slate-800 text-slate-300">
                         <td className="py-2 pr-4">{qLabel(h.fiscal_year, h.quarter)}</td>
-                        <td className="py-2 pr-4 capitalize">{h.metric}</td>
+                        <td className="py-2 pr-4">{metricLabel(h.metric)}</td>
                         <td className="py-2 pr-4 text-right">{fmtVal(h.metric, h.forecast)}</td>
                         <td className="py-2 pr-4 text-right">{fmtVal(h.metric, h.actual)}</td>
                         <td className="py-2 pr-4 text-right">{fmtVal(h.metric, h.consensus)}</td>
