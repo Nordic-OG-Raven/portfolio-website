@@ -92,6 +92,40 @@ export default function Forecast({ API_BASE }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* intro / method */}
+      <Card>
+        <h2 className="text-2xl font-bold text-slate-100 mb-2">Next-quarter earnings forecaster</h2>
+        <p className="text-sm text-slate-400 leading-relaxed mb-4">
+          Revenue and EPS forecasts for major companies, built only from data that was public before
+          each quarter closed. Every forecast is logged before the print and later graded against the
+          actual result and the analyst consensus, so the track record below is out-of-sample, not a
+          backtest.
+        </p>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <div className="rounded-lg bg-slate-800/60 p-4">
+            <div className="text-sm font-semibold text-purple-300 mb-1">Leakage-safe</div>
+            <div className="text-xs text-slate-400 leading-relaxed">
+              Each quarter is reconstructed point-in-time from SEC filings. Nothing filed after the
+              quarter can influence its forecast.
+            </div>
+          </div>
+          <div className="rounded-lg bg-slate-800/60 p-4">
+            <div className="text-sm font-semibold text-purple-300 mb-1">Benchmarked vs consensus</div>
+            <div className="text-xs text-slate-400 leading-relaxed">
+              Scored against the analyst consensus on the same quarters, so the comparison is like for
+              like.
+            </div>
+          </div>
+          <div className="rounded-lg bg-slate-800/60 p-4">
+            <div className="text-sm font-semibold text-purple-300 mb-1">Honest about limits</div>
+            <div className="text-xs text-slate-400 leading-relaxed">
+              EPS is logged only where the method is competitive. The Q4 holiday quarter is tracked
+              separately. Where consensus wins, it is shown.
+            </div>
+          </div>
+        </div>
+      </Card>
+
       {/* ticker selector */}
       <Card>
         <div className="flex flex-wrap gap-2">
