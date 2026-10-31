@@ -124,37 +124,39 @@ function FinSightApp() {
         </p>
       </div>
 
-      {/* Live pipeline overview */}
-      <PipelineOverview
-        API_BASE={API_BASE}
-        onSelectLayer={(layer: Layer) => {
-          const v = FINSIGHT_NAV.find(g => g.layer === layer)?.items[0].view;
-          if (v) changeView(v);
-        }}
-      />
+      {/* Front door: the interactive pipeline walk (full width). Layer views get the sidebar. */}
+      {view === 'overview' ? (
+        <PipelineOverview
+          API_BASE={API_BASE}
+          companies={preloadedCompanies}
+          onGoToLayer={(layer: Layer) => {
+            const v = FINSIGHT_NAV.find(g => g.layer === layer)?.items[0].view;
+            if (v) changeView(v);
+          }}
+        />
+      ) : (
+        <div className="flex flex-col lg:flex-row gap-6">
+          <Sidebar view={view} onSelect={changeView} />
 
-      {/* Medallion layout: layer sidebar + active view */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        <Sidebar view={view} onSelect={changeView} />
+          <div className="flex-1 min-w-0">
+            {/* Top bar: breadcrumb + provenance toggle */}
+            <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <div className="flex items-center gap-2 text-sm">
+                <span className={`inline-block w-2 h-2 rounded-full ${accent.dot}`} />
+                <span className={`capitalize font-medium ${accent.text}`}>{activeLayer}</span>
+                <span className="text-slate-600">/</span>
+                <span className="text-slate-200 font-medium">{labelOfView(view)}</span>
+              </div>
 
-        <div className="flex-1 min-w-0">
-          {/* Top bar: breadcrumb + provenance toggle */}
-          <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
-            <div className="flex items-center gap-2 text-sm">
-              <span className={`inline-block w-2 h-2 rounded-full ${accent.dot}`} />
-              <span className={`capitalize font-medium ${accent.text}`}>{activeLayer}</span>
-              <span className="text-slate-600">/</span>
-              <span className="text-slate-200 font-medium">{labelOfView(view)}</span>
+              <ProvenanceToggle />
             </div>
 
-            <ProvenanceToggle />
+            <LayerIntro layer={activeLayer} API_BASE={API_BASE} />
+
+            {renderView()}
           </div>
-
-          <LayerIntro layer={activeLayer} API_BASE={API_BASE} />
-
-          {renderView()}
         </div>
-      </div>
+      )}
 
       {/* Example Analyses Section - Always Visible */}
       <Card className="bg-gradient-to-r from-purple-700/10 to-purple-700/5 border-purple-700/20 mt-8">

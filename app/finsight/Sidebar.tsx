@@ -15,6 +15,21 @@ export default function Sidebar({ view, onSelect }: SidebarProps) {
   return (
     <nav className="lg:w-64 lg:shrink-0" aria-label="Medallion layers">
       <div className="bg-slate-800 rounded-xl border border-slate-800 p-3 lg:sticky lg:top-24">
+        {/* Front-door: the interactive pipeline walk, above the layer groups. */}
+        <button
+          onClick={() => onSelect('overview')}
+          aria-current={view === 'overview' ? 'page' : undefined}
+          className={`w-full text-left px-3 py-2 mb-4 rounded-lg text-sm transition-colors flex items-center gap-2 ${
+            view === 'overview'
+              ? 'bg-slate-700 text-slate-100 font-medium'
+              : 'text-slate-300 hover:text-slate-100 hover:bg-slate-700/50'
+          }`}
+        >
+          <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          Overview
+        </button>
         <div className="space-y-5">
           {NAV_DISPLAY.map((group, gi) => {
             const accent = LAYER_ACCENT[group.layer];

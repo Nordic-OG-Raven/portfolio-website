@@ -5,6 +5,7 @@
 export type Layer = 'bronze' | 'silver' | 'gold' | 'intelligence';
 
 export type View =
+  | 'overview'                                    // cross-layer front door (the pipeline walk)
   | 'filings' | 'raw_facts'                       // bronze
   | 'canonical_facts'                             // silver
   | 'warehouse' | 'statements' | 'company'        // gold
@@ -70,9 +71,10 @@ export const LAYER_ACCENT: Record<Layer, { dot: string; text: string; ring: stri
   intelligence: { dot: 'bg-purple-500', text: 'text-purple-400', ring: 'ring-purple-500/40' },
 };
 
-export const ALL_VIEWS: View[] = FINSIGHT_NAV.flatMap(g => g.items.map(i => i.view));
+// 'overview' is a cross-layer front door, not nested under any layer group.
+export const ALL_VIEWS: View[] = ['overview', ...FINSIGHT_NAV.flatMap(g => g.items.map(i => i.view))];
 
-export const DEFAULT_VIEW: View = 'company';
+export const DEFAULT_VIEW: View = 'overview';
 
 export function isView(v: string | null | undefined): v is View {
   return !!v && (ALL_VIEWS as string[]).includes(v);
@@ -84,6 +86,7 @@ export function layerOfView(view: View): Layer {
 }
 
 export function labelOfView(view: View): string {
+  if (view === 'overview') return 'Overview';
   for (const g of FINSIGHT_NAV) {
     const item = g.items.find(i => i.view === view);
     if (item) return item.label;
