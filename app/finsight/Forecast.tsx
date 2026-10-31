@@ -119,8 +119,8 @@ export default function Forecast({ API_BASE }: Props) {
           <div className="rounded-lg bg-slate-800/60 p-4">
             <div className="text-sm font-semibold text-purple-300 mb-1">Honest about limits</div>
             <div className="text-xs text-slate-400 leading-relaxed">
-              EPS is logged only where the method is competitive. The Q4 holiday quarter is tracked
-              separately. Where consensus wins, it is shown.
+              EPS is logged where the revenue-to-EPS chain is credible. We beat consensus on NVIDIA and
+              trail it on Microsoft, and show both. Elsewhere EPS is left out, and Q4 is tracked separately.
             </div>
           </div>
         </div>
