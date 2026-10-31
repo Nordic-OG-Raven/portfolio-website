@@ -15,7 +15,7 @@ const TAGS = [
 export default function TagConvergence() {
   const ys = [24, 60, 96, 132, 168, 204, 240];
   return (
-    <div className="rounded-xl border border-slate-700 bg-slate-800/40 p-4 mb-6">
+    <div className="rounded-xl border border-slate-700 bg-slate-800 p-4 mb-6">
       <style>{`
         @keyframes fs-conv { to { stroke-dashoffset: -24; } }
         .fs-conv { stroke-dasharray: 2 8; animation: fs-conv 2.2s linear infinite; }

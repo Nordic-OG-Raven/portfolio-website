@@ -43,7 +43,7 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
   ];
 
   return (
-    <div className="bg-slate-800/40 rounded-xl border border-slate-700 p-5 mb-6">
+    <div className="bg-slate-800 rounded-xl border border-slate-700 p-5 mb-6">
       <style>{`
         @keyframes fs-dash { to { stroke-dashoffset: -18; } }
         @keyframes fs-pulse { 0%{transform:scale(.6);opacity:.55} 70%{transform:scale(1.9);opacity:0} 100%{opacity:0} }

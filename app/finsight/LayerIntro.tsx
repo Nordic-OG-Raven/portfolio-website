@@ -46,7 +46,7 @@ export default function LayerIntro({ layer, API_BASE }: LayerIntroProps) {
   };
 
   return (
-    <div className="mb-4 rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+    <div className="mb-4 rounded-xl border border-slate-700 bg-slate-800 p-4">
       {/* mini pipeline position */}
       <div className="flex items-center gap-1.5 mb-3 flex-wrap">
         {ORDER.map((l, i) => {
