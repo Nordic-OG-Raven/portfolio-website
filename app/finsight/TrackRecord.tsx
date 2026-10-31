@@ -11,6 +11,7 @@ interface ScoreRow {
   n: number;
   our_mape: number | null;
   consensus_mape: number | null;
+  guided?: boolean;
 }
 
 interface Overall {
@@ -23,6 +24,7 @@ interface Overall {
 interface TrackRecordData {
   pending_count: number;
   overall: Overall[];
+  guided_overall?: Overall[];
   scorecard: ScoreRow[];
 }
 
@@ -121,6 +123,33 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
         })}
       </div>
 
+      {/* Apples-to-apples: just the forecasts where we had the same guidance signal the street has */}
+      {(data.guided_overall ?? []).filter(o => o.n > 0 && o.our_mape !== null).map(o => {
+        const weWin = o.our_mape !== null && o.consensus_mape !== null && o.our_mape <= o.consensus_mape;
+        return (
+          <Card key={`guided-${o.metric}`} hover={false} className="border-l-4 border-purple-500">
+            <div className="flex items-center justify-between gap-6 flex-wrap">
+              <div className="max-w-md">
+                <div className="text-sm font-semibold text-slate-200">{metricName(o.metric)} where guidance was available</div>
+                <div className="text-xs text-slate-500 mt-0.5">
+                  The like-for-like comparison: the {o.n} quarters where we could extract company guidance, the same input analysts build on.
+                </div>
+              </div>
+              <div className="flex items-end gap-6">
+                <div>
+                  <div className="text-xs text-slate-500">FinSight</div>
+                  <div className={`text-2xl font-bold font-mono ${weWin ? 'text-emerald-400' : 'text-slate-100'}`}>{fmt(o.our_mape)}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-slate-500">Consensus</div>
+                  <div className={`text-2xl font-bold font-mono ${!weWin ? 'text-emerald-400' : 'text-slate-300'}`}>{fmt(o.consensus_mape)}</div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        );
+      })}
+
       {/* Accuracy chart: us vs consensus per company */}
       {(() => {
         const metrics = Array.from(new Set(data.scorecard.map(r => r.metric)));
@@ -184,7 +213,12 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
             <tbody className="divide-y divide-slate-700/60">
               {data.scorecard.map((r, i) => (
                 <tr key={`${r.ticker}-${r.metric}-${i}`} className="hover:bg-slate-700/40">
-                  <td className="px-3 py-2 text-sm text-slate-100 font-medium">{r.ticker}</td>
+                  <td className="px-3 py-2 text-sm text-slate-100 font-medium whitespace-nowrap">
+                    {r.ticker}
+                    {r.guided && (
+                      <span className="ml-2 align-middle text-[10px] font-medium text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded">guides</span>
+                    )}
+                  </td>
                   <td className="px-3 py-2 text-sm text-slate-400">{metricName(r.metric)}</td>
                   <td className="px-3 py-2 text-sm text-right text-slate-400 tabular-nums">{r.n}</td>
                   <td className="px-3 py-2 text-sm text-right">{cell(r.our_mape, r.consensus_mape, 'our')}</td>
@@ -194,7 +228,10 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-slate-500 mt-3">Green marks the lower error in each row. Lower is better.</p>
+        <p className="text-xs text-slate-500 mt-3">
+          Green marks the lower error in each row. Lower is better.
+          <span className="ml-1"><span className="text-purple-300">guides</span> = issues extractable dollar guidance we forecast from.</span>
+        </p>
       </Card>
     </div>
   );
