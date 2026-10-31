@@ -5,7 +5,7 @@ import { LAYER_ACCENT, type Layer } from './finsightNav';
 
 interface PipelineStats {
   bronze: { filings: number; raw_facts: number; companies: number };
-  silver: { conformed_facts: number; canonical_facts: number };
+  silver: { conformed_facts: number };
   gold: { served_facts: number };
   intelligence: { forecasts: number; graded: number };
 }
@@ -38,7 +38,7 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
   const stages: Array<{ layer: Layer; big: number; bigLabel: string; sub: string }> = stats
     ? [
         { layer: 'bronze', big: stats.bronze.raw_facts, bigLabel: 'raw facts', sub: `${stats.bronze.filings} filings · ${stats.bronze.companies} companies` },
-        { layer: 'silver', big: stats.silver.conformed_facts, bigLabel: 'conformed facts', sub: `${stats.silver.canonical_facts.toLocaleString()} canonical` },
+        { layer: 'silver', big: stats.silver.conformed_facts, bigLabel: 'conformed facts', sub: 'deduped · USD-normalized' },
         { layer: 'gold', big: stats.gold.served_facts, bigLabel: 'served facts', sub: 'indexed for the apps' },
         { layer: 'intelligence', big: stats.intelligence.forecasts, bigLabel: 'forecasts', sub: `${stats.intelligence.graded} graded vs actuals` },
       ]
