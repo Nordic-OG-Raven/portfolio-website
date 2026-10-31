@@ -232,9 +232,23 @@ export default function Forecast({ API_BASE }: Props) {
             <div className="grid sm:grid-cols-2 gap-5">
               {revAcc && (
                 <div className="rounded-lg bg-slate-800/60 p-5">
-                  <div className="text-sm text-slate-400 mb-1">Revenue error (MAPE)</div>
-                  <div className="text-3xl font-bold text-slate-100">{revAcc.our_mape?.toFixed(1)}%</div>
-                  <div className="text-xs text-slate-500 mt-2">over {revAcc.n} graded quarters</div>
+                  <div className="text-sm text-slate-400 mb-1">
+                    Revenue error{revAcc.consensus_mape != null ? ' — us vs consensus' : ' (MAPE)'}
+                  </div>
+                  <div className="text-3xl font-bold text-slate-100">
+                    {revAcc.our_mape?.toFixed(1)}%
+                    {revAcc.consensus_mape != null && (
+                      <span className="text-lg font-medium text-slate-500"> vs {revAcc.consensus_mape.toFixed(1)}%</span>
+                    )}
+                  </div>
+                  <div className="text-xs text-slate-500 mt-2">
+                    over {revAcc.n} graded quarters
+                    {revAcc.consensus_mape != null && (
+                      <> · {(revAcc.our_mape ?? Infinity) <= revAcc.consensus_mape
+                        ? <span className="text-emerald-400">we match/beat consensus</span>
+                        : <span className="text-amber-400">consensus edges us</span>}</>
+                    )}
+                  </div>
                 </div>
               )}
               {epsAcc ? (
@@ -323,8 +337,9 @@ export default function Forecast({ API_BASE }: Props) {
               </table>
             </div>
             <p className="text-xs text-slate-600 mt-4">
-              Forecasts logged before each print; actuals from the warehouse, consensus from analyst estimates.
-              Historical rows are seeded from a leakage-safe point-in-time backtest; new rows are logged live each week.
+              Forecasts logged before each print; actuals from SEC filings. Analyst consensus: EPS via Yahoo
+              Finance, revenue via MarketBeat (last ~2 years). Historical rows are seeded from a leakage-safe
+              point-in-time backtest; new rows are logged live each week.
             </p>
           </Card>
         </>
