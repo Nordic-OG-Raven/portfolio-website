@@ -111,10 +111,11 @@ export default function Forecast({ API_BASE }: Props) {
             </div>
           </div>
           <div className="rounded-lg bg-slate-800/60 p-4">
-            <div className="text-sm font-semibold text-purple-300 mb-1">Benchmarked vs consensus</div>
+            <div className="text-sm font-semibold text-purple-300 mb-1">An edge where guidance is decisive</div>
             <div className="text-xs text-slate-400 leading-relaxed">
-              Scored against the analyst consensus on the same quarters, so the comparison is like for
-              like.
+              Scored against analyst consensus. It isn&apos;t beating the street everywhere — analysts fold
+              in guidance and segment detail. The edge is matching consensus-grade accuracy with zero
+              analyst input, and beating it on guidance-driven hyper-growth (NVIDIA: 1.2% vs 4.0%).
             </div>
           </div>
           <div className="rounded-lg bg-slate-800/60 p-4">
