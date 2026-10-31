@@ -60,6 +60,9 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
   const totalPages = Math.max(1, Math.ceil(facts.length / PAGE_SIZE));
   const pageFacts = facts.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
   const humanize = (s: string) => s.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  // Instant (balance-sheet) facts have no fiscal period; the backend can surface it as "NaN".
+  const cleanPeriod = (p: string | null): string | undefined =>
+    p && p !== 'NaN' ? p : undefined;
 
   return (
     <div className="space-y-6">
@@ -128,7 +131,7 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
                     <td className="px-3 py-2 text-sm text-slate-100">{humanize(f.canonical_label)}</td>
                     <td className="px-3 py-2 text-xs font-mono text-slate-400 break-all">{f.concept}</td>
                     <td className="px-3 py-2 text-sm text-slate-400 tabular-nums whitespace-nowrap">
-                      {f.fiscal_year}{f.fiscal_period ? ` ${f.fiscal_period}` : ''}
+                      {f.fiscal_year}{cleanPeriod(f.fiscal_period) ? ` ${cleanPeriod(f.fiscal_period)}` : ''}
                     </td>
                     <td className="px-3 py-2 text-sm text-right font-mono text-slate-200 tabular-nums whitespace-nowrap">
                       {(f.value_usd ?? f.value_numeric) === null ? (
@@ -136,7 +139,7 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
                       ) : (
                         <TraceableNumber
                           value={formatNumber(f.value_usd ?? f.value_numeric ?? null, f.unit || 'USD')}
-                          factRef={{ ticker, concept: f.concept, fiscalYear: f.fiscal_year, fiscalPeriod: f.fiscal_period ?? undefined, label: humanize(f.canonical_label), unit: f.unit || 'USD' }}
+                          factRef={{ ticker, concept: f.concept, fiscalYear: f.fiscal_year, fiscalPeriod: cleanPeriod(f.fiscal_period), label: humanize(f.canonical_label), unit: f.unit || 'USD' }}
                         />
                       )}
                     </td>
