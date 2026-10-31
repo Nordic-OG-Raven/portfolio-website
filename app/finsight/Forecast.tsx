@@ -44,7 +44,7 @@ interface Props { API_BASE: string; }
 const fmtB = (v: number) => `$${(v / 1e9).toFixed(1)}B`;
 const fmtEps = (v: number) => `$${v.toFixed(2)}`;
 const fmtVal = (metric: string, v: number | null) =>
-  v == null ? '—' : metric.startsWith('revenue') ? fmtB(v) : fmtEps(v);
+  v == null ? '-' : metric.startsWith('revenue') ? fmtB(v) : fmtEps(v);
 const metricLabel = (m: string) => (m === 'revenue_q4' ? 'Q4 revenue' : m);
 const qLabel = (fy: number, q: number) => `FY${fy} Q${q}`;
 
@@ -114,7 +114,7 @@ export default function Forecast({ API_BASE }: Props) {
           <div className="rounded-lg bg-slate-800/60 p-4">
             <div className="text-sm font-semibold text-purple-300 mb-1">An edge where guidance is decisive</div>
             <div className="text-xs text-slate-400 leading-relaxed">
-              Scored against analyst consensus. It isn&apos;t beating the street everywhere — analysts fold
+              Scored against analyst consensus. It isn&apos;t beating the street everywhere - analysts fold
               in guidance and segment detail. The edge is matching consensus-grade accuracy with zero
               analyst input, and beating it on guidance-driven hyper-growth (NVIDIA: 1.2% vs 4.0%).
             </div>
@@ -168,7 +168,7 @@ export default function Forecast({ API_BASE }: Props) {
           {/* next-quarter forecast */}
           <Card>
             <h3 className="text-xl font-bold text-slate-100 mb-1">
-              Next-quarter forecast{pendingRev ? ` — ${qLabel(pendingRev.fiscal_year, pendingRev.quarter)}` : ''}
+              Next-quarter forecast{pendingRev ? ` - ${qLabel(pendingRev.fiscal_year, pendingRev.quarter)}` : ''}
             </h3>
             <p className="text-sm text-slate-500 mb-5">
               Made before the print and frozen. Leakage-safe: built only from data filed before the quarter.
@@ -204,7 +204,7 @@ export default function Forecast({ API_BASE }: Props) {
               ) : (
                 <div className="rounded-lg bg-slate-800/40 p-5 flex items-center">
                   <p className="text-sm text-slate-500">
-                    EPS not logged for {data.ticker} — its margin→EPS chain isn&apos;t competitive with
+                    EPS not logged for {data.ticker} - its margin→EPS chain isn&apos;t competitive with
                     consensus (one-time items, acquisition amortization, FX, or bank accounting). Revenue is.
                   </p>
                 </div>
@@ -235,7 +235,7 @@ export default function Forecast({ API_BASE }: Props) {
               {revAcc && (
                 <div className="rounded-lg bg-slate-800/60 p-5">
                   <div className="text-sm text-slate-400 mb-1">
-                    Revenue error{revAcc.consensus_mape != null ? ' — us vs consensus' : ' (MAPE)'}
+                    Revenue error{revAcc.consensus_mape != null ? ' - us vs consensus' : ' (MAPE)'}
                   </div>
                   <div className="text-3xl font-bold text-slate-100">
                     {revAcc.our_mape?.toFixed(1)}%
@@ -255,7 +255,7 @@ export default function Forecast({ API_BASE }: Props) {
               )}
               {epsAcc ? (
                 <div className="rounded-lg bg-slate-800/60 p-5">
-                  <div className="text-sm text-slate-400 mb-1">EPS error — us vs consensus</div>
+                  <div className="text-sm text-slate-400 mb-1">EPS error - us vs consensus</div>
                   <div className="text-3xl font-bold text-slate-100">
                     {epsAcc.our_mape?.toFixed(1)}%
                     <span className="text-lg font-medium text-slate-500"> vs {epsAcc.consensus_mape?.toFixed(1)}%</span>
@@ -331,8 +331,8 @@ export default function Forecast({ API_BASE }: Props) {
                         <td className="py-2 pr-4 text-right">{fmtVal(h.metric, h.forecast)}</td>
                         <td className="py-2 pr-4 text-right">{fmtVal(h.metric, h.actual)}</td>
                         <td className="py-2 pr-4 text-right">{fmtVal(h.metric, h.consensus)}</td>
-                        <td className="py-2 pr-4 text-right">{h.our_ape != null ? `${(h.our_ape * 100).toFixed(1)}%` : '—'}</td>
-                        <td className="py-2 text-right">{h.consensus_ape != null ? `${(h.consensus_ape * 100).toFixed(1)}%` : '—'}</td>
+                        <td className="py-2 pr-4 text-right">{h.our_ape != null ? `${(h.our_ape * 100).toFixed(1)}%` : '-'}</td>
+                        <td className="py-2 text-right">{h.consensus_ape != null ? `${(h.consensus_ape * 100).toFixed(1)}%` : '-'}</td>
                       </tr>
                     ))}
                 </tbody>

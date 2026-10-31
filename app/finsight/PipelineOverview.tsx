@@ -15,12 +15,6 @@ interface PipelineOverviewProps {
   onSelectLayer?: (layer: Layer) => void;
 }
 
-const abbrev = (n: number): string => {
-  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
-  if (n >= 1e3) return `${(n / 1e3).toFixed(0)}K`;
-  return String(n);
-};
-
 // A live visual of the medallion pipeline: a funnel from the raw SEC facts down to the forecasts,
 // with real row counts per layer. The headline illustration of what FinSight is.
 export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOverviewProps) {
@@ -87,7 +81,7 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
             })}
       </div>
 
-      {/* Funnel bar — log-scaled widths show the refinement from 500k facts to a few hundred forecasts */}
+      {/* Funnel bar - log-scaled widths show the refinement from 500k facts to a few hundred forecasts */}
       {stages.length > 0 && (
         <div className="mt-4 flex items-center gap-1 h-2.5">
           {stages.map(s => {

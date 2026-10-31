@@ -428,14 +428,14 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
     if (isTotal) {
       // Add border ABOVE totals/subtotals (section header) - more prominent for section boundaries
       if (node.isSectionBoundary) {
-        borderTopClass = isFinalTotal ? 'border-t-2 border-gray-500' : 'border-t-2 border-gray-400';
+        borderTopClass = isFinalTotal ? 'border-t-2 border-slate-600' : 'border-t-2 border-slate-600';
       } else {
-        borderTopClass = isFinalTotal ? 'border-t-2 border-gray-400' : 'border-t border-gray-300';
+        borderTopClass = isFinalTotal ? 'border-t-2 border-slate-600' : 'border-t border-slate-700';
       }
       
       // Add border BELOW section totals (like "Total non-current assets", "Total current assets")
       if (isSectionTotal) {
-        borderBottomClass = 'border-b border-gray-300';
+        borderBottomClass = 'border-b border-slate-700';
       }
     }
     
@@ -472,9 +472,9 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                                 nextLabelLower === 'total liabilities' ||
                                 nextLabelLower.includes('net increase decrease in cash and cash equivalents');
         if (nextNode.isSectionBoundary) {
-          borderBottomClass = nextIsFinalTotal ? 'border-b-2 border-gray-500' : 'border-b-2 border-gray-400';
+          borderBottomClass = nextIsFinalTotal ? 'border-b-2 border-slate-600' : 'border-b-2 border-slate-600';
         } else {
-          borderBottomClass = nextIsFinalTotal ? 'border-b-2 border-gray-400' : 'border-b border-gray-300';
+          borderBottomClass = nextIsFinalTotal ? 'border-b-2 border-slate-600' : 'border-b border-slate-700';
         }
       }
     }
@@ -494,19 +494,19 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
         key={node.normalized_label}
         className={`${
           node.isHeader 
-            ? 'bg-blue-50/30 border-t border-blue-200' 
+            ? 'bg-slate-700/40 border-t border-slate-600' 
             : isTotal 
-              ? 'bg-gray-50 font-bold hover:bg-gray-100' 
-              : 'hover:bg-gray-50'
+              ? 'bg-slate-900 font-bold hover:bg-slate-700/60' 
+              : 'hover:bg-slate-700/40'
         } ${borderTopClass} ${borderBottomClass} ${spacingClass}`}
       >
         <td 
           className={`px-4 py-3 text-sm sticky left-0 z-10 ${
             node.isHeader
-              ? 'bg-blue-50/30 font-semibold text-blue-900 uppercase tracking-wide text-xs'
+              ? 'bg-slate-700/40 font-semibold text-slate-100 uppercase tracking-wide text-xs'
               : isTotal
-                ? 'bg-gray-50 font-bold text-gray-900'
-                : 'bg-white font-normal text-gray-900'
+                ? 'bg-slate-900 font-bold text-slate-100'
+                : 'bg-slate-800 font-normal text-slate-100'
           }`}
           style={{ paddingLeft: `${16 + indent}px` }}
         >
@@ -520,13 +520,13 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
               key={y}
               className={`px-4 py-3 text-sm text-right ${
                 node.isHeader
-                  ? 'bg-blue-50/30' // Header cells: just background, no text
+                  ? 'bg-slate-700/40' // Header cells: just background, no text
                   : `font-mono ${
                       node.values[y] !== null && node.values[y]! < 0 
-                        ? 'text-red-600' 
-                        : 'text-gray-900'
+                        ? 'text-red-400' 
+                        : 'text-slate-100'
                     } ${isTotal ? 'font-bold' : ''} ${
-                      isCurrentYear ? 'bg-purple-100' : ''
+                      isCurrentYear ? 'bg-purple-500/20' : ''
                     }`
               }`}
             >
@@ -621,17 +621,17 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
     });
 
     return (
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-slate-800 rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <h3 className="text-xl font-bold text-slate-100">{title}</h3>
             {fiscalYearEnd && (
-              <p className="text-xs text-gray-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
+              <p className="text-xs text-slate-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
             )}
             {(() => {
               const scaleInfo = getUnitScale(items);
               const scaleLabel = scaleInfo.scale === 'billions' ? 'billions' : scaleInfo.scale === 'millions' ? 'millions' : 'thousands';
-              return <p className="text-sm text-gray-600 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
+              return <p className="text-sm text-slate-400 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
             })()}
           </div>
             <button
@@ -644,7 +644,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                 }
                 setExpandedSections(newExpanded);
               }}
-              className="text-blue-600 hover:text-blue-800 text-sm"
+              className="text-purple-400 hover:text-purple-300 text-sm"
             >
               {isExpanded ? '▼ Collapse' : '▶ Expand'}
             </button>
@@ -653,23 +653,23 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
         {isExpanded && (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-slate-900">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[200px] sticky left-0 bg-gray-50 z-10">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[200px] sticky left-0 bg-slate-900 z-10">
                     Movement
                   </th>
                   {years.map(y => (
                     <th 
                       key={y} 
                       colSpan={components.length} 
-                      className="px-4 py-3 text-center text-xs font-semibold text-gray-900 uppercase tracking-wider border-l-2 border-gray-300"
+                      className="px-4 py-3 text-center text-xs font-semibold text-slate-100 uppercase tracking-wider border-l-2 border-slate-700"
                     >
                       {y}
                     </th>
                   ))}
                 </tr>
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[200px] sticky left-0 bg-gray-50 z-10">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[200px] sticky left-0 bg-slate-900 z-10">
                     {/* Empty header for movement column */}
                   </th>
                   {years.map(y => {
@@ -681,8 +681,8 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                         return (
                           <th 
                             key={`${y}-${comp.key}`} 
-                            className={`px-4 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px] ${
-                              shouldHighlight ? 'bg-purple-100' : ''
+                            className={`px-4 py-3 text-right text-xs font-semibold text-slate-300 uppercase tracking-wider min-w-[100px] ${
+                              shouldHighlight ? 'bg-purple-500/20' : ''
                             }`}
                           >
                             {comp.label}
@@ -693,7 +693,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                   })}
                 </tr>
               </thead>
-              <tbody className="bg-white">
+              <tbody className="bg-slate-800">
                 {movements.map((movement, idx) => {
                   const yearMap = movementMap.get(movement.normalized_label)!;
                   const isHeader = movement.is_header;
@@ -701,9 +701,9 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                   return (
                     <tr 
                       key={movement.normalized_label} 
-                      className={isHeader ? "bg-blue-50/30 border-t border-blue-200" : ""}
+                      className={isHeader ? "bg-slate-700/40 border-t border-slate-600" : ""}
                     >
-                      <td className={`px-4 py-3 text-left ${isHeader ? 'font-semibold text-blue-900 uppercase tracking-wider' : 'text-gray-900'} sticky left-0 bg-white z-10`}>
+                      <td className={`px-4 py-3 text-left ${isHeader ? 'font-semibold text-slate-100 uppercase tracking-wider' : 'text-slate-100'} sticky left-0 bg-slate-800 z-10`}>
                         {movement.preferred_label}
                       </td>
                       {years.map(y => {
@@ -729,8 +729,8 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                         return (
                           <td 
                                 key={`${y}-${comp.key}`} 
-                                className={`px-4 py-3 text-right ${isHeader ? 'font-semibold text-blue-900' : 'text-gray-700'} ${
-                                  shouldHighlight ? 'bg-purple-100' : ''
+                                className={`px-4 py-3 text-right ${isHeader ? 'font-semibold text-slate-100' : 'text-slate-300'} ${
+                                  shouldHighlight ? 'bg-purple-500/20' : ''
                                 }`}
                               >
                                 {isHeader ? '' : formatNumber(value, unit)}
@@ -766,18 +766,18 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
       const liabilitiesEquityFlatList = flattenTree(liabilitiesEquityTree);
       
       return (
-        <div className={hideTitle ? '' : 'bg-white rounded-lg shadow-md p-6 mb-6'}>
+        <div className={hideTitle ? '' : 'bg-slate-800 rounded-lg shadow-md p-6 mb-6'}>
           {!hideTitle && (
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+                <h3 className="text-xl font-bold text-slate-100">{title}</h3>
                 {showDate && fiscalYearEnd && (
-                  <p className="text-xs text-gray-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
+                  <p className="text-xs text-slate-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
                 )}
                 {(() => {
                   const scaleInfo = getUnitScale(items);
                   const scaleLabel = scaleInfo.scale === 'billions' ? 'billions' : scaleInfo.scale === 'millions' ? 'millions' : 'thousands';
-                  return <p className="text-sm text-gray-600 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
+                  return <p className="text-sm text-slate-400 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
                 })()}
               </div>
               <button
@@ -790,7 +790,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                   }
                   setExpandedSections(newExpanded);
                 }}
-                className="text-blue-600 hover:text-blue-800 text-sm"
+                className="text-purple-400 hover:text-purple-300 text-sm"
               >
                 {isExpanded ? '▼ Collapse' : '▶ Expand'}
               </button>
@@ -801,12 +801,12 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left: Assets */}
               <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-3">Assets</h4>
+                <h4 className="text-lg font-semibold text-slate-100 mb-3">Assets</h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-slate-900">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[200px]">
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[200px]">
                           Item
                         </th>
                         {years.map(y => {
@@ -814,8 +814,8 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                           return (
                             <th 
                               key={y} 
-                              className={`px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[120px] ${
-                                isCurrentYear ? 'bg-purple-100' : ''
+                              className={`px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[120px] ${
+                                isCurrentYear ? 'bg-purple-500/20' : ''
                               }`}
                             >
                               {y}
@@ -824,7 +824,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                         })}
                       </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody className="bg-slate-800">
                       {assetsTree.flatMap((node, index) => {
                         return renderTreeRow(node, 0, assetsFlatList, index);
                       })}
@@ -835,12 +835,12 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
               
               {/* Right: Equity and Liabilities */}
               <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-3">Equity and liabilities</h4>
+                <h4 className="text-lg font-semibold text-slate-100 mb-3">Equity and liabilities</h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-slate-900">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[200px]">
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[200px]">
                           Item
                         </th>
                         {years.map(y => {
@@ -848,8 +848,8 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                           return (
                             <th 
                               key={y} 
-                              className={`px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[120px] ${
-                                isCurrentYear ? 'bg-purple-100' : ''
+                              className={`px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[120px] ${
+                                isCurrentYear ? 'bg-purple-500/20' : ''
                               }`}
                             >
                               {y}
@@ -858,7 +858,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                         })}
                       </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody className="bg-slate-800">
                       {liabilitiesEquityTree.flatMap((node, index) => {
                         return renderTreeRow(node, 0, liabilitiesEquityFlatList, index);
                       })}
@@ -877,18 +877,18 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
     const flatNodeList = flattenTree(tree);
 
     return (
-      <div className={hideTitle ? '' : 'bg-white rounded-lg shadow-md p-6 mb-6'}>
+      <div className={hideTitle ? '' : 'bg-slate-800 rounded-lg shadow-md p-6 mb-6'}>
         {!hideTitle && (
         <div className="flex items-center justify-between mb-4">
             <div>
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <h3 className="text-xl font-bold text-slate-100">{title}</h3>
               {showDate && fiscalYearEnd && (
-                <p className="text-xs text-gray-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
+                <p className="text-xs text-slate-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
               )}
               {(() => {
                 const scaleInfo = getUnitScale(items);
                 const scaleLabel = scaleInfo.scale === 'billions' ? 'billions' : scaleInfo.scale === 'millions' ? 'millions' : 'thousands';
-                return <p className="text-sm text-gray-600 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
+                return <p className="text-sm text-slate-400 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
               })()}
             </div>
             <button
@@ -901,7 +901,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                 }
                 setExpandedSections(newExpanded);
               }}
-              className="text-blue-600 hover:text-blue-800 text-sm"
+              className="text-purple-400 hover:text-purple-300 text-sm"
             >
               {isExpanded ? '▼ Collapse' : '▶ Expand'}
             </button>
@@ -911,9 +911,9 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
         {isExpanded && (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-gray-100">
+              <thead className="bg-slate-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider sticky left-0 bg-gray-100 z-10">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider sticky left-0 bg-slate-700 z-10">
                     Item
                   </th>
                   {years.map(y => {
@@ -921,8 +921,8 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                     return (
                       <th 
                         key={y} 
-                        className={`px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[120px] ${
-                          isCurrentYear ? 'bg-purple-100' : ''
+                        className={`px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[120px] ${
+                          isCurrentYear ? 'bg-purple-500/20' : ''
                         }`}
                       >
                         {y}
@@ -931,7 +931,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                   })}
                 </tr>
               </thead>
-              <tbody className="bg-white">
+              <tbody className="bg-slate-800">
                 {tree.flatMap((node, index) => {
                   return renderTreeRow(node, 0, flatNodeList, index);
                 })}
@@ -945,17 +945,17 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-12 text-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-lg text-gray-600">Loading financial statements...</p>
+      <div className="bg-slate-800 rounded-lg shadow-md p-12 text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4"></div>
+        <p className="text-lg text-slate-400">Loading financial statements...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg">
-        <p className="text-sm text-red-700">{error}</p>
+      <div className="bg-red-500/20 border-l-4 border-red-500 p-4 rounded-lg">
+        <p className="text-sm text-red-400">{error}</p>
         <button
           onClick={loadStatements}
           className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
@@ -968,10 +968,10 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
 
   if (!data) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-slate-800 rounded-lg shadow-md p-6">
         <button
           onClick={loadStatements}
-          className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="w-full px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600"
         >
           Load Financial Statements
         </button>
@@ -999,17 +999,17 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
       // IFRS: Side-by-side layout (Income Statement + Comprehensive Income)
       return (
         <div className="mb-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-slate-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Income statement and Statement of comprehensive income</h2>
+                <h2 className="text-2xl font-bold text-slate-100">Income statement and Statement of comprehensive income</h2>
                 {fiscalYearEnd && (
-                  <p className="text-xs text-gray-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
+                  <p className="text-xs text-slate-500 mt-1">{formatFiscalYearEnd(fiscalYearEnd)}</p>
                 )}
                 {(() => {
                   const scaleInfo = getUnitScale(data.income_statement);
                   const scaleLabel = scaleInfo.scale === 'billions' ? 'billions' : scaleInfo.scale === 'millions' ? 'millions' : 'thousands';
-                  return <p className="text-sm text-gray-600 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
+                  return <p className="text-sm text-slate-400 mt-1">({scaleLabel} {scaleInfo.unit})</p>;
                 })()}
               </div>
             </div>
@@ -1018,7 +1018,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
               {/* Left: Income Statement */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-semibold text-gray-900">Income statement</h3>
+                  <h3 className="text-lg font-semibold text-slate-100">Income statement</h3>
                   <button
                     onClick={() => {
                       const newExpanded = new Set(expandedSections);
@@ -1029,7 +1029,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                       }
                       setExpandedSections(newExpanded);
                     }}
-                    className="text-blue-600 hover:text-blue-800 text-sm"
+                    className="text-purple-400 hover:text-purple-300 text-sm"
                   >
                     {expandedSections.has('income_statement') ? '▼ Collapse' : '▶ Expand'}
                   </button>
@@ -1041,7 +1041,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
               {comprehensiveIncome.length > 0 && (
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-gray-900">Statement of comprehensive income</h3>
+                    <h3 className="text-lg font-semibold text-slate-100">Statement of comprehensive income</h3>
                     <button
                       onClick={() => {
                         const newExpanded = new Set(expandedSections);
@@ -1052,7 +1052,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                         }
                         setExpandedSections(newExpanded);
                       }}
-                      className="text-blue-600 hover:text-blue-800 text-sm"
+                      className="text-purple-400 hover:text-purple-300 text-sm"
                     >
                       {expandedSections.has('comprehensive_income') ? '▼ Collapse' : '▶ Expand'}
                     </button>
@@ -1077,12 +1077,9 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
 
   return (
     <div className="space-y-6">
-      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
-        <p className="text-sm text-blue-700">
-          <strong>{ticker} - {year}</strong> Financial Statements ({accountingStandard})
-        </p>
-        <p className="text-xs text-blue-600 mt-1">
-          Showing {years.join(', ')} | Total: {data.income_statement.length} income statement items, {data.comprehensive_income?.length || 0} comprehensive income items, {data.balance_sheet.length} balance sheet items, {data.cash_flow.length} cash flow items, {data.equity_statement?.length || 0} equity statement items
+      <div className="bg-slate-700/40 border-l-4 border-purple-500 px-4 py-2 rounded-lg">
+        <p className="text-sm text-slate-300">
+          <strong className="text-slate-100">{ticker} {year}</strong> · {accountingStandard} · {years.join(', ')}
         </p>
       </div>
 

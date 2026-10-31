@@ -37,9 +37,9 @@ const METRIC_LABEL: Record<string, string> = {
 };
 
 const metricName = (m: string) => METRIC_LABEL[m] || m;
-const fmt = (x: number | null) => (x === null ? '—' : `${x.toFixed(1)}%`);
+const fmt = (x: number | null) => (x === null ? '-' : `${x.toFixed(1)}%`);
 
-// Intelligence: the live, leakage-safe forecast track record — our realized accuracy vs analyst
+// Intelligence: the live, leakage-safe forecast track record - our realized accuracy vs analyst
 // consensus, graded against what each company actually reported. Lower MAPE is better.
 export default function TrackRecord({ API_BASE }: TrackRecordProps) {
   const [data, setData] = useState<TrackRecordData | null>(null);
@@ -92,17 +92,10 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
 
   return (
     <div className="space-y-6">
-      <Card hover={false}>
-        <h2 className="text-xl font-bold text-slate-100 mb-1">Live forecast track record</h2>
-        <p className="text-sm text-slate-400 leading-relaxed">
-          Every forecast is logged before the company reports, then graded against the actual result and
-          against analyst consensus. These are realized errors over time (mean absolute percentage error,
-          so lower is better), not a backtest. The automated, filings-only method matches consensus on
-          stable names and leads on guidance-driven hyper-growth (NVIDIA, Broadcom); consensus, which
-          folds in company guidance and segment detail, leads on the rest. {data.pending_count} forecasts
-          are currently logged and awaiting their next report. Consensus via MarketBeat.
-        </p>
-      </Card>
+      <p className="text-sm text-slate-400">
+        Forecast error vs analyst consensus, graded against actuals. Lower is better.
+        <span className="text-slate-500"> {data.pending_count} forecasts awaiting their next report.</span>
+      </p>
 
       {/* Overall by metric */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -139,7 +132,7 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
         return (
           <Card hover={false}>
             <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
-              <h3 className="text-sm font-semibold text-slate-200">Accuracy by company — lower is better (% error)</h3>
+              <h3 className="text-sm font-semibold text-slate-200">% error by company</h3>
               <div className="flex gap-1">
                 {metrics.map(m => (
                   <button

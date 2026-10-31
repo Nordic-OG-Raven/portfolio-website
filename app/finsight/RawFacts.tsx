@@ -91,9 +91,9 @@ export default function RawFacts({ companies, loadingCompanies, API_BASE }: RawF
   const pageFacts = facts.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
 
   const factPeriod = (f: RawFact) =>
-    f.instant_date || [f.period_start, f.period_end].filter(Boolean).join(' → ') || '—';
+    f.instant_date || [f.period_start, f.period_end].filter(Boolean).join(' → ') || '-';
   const factValue = (f: RawFact) =>
-    f.value_numeric !== null ? formatNumber(f.value_numeric, f.unit || '') : (f.value_text || '—');
+    f.value_numeric !== null ? formatNumber(f.value_numeric, f.unit || '') : (f.value_text || '-');
 
   return (
     <div className="space-y-6">
@@ -127,7 +127,7 @@ export default function RawFacts({ companies, loadingCompanies, API_BASE }: RawF
               ) : (
                 filingOptions.map(o => (
                   <option key={o.accession} value={o.accession}>
-                    {o.form} · {o.filing_date || '—'} ({o.fact_count.toLocaleString()} facts)
+                    {o.form} · {o.filing_date || '-'} ({o.fact_count.toLocaleString()} facts)
                   </option>
                 ))
               )}
@@ -186,7 +186,7 @@ export default function RawFacts({ companies, loadingCompanies, API_BASE }: RawF
                     </td>
                     <td className="px-3 py-2 text-xs text-slate-400 tabular-nums whitespace-nowrap">{factPeriod(f)}</td>
                     <td className="px-3 py-2 text-sm text-right font-mono text-slate-200 tabular-nums whitespace-nowrap">{factValue(f)}</td>
-                    <td className="px-3 py-2 text-xs text-slate-400">{f.statement_type || '—'}</td>
+                    <td className="px-3 py-2 text-xs text-slate-400">{f.statement_type || '-'}</td>
                   </tr>
                 ))}
               </tbody>

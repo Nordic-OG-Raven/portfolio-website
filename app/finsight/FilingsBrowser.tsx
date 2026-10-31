@@ -93,7 +93,7 @@ export default function FilingsBrowser({ companies, loadingCompanies, API_BASE }
 
       {!loading && !error && filings.length > 0 && (
         <Card hover={false}>
-          <h3 className="text-sm font-semibold text-slate-200 mb-3">Facts ingested per filing, over time</h3>
+          <h3 className="text-sm font-semibold text-slate-200 mb-3">Facts per filing</h3>
           <div style={{ width: '100%', height: 220 }}>
             <ResponsiveContainer>
               <BarChart
@@ -133,8 +133,8 @@ export default function FilingsBrowser({ companies, loadingCompanies, API_BASE }
                 {filings.map(f => (
                   <tr key={f.accession} className="hover:bg-slate-700/40">
                     <td className="px-3 py-2"><Badge variant="default">{f.form}</Badge></td>
-                    <td className="px-3 py-2 text-sm text-slate-200 tabular-nums">{f.filing_date || '—'}</td>
-                    <td className="px-3 py-2 text-sm text-slate-400 tabular-nums">{f.period_of_report || '—'}</td>
+                    <td className="px-3 py-2 text-sm text-slate-200 tabular-nums">{f.filing_date || '-'}</td>
+                    <td className="px-3 py-2 text-sm text-slate-400 tabular-nums">{f.period_of_report || '-'}</td>
                     <td className="px-3 py-2 text-sm text-slate-200 text-right tabular-nums">{f.fact_count.toLocaleString()}</td>
                     <td className="px-3 py-2 text-right">
                       {f.edgar_url ? (
@@ -149,7 +149,7 @@ export default function FilingsBrowser({ companies, loadingCompanies, API_BASE }
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
-                      ) : <span className="text-slate-600 text-sm">—</span>}
+                      ) : <span className="text-slate-600 text-sm">-</span>}
                     </td>
                   </tr>
                 ))}

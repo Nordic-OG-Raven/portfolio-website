@@ -1,19 +1,18 @@
 // Single source of truth for the medallion navigation: the sidebar, the view dispatch, and
 // the URL (?view=) all read from this. Layers follow the data flow bronze -> silver -> gold ->
-// intelligence.
+// intelligence. Each view belongs to the layer whose data it shows.
 
 export type Layer = 'bronze' | 'silver' | 'gold' | 'intelligence';
 
 export type View =
   | 'filings' | 'raw_facts'                       // bronze
-  | 'transforms' | 'canonical_facts' | 'lineage'  // silver
+  | 'canonical_facts'                             // silver
   | 'warehouse' | 'statements' | 'company'        // gold
   | 'ask' | 'forecast' | 'track_record';          // intelligence
 
 export interface NavItem {
   view: View;
   label: string;
-  isNew?: boolean;
 }
 
 export interface NavGroup {
@@ -27,10 +26,10 @@ export const FINSIGHT_NAV: NavGroup[] = [
   {
     layer: 'bronze',
     label: 'Bronze',
-    blurb: 'Raw SEC filings',
+    blurb: 'Raw filings',
     items: [
-      { view: 'filings', label: 'Filings browser', isNew: true },
-      { view: 'raw_facts', label: 'Raw facts', isNew: true },
+      { view: 'filings', label: 'Filings browser' },
+      { view: 'raw_facts', label: 'Raw facts' },
     ],
   },
   {
@@ -38,9 +37,7 @@ export const FINSIGHT_NAV: NavGroup[] = [
     label: 'Silver',
     blurb: 'Conformed facts',
     items: [
-      { view: 'transforms', label: 'Transforms', isNew: true },
-      { view: 'canonical_facts', label: 'Canonical facts', isNew: true },
-      { view: 'lineage', label: 'Lineage map', isNew: true },
+      { view: 'canonical_facts', label: 'Canonical facts' },
     ],
   },
   {
@@ -58,9 +55,9 @@ export const FINSIGHT_NAV: NavGroup[] = [
     label: 'Intelligence',
     blurb: 'The apps',
     items: [
-      { view: 'ask', label: 'Ask (natural language)' },
+      { view: 'ask', label: 'Ask' },
       { view: 'forecast', label: 'Earnings forecast' },
-      { view: 'track_record', label: 'Track record', isNew: true },
+      { view: 'track_record', label: 'Track record' },
     ],
   },
 ];

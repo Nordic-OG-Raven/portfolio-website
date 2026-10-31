@@ -35,21 +35,14 @@ export default function Sidebar({ view, onSelect }: SidebarProps) {
                         <button
                           onClick={() => onSelect(item.view)}
                           aria-current={active ? 'page' : undefined}
-                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between gap-2 ${
+                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                             active
                               ? 'bg-slate-700 text-slate-100 font-medium'
                               : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
                           }`}
                         >
-                          <span className="flex items-center gap-2">
-                            <span className={`inline-block w-1.5 h-1.5 rounded-full ${active ? accent.dot : 'bg-transparent'}`} />
-                            {item.label}
-                          </span>
-                          {item.isNew && (
-                            <span className="text-[10px] font-semibold uppercase tracking-wide text-purple-300 bg-purple-700/30 border border-purple-700/50 rounded px-1.5 py-0.5">
-                              new
-                            </span>
-                          )}
+                          <span className={`inline-block w-1.5 h-1.5 rounded-full ${active ? accent.dot : 'bg-transparent'}`} />
+                          {item.label}
                         </button>
                       </li>
                     );

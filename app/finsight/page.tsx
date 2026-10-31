@@ -10,11 +10,10 @@ import CompanyAnalysis from './CompanyAnalysis';
 import StatementsView from './StatementsView';
 import FilingsBrowser from './FilingsBrowser';
 import RawFacts from './RawFacts';
-import Transforms from './Transforms';
 import CanonicalFacts from './CanonicalFacts';
-import LineageMap from './LineageMap';
 import TrackRecord from './TrackRecord';
 import Sidebar from './Sidebar';
+import LayerIntro from './LayerIntro';
 import PipelineOverview from './PipelineOverview';
 import { LayoutShell } from '../components/LayoutShell';
 import { Card } from '../components/ui/Card';
@@ -103,12 +102,8 @@ function FinSightApp() {
         return <FilingsBrowser companies={preloadedCompanies} loadingCompanies={loadingCompanies} API_BASE={API_BASE} />;
       case 'raw_facts':
         return <RawFacts companies={preloadedCompanies} loadingCompanies={loadingCompanies} API_BASE={API_BASE} />;
-      case 'transforms':
-        return <Transforms API_BASE={API_BASE} />;
       case 'canonical_facts':
         return <CanonicalFacts companies={preloadedCompanies} loadingCompanies={loadingCompanies} API_BASE={API_BASE} />;
-      case 'lineage':
-        return <LineageMap />;
       default:
         return null;
     }
@@ -125,25 +120,16 @@ function FinSightApp() {
         <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-3 text-center">
           FinSight
         </h1>
-        <p className="text-lg text-slate-400 text-center max-w-3xl mx-auto leading-relaxed">
-          A transparent financial data platform. Browse the raw SEC filings, follow each layer that
-          transforms them, and trace any number back to the exact filing it came from. Built end-to-end
-          as a portfolio project, extracting 10 to 40 thousand facts per filing. Pick a layer on the
-          left to dig in.
+        <p className="text-lg text-slate-400 text-center max-w-2xl mx-auto leading-relaxed">
+          Browse the raw SEC filings, watch each layer refine them, and trace any number back to the
+          filing it came from.
         </p>
-      </div>
-
-      {/* Company coverage note */}
-      <div className="mb-6 text-sm text-slate-400 text-center max-w-3xl mx-auto">
-        <p>
-          <strong className="text-slate-300">Company coverage</strong> is a curated set, since this is a
-          free portfolio project with limited storage. You can request a custom analysis for another
-          company (up to 10 per month).{' '}
+        <p className="text-sm text-slate-500 text-center mt-2">
           <button
             onClick={() => setShowCompaniesModal(true)}
             className="text-purple-400 hover:text-purple-300 underline transition-colors"
           >
-            View available companies and reports
+            View the companies covered
           </button>
         </p>
       </div>
@@ -173,6 +159,8 @@ function FinSightApp() {
 
             <ProvenanceToggle />
           </div>
+
+          <LayerIntro layer={activeLayer} API_BASE={API_BASE} />
 
           {renderView()}
         </div>

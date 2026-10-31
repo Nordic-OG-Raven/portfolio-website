@@ -224,18 +224,18 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Customize Your Analysis</h2>
+      <div className="bg-slate-800 rounded-lg shadow-md p-6">
+        <h2 className="text-lg font-bold text-slate-100 mb-4">Compare companies</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Company Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Companies
             </label>
-            <div className="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+            <div className="max-h-48 overflow-y-auto border border-slate-700 rounded-lg p-2">
               {companies.map(company => (
-                <label key={company.ticker} className="flex items-center space-x-2 p-2 hover:bg-gray-50 cursor-pointer">
+                <label key={company.ticker} className="flex items-center space-x-2 p-2 hover:bg-slate-700/40 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.ticker)}
@@ -248,7 +248,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                     }}
                     className="rounded"
                   />
-                  <span className="text-sm text-gray-900 font-medium">{company.name} ({company.ticker})</span>
+                  <span className="text-sm text-slate-100 font-medium">{company.name} ({company.ticker})</span>
                 </label>
               ))}
             </div>
@@ -256,13 +256,13 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
 
           {/* Year Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               {isCrossCompanyView 
                 ? `Fiscal Year (for comparison): ${selectedYear}`
                 : `Fiscal Year: ${selectedYear}`}
             </label>
             {isCrossCompanyView && (
-              <p className="text-xs text-gray-600 mb-2">
+              <p className="text-xs text-slate-400 mb-2">
                 Cross-company comparison shows one year at a time. Use Single Company Analysis for multi-year trends.
               </p>
             )}
@@ -274,7 +274,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
               onChange={(e) => setSelectedYear(Number(e.target.value))}
               className="w-full"
             />
-            <div className="flex justify-between text-xs text-gray-600 mt-1">
+            <div className="flex justify-between text-xs text-slate-400 mt-1">
               <span>2020</span>
               <span>2025</span>
             </div>
@@ -283,33 +283,31 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
 
         {/* Granularity */}
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-slate-300 mb-2">
             Granularity
           </label>
           <select
             value={granularity}
             onChange={(e) => setGranularity(Number(e.target.value))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white"
+            className="w-full px-4 py-2 border border-slate-700 rounded-lg text-slate-100 bg-slate-800"
           >
             <option value={3}>Standardized (comparable across companies)</option>
             <option value={1}>All line items (as filed, includes gaps)</option>
           </select>
-          <p className="text-xs text-gray-600 mt-1">
-            Standardized maps each filer&apos;s concepts to a common vocabulary (incl. IFRS↔US-GAAP),
-            so rows line up; &ldquo;all line items&rdquo; shows everything as reported, with gaps where
-            companies tag things differently.
+          <p className="text-xs text-slate-500 mt-1">
+            Standardized maps every filer to a shared vocabulary so rows line up across companies.
           </p>
         </div>
 
         {/* Metrics Selection */}
         {availableMetrics.length > 0 && (
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Metrics (leave empty for all)
             </label>
-            <div className="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+            <div className="max-h-48 overflow-y-auto border border-slate-700 rounded-lg p-2">
               {availableMetrics.map(metric => (
-                <label key={metric} className="flex items-center space-x-2 p-1 hover:bg-gray-50 cursor-pointer">
+                <label key={metric} className="flex items-center space-x-2 p-1 hover:bg-slate-700/40 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={selectedMetrics.includes(metric)}
@@ -322,7 +320,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                     }}
                     className="rounded"
                   />
-                  <span className="text-sm text-gray-900">{humanizeLabel(metric)}</span>
+                  <span className="text-sm text-slate-100">{humanizeLabel(metric)}</span>
                 </label>
               ))}
             </div>
@@ -338,7 +336,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
               onChange={(e) => setShowSegments(e.target.checked)}
               className="rounded"
             />
-            <span className="text-sm text-gray-800">Show segment breakdowns</span>
+            <span className="text-sm text-slate-200">Show segment breakdowns</span>
           </label>
           <label className="flex items-center space-x-2">
             <input
@@ -347,7 +345,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
               onChange={(e) => setShowAllConcepts(e.target.checked)}
               className="rounded"
             />
-            <span className="text-sm text-gray-800">Auditor view (show all concepts including duplicates)</span>
+            <span className="text-sm text-slate-200">Auditor view (show all concepts including duplicates)</span>
           </label>
         </div>
 
@@ -355,7 +353,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
         <button
           onClick={handleLoadData}
           disabled={loading || selectedCompanies.length === 0}
-          className="w-full mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full mt-6 px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Loading...' : 'Load Data'}
         </button>
@@ -363,16 +361,16 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
 
       {/* Error */}
       {error && (
-        <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg">
-          <p className="text-sm text-red-700">{error}</p>
+        <div className="bg-red-500/20 border-l-4 border-red-500 p-4 rounded-lg">
+          <p className="text-sm text-red-400">{error}</p>
         </div>
       )}
 
       {/* Data Table */}
       {data.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-slate-800 rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-900">
+            <h3 className="text-xl font-bold text-slate-100">
               Data ({data.length.toLocaleString()} rows)
             </h3>
             <div className="space-x-2">
@@ -447,30 +445,30 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                 });
                 
                 return Object.entries(byStatementType).sort((a, b) => STMT_ORDER.indexOf(a[0]) - STMT_ORDER.indexOf(b[0])).map(([stmtType, labels]) => (
-                  <div key={stmtType} className="mb-8 bg-white rounded-lg shadow-md p-6">
-                    <h4 className="text-lg font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+                  <div key={stmtType} className="mb-8 bg-slate-800 rounded-lg shadow-md p-6">
+                    <h4 className="text-lg font-bold text-slate-100 mb-4 border-b-2 border-slate-700 pb-2">
                       {stmtType} - {selectedYear}
                     </h4>
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-100">
+                    <table className="min-w-full divide-y divide-slate-700">
+                      <thead className="bg-slate-700">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider sticky left-0 bg-gray-100 z-10">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider sticky left-0 bg-slate-700 z-10">
                             Metric
                           </th>
                           {selectedCompanies.map(ticker => {
                             const company = companies.find(c => c.ticker === ticker);
                             return (
-                              <th key={ticker} className="px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider min-w-[120px]">
+                              <th key={ticker} className="px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase tracking-wider min-w-[120px]">
                                 {company?.name || ticker}
                               </th>
                             );
                           })}
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider">
                             Unit
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="bg-slate-800 divide-y divide-slate-700">
                         {labels.map(label => {
                           const firstRow = Object.values(metricsByLabel[label])[0];
                           const isTotal = firstRow.hierarchy_level === null || (firstRow.hierarchy_level && firstRow.hierarchy_level >= 3);
@@ -479,10 +477,10 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                           return (
                             <tr 
                               key={label}
-                              className={isTotal ? 'bg-gray-50 font-semibold hover:bg-gray-100' : 'hover:bg-gray-50'}
+                              className={isTotal ? 'bg-slate-900 font-semibold hover:bg-slate-700/60' : 'hover:bg-slate-700/40'}
                             >
                               <td 
-                                className={`px-4 py-3 text-sm font-medium text-gray-900 sticky left-0 z-10 ${isTotal ? 'bg-gray-50' : 'bg-white'}`}
+                                className={`px-4 py-3 text-sm font-medium text-slate-100 sticky left-0 z-10 ${isTotal ? 'bg-slate-900' : 'bg-slate-800'}`}
                                 style={{ paddingLeft: `${16 + indent}px` }}
                               >
                                 {humanizeLabel(label)}
@@ -494,14 +492,14 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                                   <td 
                                     key={ticker} 
                                     className={`px-4 py-3 text-sm text-right font-mono font-medium ${
-                                      value !== null && value !== undefined && value < 0 ? 'text-red-600' : 'text-gray-900'
+                                      value !== null && value !== undefined && value < 0 ? 'text-red-400' : 'text-slate-100'
                                     }`}
                                   >
                                     {row ? formatNumber(row.value_numeric, row.unit_measure) : '-'}
                                   </td>
                                 );
                               })}
-                              <td className="px-4 py-3 text-sm text-gray-700">
+                              <td className="px-4 py-3 text-sm text-slate-300">
                                 {firstRow.unit_measure}
                               </td>
                             </tr>
@@ -543,36 +541,36 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                 });
 
                 return Object.entries(grouped).sort((a, b) => STMT_ORDER.indexOf(a[0]) - STMT_ORDER.indexOf(b[0])).map(([stmtType, rows]) => (
-                  <div key={stmtType} className="mb-6 bg-gray-50 rounded-lg p-4">
-                    <h5 className="text-md font-semibold text-gray-800 mb-3">{stmtType} ({rows.length} items)</h5>
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-200">
+                  <div key={stmtType} className="mb-6 bg-slate-900 rounded-lg p-4">
+                    <h5 className="text-md font-semibold text-slate-200 mb-3">{stmtType} ({rows.length} items)</h5>
+                    <table className="min-w-full divide-y divide-slate-700">
+                      <thead className="bg-slate-700">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase">Metric</th>
-                          <th className="px-4 py-3 text-right text-xs font-semibold text-gray-900 uppercase">Value</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-900 uppercase">Unit</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase">Metric</th>
+                          <th className="px-4 py-3 text-right text-xs font-semibold text-slate-100 uppercase">Value</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase">Unit</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="bg-slate-800 divide-y divide-slate-700">
                         {rows.slice(0, 100).map((row, idx) => (
-                          <tr key={idx} className="hover:bg-gray-100">
-                            <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                          <tr key={idx} className="hover:bg-slate-700/60">
+                            <td className="px-4 py-3 text-sm font-medium text-slate-100">
                               {humanizeLabel(row.normalized_label)}
                             </td>
                             <td className={`px-4 py-3 text-sm text-right font-mono font-medium ${
                               row.value_numeric !== null && row.value_numeric !== undefined && row.value_numeric < 0 
-                                ? 'text-red-600' 
-                                : 'text-gray-900'
+                                ? 'text-red-400' 
+                                : 'text-slate-100'
                             }`}>
                               {formatNumber(row.value_numeric, row.unit_measure)}
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-700">{row.unit_measure}</td>
+                            <td className="px-4 py-3 text-sm text-slate-300">{row.unit_measure}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                     {rows.length > 100 && (
-                      <p className="text-sm text-gray-600 mt-2">Showing first 100 of {rows.length} items</p>
+                      <p className="text-sm text-slate-400 mt-2">Showing first 100 of {rows.length} items</p>
                     )}
                   </div>
                 ));
@@ -587,8 +585,8 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Time Series */}
           {timeSeriesData.length > 0 && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Time Series</h3>
+            <div className="bg-slate-800 rounded-lg shadow-md p-6">
+              <h3 className="text-lg font-bold text-slate-100 mb-4">Time Series</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={timeSeriesData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -611,8 +609,8 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
 
           {/* Cross-Company Comparison */}
           {crossCompanyData.length > 0 && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
+            <div className="bg-slate-800 rounded-lg shadow-md p-6">
+              <h3 className="text-lg font-bold text-slate-100 mb-4">
                 {humanizeLabel(selectedMetrics[0])} by Company
               </h3>
               <ResponsiveContainer width="100%" height={300}>
