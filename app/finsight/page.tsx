@@ -120,9 +120,8 @@ function FinSightApp() {
         <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-3 text-center">
           FinSight
         </h1>
-        <p className="text-lg text-slate-400 text-center max-w-2xl mx-auto leading-relaxed">
-          Browse the raw SEC filings, watch each layer refine them, and trace any number back to the
-          filing it came from.
+        <p className="text-xl md:text-2xl text-slate-200 text-center max-w-2xl mx-auto font-semibold">
+          Watch a 10-K become a <span className="text-purple-400">forecast</span>.
         </p>
         <p className="text-sm text-slate-500 text-center mt-2">
           <button

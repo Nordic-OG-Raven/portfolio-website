@@ -5,6 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Card } from '../components/ui/Card';
 import { formatNumber } from './format';
 import TraceableNumber from './TraceableNumber';
+import TagConvergence from './TagConvergence';
 import type { Company } from './types';
 
 interface CanonicalFact {
@@ -86,6 +87,8 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
 
   return (
     <div className="space-y-6">
+      <TagConvergence />
+
       <Card hover={false}>
         <div className="flex flex-wrap items-end gap-4 justify-between">
           <div className="min-w-[220px]">
