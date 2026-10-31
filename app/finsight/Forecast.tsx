@@ -93,42 +93,6 @@ export default function Forecast({ API_BASE }: Props) {
 
   return (
     <div className="space-y-6">
-      {/* intro / method */}
-      <Card>
-        <h2 className="text-2xl font-bold text-slate-100 mb-2">Next-quarter earnings forecaster</h2>
-        <p className="text-sm text-slate-400 leading-relaxed mb-4">
-          Revenue and EPS forecasts for major companies, built only from data that was public before
-          each quarter closed. Every forecast is logged before the print and later graded against the
-          actual result and the analyst consensus, so the track record below is out-of-sample, not a
-          backtest. Prediction intervals are calibrated: the 80% band has covered ~83% of outcomes
-          historically.
-        </p>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <div className="rounded-lg bg-slate-800/60 p-4">
-            <div className="text-sm font-semibold text-purple-300 mb-1">Leakage-safe</div>
-            <div className="text-xs text-slate-400 leading-relaxed">
-              Each quarter is reconstructed point-in-time from SEC filings. Nothing filed after the
-              quarter can influence its forecast.
-            </div>
-          </div>
-          <div className="rounded-lg bg-slate-800/60 p-4">
-            <div className="text-sm font-semibold text-purple-300 mb-1">An edge where guidance is decisive</div>
-            <div className="text-xs text-slate-400 leading-relaxed">
-              Scored against analyst consensus. It isn&apos;t beating the street everywhere - analysts fold
-              in guidance and segment detail. The edge is matching consensus-grade accuracy with zero
-              analyst input, and beating it on guidance-driven hyper-growth (NVIDIA: 1.2% vs 4.0%).
-            </div>
-          </div>
-          <div className="rounded-lg bg-slate-800/60 p-4">
-            <div className="text-sm font-semibold text-purple-300 mb-1">Honest about limits</div>
-            <div className="text-xs text-slate-400 leading-relaxed">
-              EPS is logged where the revenue-to-EPS chain is credible. We beat consensus on NVIDIA and
-              trail it on Microsoft, and show both. Elsewhere EPS is left out, and Q4 is tracked separately.
-            </div>
-          </div>
-        </div>
-      </Card>
-
       {/* ticker selector */}
       <Card>
         <div className="flex flex-wrap gap-2">

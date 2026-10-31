@@ -30,7 +30,6 @@ function FinSightApp() {
   const [quota, setQuota] = useState<QuotaInfo | null>(null);
   const [loadingCompanies, setLoadingCompanies] = useState(true);
   const [companiesError, setCompaniesError] = useState<string | null>(null);
-  const [showCompaniesModal, setShowCompaniesModal] = useState(false);
 
   const paramView = searchParams.get('view');
   const [view, setView] = useState<View>(isView(paramView) ? paramView : DEFAULT_VIEW);
@@ -123,14 +122,6 @@ function FinSightApp() {
         <p className="text-xl md:text-2xl text-slate-200 text-center max-w-2xl mx-auto font-semibold">
           Watch a 10-K become a <span className="text-purple-400">forecast</span>.
         </p>
-        <p className="text-sm text-slate-500 text-center mt-2">
-          <button
-            onClick={() => setShowCompaniesModal(true)}
-            className="text-purple-400 hover:text-purple-300 underline transition-colors"
-          >
-            View the companies covered
-          </button>
-        </p>
       </div>
 
       {/* Live pipeline overview */}
@@ -198,94 +189,6 @@ function FinSightApp() {
           </div>
         </div>
       </Card>
-
-      {/* Companies Modal */}
-      {showCompaniesModal && (
-        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowCompaniesModal(false)}>
-          <div className="bg-slate-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <div className="p-6 border-b border-slate-700 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-slate-100">Available Companies & Reports</h2>
-              <button
-                onClick={() => setShowCompaniesModal(false)}
-                className="text-slate-400 hover:text-slate-200 transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="p-6 overflow-y-auto flex-1">
-              {preloadedCompanies.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-slate-400">Loading companies...</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {preloadedCompanies.map((company) => (
-                    <div key={company.ticker} className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="text-lg font-semibold text-slate-100">{company.name}</h3>
-                          <p className="text-sm text-slate-400">Ticker: {company.ticker}</p>
-                        </div>
-                      </div>
-                      <div className="mt-3 space-y-3">
-                        {company.years_detail && company.years_detail.length > 0 ? (
-                          company.years_detail.map((yearDetail) => (
-                            <div key={yearDetail.year} className="mb-3">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="text-sm font-semibold text-slate-200">{yearDetail.year}</span>
-                                {yearDetail.filing_types && yearDetail.filing_types.length > 0 && (
-                                  <span className="text-xs text-slate-500">
-                                    ({yearDetail.filing_types.join(', ')})
-                                  </span>
-                                )}
-                              </div>
-                              {yearDetail.quarters && yearDetail.quarters.length > 0 ? (
-                                <div className="flex flex-wrap gap-2">
-                                  {yearDetail.quarters.map((quarter) => (
-                                    <span
-                                      key={quarter}
-                                      className="px-2 py-1 bg-purple-700/30 text-purple-300 rounded text-xs font-medium border border-purple-700/50"
-                                    >
-                                      Q{quarter}
-                                    </span>
-                                  ))}
-                                </div>
-                              ) : (
-                                <span className="text-xs text-slate-500 italic">Annual report only</span>
-                              )}
-                            </div>
-                          ))
-                        ) : (
-                          <div>
-                            <p className="text-sm text-slate-400 mb-2">Available Years:</p>
-                            <div className="flex flex-wrap gap-2">
-                              {company.years.map((year) => (
-                                <span
-                                  key={year}
-                                  className="px-3 py-1 bg-purple-700/30 text-purple-300 rounded-md text-sm font-medium border border-purple-700/50"
-                                >
-                                  {year}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="p-4 border-t border-slate-700 bg-slate-800/50">
-              <p className="text-xs text-slate-500 text-center">
-                Total: {preloadedCompanies.length} companies • {preloadedCompanies.reduce((sum, c) => sum + c.years.length, 0)} reports
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Footer */}
       <div className="mt-8 text-center text-sm text-slate-400">
