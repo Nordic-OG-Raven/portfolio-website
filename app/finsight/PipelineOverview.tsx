@@ -41,7 +41,7 @@ const usdB = (n: number): string => `$${(n / 1e9).toFixed(1)}B`;
 export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: Props) {
   const [stats, setStats] = useState<PipelineStats | null>(null);
   const [codes, setCodes] = useState<Record<string, string>>({});
-  const [ticker, setTicker] = useState<string>('AAPL');
+  const [ticker, setTicker] = useState<string>('NVDA'); // open on our strongest case (beats consensus)
   const [filings, setFilings] = useState<FilingsResp | null>(null);
   const [fc, setFc] = useState<ForecastResp | null>(null);
 
@@ -193,14 +193,14 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
         <span className="text-xs font-mono text-slate-500">or run each layer below</span>
       </div>
 
-      {/* stage cards */}
-      <div className="flex gap-3 overflow-x-auto pb-1">
+      {/* stage cards — a row on wide screens (the left-to-right pipeline), wrapping on narrow */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         {STAGES.map((s, i) => {
           const a = LAYER_ACCENT[s.layer];
           const locked = i > 0 && !ran[i - 1];
           const done = ran[i];
           return (
-            <div key={s.k} className={`flex-1 min-w-[240px] rounded-xl border bg-slate-900/50 relative overflow-hidden transition-opacity ${locked ? 'opacity-50' : 'opacity-100'} border-slate-700`}>
+            <div key={s.k} className={`rounded-xl border bg-slate-900/50 relative overflow-hidden transition-opacity ${locked ? 'opacity-50' : 'opacity-100'} border-slate-700`}>
               <div className={`h-[3px] ${a.dot}`} />
               <div className="p-4">
                 <div className="flex items-center gap-2">
