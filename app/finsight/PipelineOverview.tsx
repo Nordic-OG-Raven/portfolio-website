@@ -47,9 +47,18 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
       <style>{`
         @keyframes fs-dash { to { stroke-dashoffset: -18; } }
         @keyframes fs-pulse { 0%{transform:scale(.6);opacity:.55} 70%{transform:scale(1.9);opacity:0} 100%{opacity:0} }
+        @keyframes fs-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+        @keyframes fs-draw { to { stroke-dashoffset: 0; } }
+        @keyframes fs-proj { to { stroke-dashoffset: -16; } }
         .fs-flow { stroke-dasharray:3 6; animation: fs-dash 1.4s linear infinite; }
         .fs-pulse { transform-box: fill-box; transform-origin: center; animation: fs-pulse 2.6s ease-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .fs-flow, .fs-pulse { animation: none; } }
+        .fs-grow { transform-box: fill-box; transform-origin: center bottom; animation: fs-grow .8s cubic-bezier(.2,.8,.2,1) both; }
+        .fs-draw { stroke-dasharray: 150; stroke-dashoffset: 150; animation: fs-draw 1.2s ease-out .25s both; }
+        .fs-proj { animation: fs-proj .9s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .fs-flow, .fs-pulse, .fs-proj, .fs-grow { animation: none; }
+          .fs-draw { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; }
+        }
       `}</style>
 
       <svg viewBox="0 0 1040 230" width="100%" role="img"
@@ -82,18 +91,18 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
           ))}
         </g>
 
-        {/* gold: consolidated marts */}
+        {/* gold: consolidated marts (grow on load) */}
         <g fill={GOLD}>
-          <rect x="600" y="140" width="20" height="40" rx="2" opacity=".7" />
-          <rect x="628" y="110" width="20" height="70" rx="2" opacity=".85" />
-          <rect x="656" y="86" width="20" height="94" rx="2" />
-          <rect x="684" y="124" width="20" height="56" rx="2" opacity=".8" />
+          <rect className="fs-grow" style={{ animationDelay: '0.1s' }} x="600" y="140" width="20" height="40" rx="2" opacity=".7" />
+          <rect className="fs-grow" style={{ animationDelay: '0.2s' }} x="628" y="110" width="20" height="70" rx="2" opacity=".85" />
+          <rect className="fs-grow" style={{ animationDelay: '0.3s' }} x="656" y="86" width="20" height="94" rx="2" />
+          <rect className="fs-grow" style={{ animationDelay: '0.4s' }} x="684" y="124" width="20" height="56" rx="2" opacity=".8" />
         </g>
 
-        {/* intelligence: forecast line */}
+        {/* intelligence: forecast line (draws in, projection flows out to the pulsing endpoint) */}
         <g>
-          <polyline points="862,162 888,140 914,146 940,110 966,118" fill="none" stroke={PURPLE} strokeWidth="2.4" />
-          <polyline points="966,118 992,82" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeDasharray="4 4" />
+          <polyline className="fs-draw" points="862,162 888,140 914,146 940,110 966,118" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round" />
+          <polyline className="fs-proj" points="966,118 992,82" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeDasharray="4 4" />
           <circle className="fs-pulse" cx="992" cy="82" r="10" fill="none" stroke={PURPLE} strokeWidth="1.2" />
           <circle cx="992" cy="82" r="5" fill={PURPLE} />
         </g>
