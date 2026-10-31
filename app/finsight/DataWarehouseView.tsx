@@ -55,6 +55,11 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
   // For cross-company comparison: rows = metrics, columns = companies (single year)
   const isCrossCompanyView = selectedCompanies.length > 1;
 
+  // Year slider range is driven by the years that actually have data (not a hardcoded cap).
+  const availableYears = Array.from(new Set(companies.flatMap(c => c.years)));
+  const minYear = availableYears.length ? Math.min(...availableYears) : 2020;
+  const maxYear = availableYears.length ? Math.max(...availableYears) : new Date().getFullYear();
+
   // Load available metrics when companies/year change
   useEffect(() => {
     if (selectedCompanies.length === 0) {
@@ -268,15 +273,15 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
             )}
             <input
               type="range"
-              min="2020"
-              max="2025"
-              value={selectedYear}
+              min={minYear}
+              max={maxYear}
+              value={Math.min(Math.max(selectedYear, minYear), maxYear)}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
               className="w-full"
             />
             <div className="flex justify-between text-xs text-slate-400 mt-1">
-              <span>2020</span>
-              <span>2025</span>
+              <span>{minYear}</span>
+              <span>{maxYear}</span>
             </div>
           </div>
         </div>

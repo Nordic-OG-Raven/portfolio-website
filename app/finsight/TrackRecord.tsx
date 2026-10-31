@@ -31,7 +31,7 @@ interface TrackRecordProps {
 }
 
 const METRIC_LABEL: Record<string, string> = {
-  revenue: 'Revenue',
+  revenue: 'Revenue (Q1-Q3)',
   revenue_q4: 'Revenue (Q4)',
   eps: 'EPS',
 };
