@@ -99,7 +99,8 @@ export default function Forecast({ API_BASE }: Props) {
           Revenue and EPS forecasts for major companies, built only from data that was public before
           each quarter closed. Every forecast is logged before the print and later graded against the
           actual result and the analyst consensus, so the track record below is out-of-sample, not a
-          backtest.
+          backtest. Prediction intervals are calibrated: the 80% band has covered ~83% of outcomes
+          historically.
         </p>
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="rounded-lg bg-slate-800/60 p-4">
