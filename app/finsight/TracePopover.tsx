@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { formatNumber } from './format';
 import { LAYER_ACCENT } from './finsightNav';
 import type { FactRef } from './ProvenanceContext';
@@ -78,11 +78,22 @@ export default function TracePopover({ API_BASE, factRef, anchorRect, onClose }:
     return () => controller.abort();
   }, [API_BASE, factRef.ticker, factRef.concept, factRef.fiscalYear, factRef.fiscalPeriod]);
 
-  // Position below the anchor, clamped to the viewport.
+  // Place next to the anchor, clamped to the viewport. Prefer below, but flip above when there's
+  // more room there; cap the height to the available space and let the body scroll inside, so the
+  // popover can never spill off-screen out of reach.
+  const MARGIN = 8;
   const vw = typeof window !== 'undefined' ? window.innerWidth : 1024;
   const vh = typeof window !== 'undefined' ? window.innerHeight : 768;
-  const left = Math.max(8, Math.min(anchorRect.left, vw - WIDTH - 8));
-  const top = Math.max(8, Math.min(anchorRect.bottom + 8, vh - 360));
+  const width = Math.min(WIDTH, vw - 2 * MARGIN);
+  const left = Math.max(MARGIN, Math.min(anchorRect.left, vw - width - MARGIN));
+  const spaceBelow = vh - anchorRect.bottom - 2 * MARGIN;
+  const spaceAbove = anchorRect.top - 2 * MARGIN;
+  const placeBelow = spaceBelow >= 240 || spaceBelow >= spaceAbove;
+  const maxHeight = Math.max(180, placeBelow ? spaceBelow : spaceAbove);
+  const style: CSSProperties = {
+    left, width, maxHeight,
+    ...(placeBelow ? { top: anchorRect.bottom + MARGIN } : { bottom: vh - anchorRect.top + MARGIN }),
+  };
 
   const goldVal = data?.gold
     ? formatNumber(data.gold.value_usd ?? data.gold.value_numeric ?? null, data.gold.unit || 'USD')
@@ -100,12 +111,12 @@ export default function TracePopover({ API_BASE, factRef, anchorRect, onClose }:
         role="dialog"
         aria-modal="true"
         aria-label="Data lineage"
-        className="fixed z-50 bg-slate-800 border border-slate-600 rounded-xl shadow-2xl text-slate-200"
-        style={{ left, top, width: WIDTH }}
+        className="fixed z-50 flex flex-col bg-slate-800 border border-slate-600 rounded-xl shadow-2xl text-slate-200"
+        style={style}
         onClick={(e) => e.stopPropagation()}
       >
         {/* header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 shrink-0">
           <div className="min-w-0">
             <div className="text-xs uppercase tracking-wider text-slate-500">Trace to source</div>
             <div className="text-sm font-medium text-slate-100 truncate">
@@ -124,7 +135,7 @@ export default function TracePopover({ API_BASE, factRef, anchorRect, onClose }:
           </button>
         </div>
 
-        <div className="p-4">
+        <div className="p-4 overflow-y-auto flex-1 min-h-0">
           {loading && (
             <div className="flex items-center gap-3 py-4 text-sm text-slate-400">
               <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-500" />
