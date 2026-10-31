@@ -13,8 +13,8 @@ import RawFacts from './RawFacts';
 import Transforms from './Transforms';
 import CanonicalFacts from './CanonicalFacts';
 import LineageMap from './LineageMap';
+import TrackRecord from './TrackRecord';
 import Sidebar from './Sidebar';
-import ComingSoon from './ComingSoon';
 import { LayoutShell } from '../components/LayoutShell';
 import { Card } from '../components/ui/Card';
 import { ProvenanceProvider, ProvenanceToggle } from './ProvenanceContext';
@@ -97,10 +97,7 @@ function FinSightApp() {
       case 'forecast':
         return <Forecast API_BASE={API_BASE} />;
       case 'track_record':
-        return (
-          <ComingSoon layer="intelligence" title="Track record"
-            blurb="A live, timestamped log of each earnings forecast versus what the company actually reported, and versus analyst consensus." />
-        );
+        return <TrackRecord API_BASE={API_BASE} />;
       case 'filings':
         return <FilingsBrowser companies={preloadedCompanies} loadingCompanies={loadingCompanies} API_BASE={API_BASE} />;
       case 'raw_facts':

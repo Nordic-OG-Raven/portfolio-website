@@ -55,9 +55,10 @@ export default function TracePopover({ API_BASE, factRef, anchorRect, onClose }:
     setError(null);
     setData(null);
 
+    const fp = factRef.fiscalPeriod ? `&fiscal_period=${encodeURIComponent(factRef.fiscalPeriod)}` : '';
     const backendPath =
       `/api/lineage/${encodeURIComponent(factRef.ticker)}` +
-      `?concept=${encodeURIComponent(factRef.concept)}&fiscal_year=${factRef.fiscalYear}`;
+      `?concept=${encodeURIComponent(factRef.concept)}&fiscal_year=${factRef.fiscalYear}${fp}`;
     const url = `${API_BASE}?path=${encodeURIComponent(backendPath)}`;
 
     fetch(url, { signal: controller.signal })
@@ -75,7 +76,7 @@ export default function TracePopover({ API_BASE, factRef, anchorRect, onClose }:
       .finally(() => setLoading(false));
 
     return () => controller.abort();
-  }, [API_BASE, factRef.ticker, factRef.concept, factRef.fiscalYear]);
+  }, [API_BASE, factRef.ticker, factRef.concept, factRef.fiscalYear, factRef.fiscalPeriod]);
 
   // Position below the anchor, clamped to the viewport.
   const vw = typeof window !== 'undefined' ? window.innerWidth : 1024;

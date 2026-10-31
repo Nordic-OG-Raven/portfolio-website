@@ -8,6 +8,7 @@ export interface FactRef {
   ticker: string;
   concept: string;      // XBRL concept (any taxonomy-prefix form; the backend matches on local part)
   fiscalYear: number;
+  fiscalPeriod?: string; // e.g. 'Q1'; omit for annual facts (the backend then prefers the annual fact)
   label?: string;
   unit?: string;
   displayValue?: string;

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card } from '../components/ui/Card';
 import { formatNumber } from './format';
+import TraceableNumber from './TraceableNumber';
 import type { Company } from './types';
 
 interface CanonicalFact {
@@ -130,7 +131,14 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
                       {f.fiscal_year}{f.fiscal_period ? ` ${f.fiscal_period}` : ''}
                     </td>
                     <td className="px-3 py-2 text-sm text-right font-mono text-slate-200 tabular-nums whitespace-nowrap">
-                      {formatNumber(f.value_usd ?? f.value_numeric ?? null, f.unit || 'USD')}
+                      {(f.value_usd ?? f.value_numeric) === null ? (
+                        formatNumber(f.value_usd ?? f.value_numeric ?? null, f.unit || 'USD')
+                      ) : (
+                        <TraceableNumber
+                          value={formatNumber(f.value_usd ?? f.value_numeric ?? null, f.unit || 'USD')}
+                          factRef={{ ticker, concept: f.concept, fiscalYear: f.fiscal_year, fiscalPeriod: f.fiscal_period ?? undefined, label: humanize(f.canonical_label), unit: f.unit || 'USD' }}
+                        />
+                      )}
                     </td>
                   </tr>
                 ))}

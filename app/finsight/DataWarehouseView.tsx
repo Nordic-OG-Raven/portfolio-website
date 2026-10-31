@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import TraceableNumber from './TraceableNumber';
 
 interface Company {
   ticker: string;
@@ -291,7 +292,7 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
             onChange={(e) => setGranularity(Number(e.target.value))}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white"
           >
-            <option value={3}>Standardized — comparable across companies</option>
+            <option value={3}>Standardized (comparable across companies)</option>
             <option value={1}>All line items (as filed, includes gaps)</option>
           </select>
           <p className="text-xs text-gray-600 mt-1">
@@ -497,7 +498,12 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                                       value !== null && value !== undefined && value < 0 ? 'text-red-600' : 'text-gray-900'
                                     }`}
                                   >
-                                    {row ? formatNumber(row.value_numeric, row.unit_measure) : '-'}
+                                    {row && row.value_numeric !== null && row.fiscal_year !== null ? (
+                                      <TraceableNumber
+                                        value={formatNumber(row.value_numeric, row.unit_measure)}
+                                        factRef={{ ticker, concept: row.concept, fiscalYear: row.fiscal_year, label: humanizeLabel(label), unit: row.unit_measure }}
+                                      />
+                                    ) : (row ? formatNumber(row.value_numeric, row.unit_measure) : '-')}
                                   </td>
                                 );
                               })}
@@ -564,7 +570,12 @@ export default function DataWarehouseView({ companies, API_BASE }: DataWarehouse
                                 ? 'text-red-600' 
                                 : 'text-gray-900'
                             }`}>
-                              {formatNumber(row.value_numeric, row.unit_measure)}
+                              {row.value_numeric !== null && row.fiscal_year !== null ? (
+                                <TraceableNumber
+                                  value={formatNumber(row.value_numeric, row.unit_measure)}
+                                  factRef={{ ticker: row.company, concept: row.concept, fiscalYear: row.fiscal_year, label: humanizeLabel(row.normalized_label), unit: row.unit_measure }}
+                                />
+                              ) : formatNumber(row.value_numeric, row.unit_measure)}
                             </td>
                             <td className="px-4 py-3 text-sm text-gray-700">{row.unit_measure}</td>
                           </tr>
