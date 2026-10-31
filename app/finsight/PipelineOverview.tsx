@@ -65,27 +65,27 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
         aria-label="Pipeline: raw bronze facts conform through silver and gold into an intelligence forecast">
         {/* flowing connectors */}
         <g stroke={PURPLE} strokeWidth="1.6" opacity="0.8" fill="none">
-          <line className="fs-flow" x1="210" y1="115" x2="268" y2="115" />
-          <line className="fs-flow" x1="470" y1="115" x2="528" y2="115" />
-          <line className="fs-flow" x1="730" y1="115" x2="788" y2="115" />
+          <line className="fs-flow" x1="231" y1="115" x2="289" y2="115" />
+          <line className="fs-flow" x1="491" y1="115" x2="549" y2="115" />
+          <line className="fs-flow" x1="751" y1="115" x2="809" y2="115" />
         </g>
         <g fill={PURPLE} opacity="0.85">
-          <path d="M268 115 l-9 -5 v10 z" /><path d="M528 115 l-9 -5 v10 z" /><path d="M788 115 l-9 -5 v10 z" />
+          <path d="M289 115 l-9 -5 v10 z" /><path d="M549 115 l-9 -5 v10 z" /><path d="M809 115 l-9 -5 v10 z" />
         </g>
 
         {/* bronze: scattered raw facts */}
         <g fill={BRONZE}>
-          <circle cx="60" cy="60" r="4" opacity=".9" /><circle cx="110" cy="48" r="3" opacity=".6" /><circle cx="150" cy="72" r="4" opacity=".8" />
-          <circle cx="40" cy="100" r="3" opacity=".5" /><circle cx="92" cy="94" r="5" opacity=".9" /><circle cx="140" cy="108" r="3" opacity=".6" />
-          <circle cx="66" cy="140" r="4" opacity=".75" /><circle cx="118" cy="136" r="3" opacity=".55" /><circle cx="160" cy="140" r="4" opacity=".85" />
-          <circle cx="44" cy="166" r="3" opacity=".5" /><circle cx="96" cy="176" r="4" opacity=".7" /><circle cx="146" cy="170" r="3" opacity=".6" />
-          <circle cx="78" cy="118" r="3" opacity=".6" /><circle cx="128" cy="82" r="3" opacity=".5" /><circle cx="104" cy="150" r="3" opacity=".55" />
+          <circle cx="90" cy="60" r="4" opacity=".9" /><circle cx="140" cy="48" r="3" opacity=".6" /><circle cx="180" cy="72" r="4" opacity=".8" />
+          <circle cx="70" cy="100" r="3" opacity=".5" /><circle cx="122" cy="94" r="5" opacity=".9" /><circle cx="170" cy="108" r="3" opacity=".6" />
+          <circle cx="96" cy="140" r="4" opacity=".75" /><circle cx="148" cy="136" r="3" opacity=".55" /><circle cx="190" cy="140" r="4" opacity=".85" />
+          <circle cx="74" cy="166" r="3" opacity=".5" /><circle cx="126" cy="176" r="4" opacity=".7" /><circle cx="176" cy="170" r="3" opacity=".6" />
+          <circle cx="108" cy="118" r="3" opacity=".6" /><circle cx="158" cy="82" r="3" opacity=".5" /><circle cx="134" cy="150" r="3" opacity=".55" />
         </g>
 
         {/* silver: normalized grid */}
         <g fill={SILVER}>
           {[56, 80, 104, 128, 152].map((y, r) => (
-            [308, 330, 352, 374].map(x => (
+            [351, 373, 395, 417].map(x => (
               <rect key={`${x}-${y}`} x={x} y={y} width="12" height="12" rx="2" opacity={r % 2 ? 0.7 : 0.88} />
             ))
           ))}
@@ -93,18 +93,18 @@ export default function PipelineOverview({ API_BASE, onSelectLayer }: PipelineOv
 
         {/* gold: consolidated marts (grow on load) */}
         <g fill={GOLD}>
-          <rect className="fs-grow" style={{ animationDelay: '0.1s' }} x="600" y="140" width="20" height="40" rx="2" opacity=".7" />
-          <rect className="fs-grow" style={{ animationDelay: '0.2s' }} x="628" y="110" width="20" height="70" rx="2" opacity=".85" />
-          <rect className="fs-grow" style={{ animationDelay: '0.3s' }} x="656" y="86" width="20" height="94" rx="2" />
-          <rect className="fs-grow" style={{ animationDelay: '0.4s' }} x="684" y="124" width="20" height="56" rx="2" opacity=".8" />
+          <rect className="fs-grow" style={{ animationDelay: '0.1s' }} x="598" y="140" width="20" height="40" rx="2" opacity=".7" />
+          <rect className="fs-grow" style={{ animationDelay: '0.2s' }} x="626" y="110" width="20" height="70" rx="2" opacity=".85" />
+          <rect className="fs-grow" style={{ animationDelay: '0.3s' }} x="654" y="86" width="20" height="94" rx="2" />
+          <rect className="fs-grow" style={{ animationDelay: '0.4s' }} x="682" y="124" width="20" height="56" rx="2" opacity=".8" />
         </g>
 
         {/* intelligence: forecast line (draws in, projection flows out to the pulsing endpoint) */}
         <g>
-          <polyline className="fs-draw" points="862,162 888,140 914,146 940,110 966,118" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round" />
-          <polyline className="fs-proj" points="966,118 992,82" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeDasharray="4 4" />
-          <circle className="fs-pulse" cx="992" cy="82" r="10" fill="none" stroke={PURPLE} strokeWidth="1.2" />
-          <circle cx="992" cy="82" r="5" fill={PURPLE} />
+          <polyline className="fs-draw" points="845,162 871,140 897,146 923,110 949,118" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round" />
+          <polyline className="fs-proj" points="949,118 975,82" fill="none" stroke={PURPLE} strokeWidth="2.4" strokeDasharray="4 4" />
+          <circle className="fs-pulse" cx="975" cy="82" r="10" fill="none" stroke={PURPLE} strokeWidth="1.2" />
+          <circle cx="975" cy="82" r="5" fill={PURPLE} />
         </g>
       </svg>
 
