@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import TraceableNumber from './TraceableNumber';
 
 interface StatementItem {
   normalized_label: string;
@@ -47,6 +48,7 @@ interface APIResponse {
 interface TreeNode {
   label: string;
   normalized_label: string;
+  concept_name: string;  // XBRL concept, carried for provenance tracing
   values: Record<number, number | null>; // year -> value
   unit: string;
   hierarchy_level: number | null;
@@ -129,7 +131,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
 
   // Format number with commas and parentheses for negatives (accounting format)
   const formatNumber = (value: number | null, unit: string = 'USD'): string => {
-    if (value === null || value === undefined) return '—';
+    if (value === null || value === undefined) return 'N/A';
     
     // Normalize unit
     const normalizedUnit = unit === 'pure' ? '%' : unit;
@@ -308,6 +310,7 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
       nodes[label] = {
         label: firstItem.preferred_label || humanizeLabel(label, firstItem.concept_name),  // LASTING - use preferred_label from database
         normalized_label: label,
+        concept_name: firstItem.concept_name,
         values,
         unit,
         hierarchy_level: hierarchyLevel,
@@ -527,7 +530,14 @@ export default function FinancialStatements({ ticker, year, API_BASE }: Financia
                     }`
               }`}
             >
-              {node.isHeader ? '' : formatNumber(node.values[y], node.unit)}
+              {node.isHeader || node.values[y] === null ? (
+                node.isHeader ? '' : formatNumber(node.values[y], node.unit)
+              ) : (
+                <TraceableNumber
+                  value={formatNumber(node.values[y], node.unit)}
+                  factRef={{ ticker, concept: node.concept_name, fiscalYear: y, label: node.label, unit: node.unit }}
+                />
+              )}
             </td>
           );
         })}
