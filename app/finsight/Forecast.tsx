@@ -6,7 +6,8 @@ import { Card } from '../components/ui/Card';
 
 // Companies with a live forecast in the ledger (revenue for all; EPS only where the margin->EPS
 // chain is competitive with consensus). Mirrors forecast_log.LEDGER on the backend.
-const TRACKED = ['NVDA', 'AMZN', 'AVGO', 'MSFT', 'GOOGL', 'AAPL', 'JPM'];
+const TRACKED = ['NVDA', 'AMZN', 'AVGO', 'MSFT', 'GOOGL', 'AAPL', 'JPM',
+  'META', 'TSLA', 'NFLX', 'AMD', 'ORCL', 'CRM'];
 
 interface Pending {
   fiscal_year: number;
