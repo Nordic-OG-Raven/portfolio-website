@@ -15,11 +15,12 @@ import CanonicalFacts from './CanonicalFacts';
 import LineageMap from './LineageMap';
 import TrackRecord from './TrackRecord';
 import Sidebar from './Sidebar';
+import PipelineOverview from './PipelineOverview';
 import { LayoutShell } from '../components/LayoutShell';
 import { Card } from '../components/ui/Card';
 import { ProvenanceProvider, ProvenanceToggle } from './ProvenanceContext';
 import type { Company, QuotaInfo } from './types';
-import { DEFAULT_VIEW, isView, labelOfView, layerOfView, LAYER_ACCENT, type View } from './finsightNav';
+import { DEFAULT_VIEW, FINSIGHT_NAV, isView, labelOfView, layerOfView, LAYER_ACCENT, type Layer, type View } from './finsightNav';
 
 function FinSightApp() {
   const router = useRouter();
@@ -146,6 +147,15 @@ function FinSightApp() {
           </button>
         </p>
       </div>
+
+      {/* Live pipeline overview */}
+      <PipelineOverview
+        API_BASE={API_BASE}
+        onSelectLayer={(layer: Layer) => {
+          const v = FINSIGHT_NAV.find(g => g.layer === layer)?.items[0].view;
+          if (v) changeView(v);
+        }}
+      />
 
       {/* Medallion layout: layer sidebar + active view */}
       <div className="flex flex-col lg:flex-row gap-6">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import type { Company } from './types';
@@ -88,6 +89,31 @@ export default function FilingsBrowser({ companies, loadingCompanies, API_BASE }
         <div className="bg-red-500/20 border-l-4 border-red-500 p-4 rounded-lg">
           <p className="text-sm text-red-400">{error}</p>
         </div>
+      )}
+
+      {!loading && !error && filings.length > 0 && (
+        <Card hover={false}>
+          <h3 className="text-sm font-semibold text-slate-200 mb-3">Facts ingested per filing, over time</h3>
+          <div style={{ width: '100%', height: 220 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={[...filings].reverse().map(f => ({ date: f.filing_date || '', facts: f.fact_count, form: f.form }))}
+                margin={{ top: 4, right: 8, left: -8, bottom: 4 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis dataKey="date" tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#334155' }} minTickGap={24} />
+                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
+                <Tooltip
+                  cursor={{ fill: '#ffffff08' }}
+                  contentStyle={{ background: '#1e293b', border: '1px solid #475569', borderRadius: 8, color: '#e2e8f0' }}
+                  formatter={(v: number) => [`${v.toLocaleString()} facts`, '']}
+                  labelFormatter={(l: string) => l}
+                />
+                <Bar dataKey="facts" fill="#d97706" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
       )}
 
       {!loading && !error && filings.length > 0 && (

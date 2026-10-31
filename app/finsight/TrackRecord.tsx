@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 
@@ -44,6 +45,7 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
   const [data, setData] = useState<TrackRecordData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [metric, setMetric] = useState<string>('revenue');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -126,6 +128,52 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
           );
         })}
       </div>
+
+      {/* Accuracy chart: us vs consensus per company */}
+      {(() => {
+        const metrics = Array.from(new Set(data.scorecard.map(r => r.metric)));
+        const chartData = data.scorecard
+          .filter(r => r.metric === metric)
+          .map(r => ({ ticker: r.ticker, FinSight: r.our_mape, Consensus: r.consensus_mape }))
+          .sort((a, b) => (a.FinSight ?? 99) - (b.FinSight ?? 99));
+        return (
+          <Card hover={false}>
+            <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <h3 className="text-sm font-semibold text-slate-200">Accuracy by company — lower is better (% error)</h3>
+              <div className="flex gap-1">
+                {metrics.map(m => (
+                  <button
+                    key={m}
+                    onClick={() => setMetric(m)}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                      metric === m ? 'bg-purple-700 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    }`}
+                  >
+                    {metricName(m)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div style={{ width: '100%', height: 320 }}>
+              <ResponsiveContainer>
+                <BarChart data={chartData} margin={{ top: 4, right: 8, left: -8, bottom: 4 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                  <XAxis dataKey="ticker" tick={{ fill: '#94a3b8', fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#334155' }} />
+                  <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickLine={false} axisLine={false} unit="%" />
+                  <Tooltip
+                    cursor={{ fill: '#ffffff08' }}
+                    contentStyle={{ background: '#1e293b', border: '1px solid #475569', borderRadius: 8, color: '#e2e8f0' }}
+                    formatter={(v: number) => [`${v?.toFixed(1)}%`, '']}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 12, color: '#94a3b8' }} />
+                  <Bar dataKey="FinSight" fill="#a855f7" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="Consensus" fill="#64748b" radius={[3, 3, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
+        );
+      })()}
 
       {/* Per-company scorecard */}
       <Card hover={false} className="overflow-hidden">

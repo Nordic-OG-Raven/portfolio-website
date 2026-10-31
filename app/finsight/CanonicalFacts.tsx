@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card } from '../components/ui/Card';
 import { formatNumber } from './format';
 import TraceableNumber from './TraceableNumber';
@@ -34,6 +35,7 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
+  const [selectedMetric, setSelectedMetric] = useState<string>('');
 
   useEffect(() => {
     if (!ticker && companies.length > 0) setTicker(companies[0].ticker);
@@ -63,6 +65,24 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
   // Instant (balance-sheet) facts have no fiscal period; the backend can surface it as "NaN".
   const cleanPeriod = (p: string | null): string | undefined =>
     p && p !== 'NaN' ? p : undefined;
+
+  // Trend chart: one canonical metric's value over time.
+  const PERIOD_RANK: Record<string, number> = { Q1: 1, Q2: 2, YTD6: 2.5, Q3: 3, YTD9: 3.5, Q4: 4, FY: 5 };
+  const metricLabels = Array.from(new Set(facts.map(f => f.canonical_label))).sort();
+  const activeMetric = metricLabels.includes(selectedMetric)
+    ? selectedMetric
+    : (metricLabels.includes('revenue') ? 'revenue' : metricLabels[0] || '');
+  const series = facts
+    .filter(f => f.canonical_label === activeMetric && f.fiscal_year != null && (f.value_usd ?? f.value_numeric) != null)
+    .map(f => {
+      const p = cleanPeriod(f.fiscal_period);
+      return {
+        order: f.fiscal_year * 10 + (p ? (PERIOD_RANK[p] ?? 4.5) : 4.5),
+        label: `${f.fiscal_year}${p ? ` ${p}` : ''}`,
+        value: (f.value_usd ?? f.value_numeric) as number,
+      };
+    })
+    .sort((a, b) => a.order - b.order);
 
   return (
     <div className="space-y-6">
@@ -102,6 +122,36 @@ export default function CanonicalFacts({ companies, loadingCompanies, API_BASE }
         <div className="bg-red-500/20 border-l-4 border-red-500 p-4 rounded-lg">
           <p className="text-sm text-red-400">{error}</p>
         </div>
+      )}
+
+      {!loading && !error && series.length > 1 && (
+        <Card hover={false}>
+          <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
+            <h3 className="text-sm font-semibold text-slate-200">{humanize(activeMetric)} over time (USD)</h3>
+            <select
+              value={activeMetric}
+              onChange={(e) => setSelectedMetric(e.target.value)}
+              className="px-3 py-1.5 text-xs border border-slate-700 rounded-lg bg-slate-800 text-slate-100 focus:ring-2 focus:ring-purple-700"
+            >
+              {metricLabels.map(m => <option key={m} value={m}>{humanize(m)}</option>)}
+            </select>
+          </div>
+          <div style={{ width: '100%', height: 260 }}>
+            <ResponsiveContainer>
+              <LineChart data={series} margin={{ top: 4, right: 12, left: 4, bottom: 4 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis dataKey="label" tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#334155' }} minTickGap={16} />
+                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} tickFormatter={(v: number) => formatNumber(v, '').trim()} width={64} />
+                <Tooltip
+                  cursor={{ stroke: '#475569' }}
+                  contentStyle={{ background: '#1e293b', border: '1px solid #475569', borderRadius: 8, color: '#e2e8f0' }}
+                  formatter={(v: number) => [formatNumber(v, 'USD'), humanize(activeMetric)]}
+                />
+                <Line type="monotone" dataKey="value" stroke="#a855f7" strokeWidth={2} dot={{ r: 2, fill: '#a855f7' }} activeDot={{ r: 4 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
       )}
 
       {!loading && !error && facts.length > 0 && (
