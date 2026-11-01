@@ -51,6 +51,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
   const [log, setLog] = useState<{ cls: string; text: string }[]>([]);
   const logRef = useRef<HTMLDivElement>(null);
   const busyRef = useRef(false);
+  const autoRef = useRef(false);
 
   const get = (path: string) => fetch(`${API_BASE}?path=${encodeURIComponent(path)}`).then(r => (r.ok ? r.json() : null));
 
@@ -76,6 +77,16 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
   }, [ticker]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight; }, [log]);
+
+  // Auto-play the walk once, on first load, so the front door is alive instead of idle. Respects
+  // reduced-motion (jumps straight to the finished state). Switching companies afterward is manual.
+  useEffect(() => {
+    if (autoRef.current || !stats || !filings || !fc) return;
+    autoRef.current = true;
+    const reduce = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { setRan([true, true, true, true]); return; }
+    (async () => { for (let i = 0; i < STAGES.length; i++) { await runStage(i); await sleep(220); } })();
+  }, [stats, filings, fc]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function reset() {
     busyRef.current = false;
@@ -153,7 +164,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
       <div className="flex items-end justify-between gap-4 flex-wrap mb-4">
         <div>
           <div className="text-xs font-mono uppercase tracking-[0.18em] text-purple-400 mb-1.5">The pipeline</div>
-          <h2 className="text-lg font-bold text-slate-100">Watch a company move through the warehouse</h2>
+          <h2 className="text-lg font-bold text-slate-100">One company, every layer, left to right</h2>
           <p className="text-sm text-slate-400 mt-1 max-w-xl">Run each layer in turn. The code under each step is the code that actually runs; the numbers are live.</p>
         </div>
         <label className="flex flex-col gap-1 text-right">
@@ -187,7 +198,8 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
       <div className="flex items-center gap-3 flex-wrap mb-4">
         <button
           onClick={async () => { reset(); await sleep(0); for (let i = 0; i < STAGES.length; i++) { await runStage(i); await sleep(220); } }}
-          className="px-4 py-2 rounded-lg text-sm font-semibold bg-purple-700 hover:bg-purple-600 text-white transition-colors"
+          disabled={busy}
+          className="px-4 py-2 rounded-lg text-sm font-semibold bg-purple-700 hover:bg-purple-600 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >▶ Run the whole pipeline</button>
         <button onClick={reset} className="px-4 py-2 rounded-lg text-sm font-mono border border-slate-600 text-slate-300 hover:border-slate-400 transition-colors">↺ Reset</button>
         <span className="text-xs font-mono text-slate-500">or run each layer below</span>

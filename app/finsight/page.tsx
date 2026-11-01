@@ -180,18 +180,6 @@ function FinSightApp() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </Link>
-          <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
-            <div className="flex-1">
-              <div className="font-semibold text-slate-400">NVIDIA - Tech Sector Analysis</div>
-              <div className="text-sm text-slate-500">Coming soon</div>
-            </div>
-          </div>
-          <div className="flex items-center px-6 py-4 bg-slate-800 rounded-lg border border-slate-800 opacity-60">
-            <div className="flex-1">
-              <div className="font-semibold text-slate-400">Apple - Consumer Tech Analysis</div>
-              <div className="text-sm text-slate-500">Coming soon</div>
-            </div>
-          </div>
         </div>
       </Card>
 
