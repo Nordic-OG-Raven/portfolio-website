@@ -55,21 +55,15 @@ export default function CodeModal({ doc, subtitle, accentDot, onClose }: CodeMod
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={doc.title}>
       <div className="absolute inset-0 bg-black/70" onClick={onClose} aria-hidden="true" />
       <div className="relative bg-slate-900 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[86vh] flex flex-col shadow-2xl">
-        <div className="px-5 py-3 border-b border-slate-700 shrink-0">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 min-w-0">
-              <span className={`inline-block w-2.5 h-2.5 rounded-full shrink-0 ${accentDot}`} />
-              <span className="font-mono text-sm text-slate-200 truncate">{doc.title}</span>
-              <span className="font-mono text-xs text-slate-500 shrink-0">· {subtitle}</span>
-            </div>
-            <button onClick={onClose} aria-label="Close" className="shrink-0 text-slate-400 hover:text-slate-200 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+        <div className="px-5 py-3 border-b border-slate-700 shrink-0 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className={`inline-block w-2.5 h-2.5 rounded-full shrink-0 ${accentDot}`} />
+            <span className="font-mono text-sm text-slate-200 truncate">{doc.title}</span>
+            <span className="font-mono text-xs text-slate-500 shrink-0">· {subtitle}</span>
           </div>
-          {doc.explanation && <p className="text-xs text-slate-400 mt-2 leading-relaxed max-w-3xl">{doc.explanation}</p>}
-          {doc.highlight && doc.highlight.length > 0 && (
-            <p className="text-[11px] text-amber-500/80 mt-2 font-mono">▌ highlighted lines are the core of this step</p>
-          )}
+          <button onClick={onClose} aria-label="Close" className="shrink-0 text-slate-400 hover:text-slate-200 transition-colors">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
         </div>
         <div className="flex-1 overflow-auto p-4 bg-slate-950">
           <CodeBlock code={doc.code} highlight={doc.highlight || []} />
