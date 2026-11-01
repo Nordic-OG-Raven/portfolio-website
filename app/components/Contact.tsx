@@ -56,8 +56,8 @@ export default function Contact() {
             <div>
               <h3 className="text-2xl font-semibold text-slate-100 mb-4">Contact Information</h3>
               <p className="text-slate-400 leading-relaxed">
-                Feel free to reach out for project collaborations, consulting opportunities,
-                or just to discuss AI/ML and data analytics.
+                Feel free to reach out about roles, project collaborations,
+                or just to talk data, BI, and analytics.
               </p>
             </div>
 

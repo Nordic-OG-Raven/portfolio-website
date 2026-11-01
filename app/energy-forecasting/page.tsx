@@ -69,7 +69,7 @@ const notebooks: NotebookEntry[] = [
     methodology:
       'A strictly sealed-off final 120 days, untouched by any exploration or feature-engineering decision made earlier in the project. Every model is fit once on development data and scored once on the holdout, no peeking, no second attempt.',
     finding:
-      'The edge held up and got stronger, not weaker (correlation 0.138 -> 0.283, Sharpe 10.5 -> 20.4) — the single strongest evidence available that a good backtest number is real rather than overfit.',
+      'The edge held up and got stronger, not weaker (correlation 0.138 -> 0.283, Sharpe 10.5 -> 20.4), the single strongest evidence available that a good backtest number is real rather than overfit.',
     image: { src: '/energy-forecasting/nb05-holdout-chunks.png', alt: 'Holdout P&L by roughly two-week chunk' },
   },
   {
@@ -78,7 +78,7 @@ const notebooks: NotebookEntry[] = [
     title: 'Combinatorial Purged Cross-Validation',
     methodology:
       "Lopez de Prado's CPCV (Advances in Financial Machine Learning): instead of one train/test split, tests many different combinatorial train/test paths with proper embargo purging around each test block.",
-    finding: '15 out of 15 purged combinations came back with positive correlation and positive Sharpe — the effect does not depend on which specific historical path is used to test it.',
+    finding: '15 out of 15 purged combinations came back with positive correlation and positive Sharpe, so the effect does not depend on which specific historical path is used to test it.',
     image: { src: '/energy-forecasting/nb06-cpcv-distribution.png', alt: 'Distribution of correlation and Sharpe across 15 CPCV combinations' },
   },
   {
@@ -86,7 +86,7 @@ const notebooks: NotebookEntry[] = [
     file: '07_dk2_replication.ipynb',
     title: 'DK2 Replication',
     methodology:
-      'The exact DK1-tuned recipe — same features, same hyperparameters, zero re-tuning — run unmodified on DK2, a physically different price zone (no direct Norway interconnector, different generation mix).',
+      'The exact DK1-tuned recipe (same features, same hyperparameters, zero re-tuning) run unmodified on DK2, a physically different price zone (no direct Norway interconnector, different generation mix).',
     finding:
       "Generalizes: DK2's walk-forward correlation (0.195) is actually stronger than DK1's (0.138), real evidence this is a structural property of the Nordic balancing market, not a DK1-specific artifact, though DK2's absolute Sharpe is lower and its edge is more concentrated in the classifier.",
     image: { src: '/energy-forecasting/nb07-dk1-vs-dk2.png', alt: 'DK1 vs. DK2: walk-forward correlation and blind-holdout Sharpe' },
@@ -98,7 +98,7 @@ const notebooks: NotebookEntry[] = [
     methodology:
       "Triggered by a professional energy trader's direct challenge: a good Sharpe doesn't rule out getting wiped out by one price spike. Adds VaR/CVaR/skew/kurtosis, tests volatility-scaled sizing and cross-zone diversification as mitigations, fits an Extreme Value Theory tail estimate, and tries four independent methods to predict shocks in advance.",
     finding:
-      "The concern was real: a single hour could lose 7% of the strategy's entire multi-year profit. Mitigations cut that worst hour by 67% while improving Sharpe. All four early-warning attempts (a statistical test, a candidate feature, a full ML classifier, high-resolution real-time data) failed to predict DK1's instantaneous shocks — strong evidence the risk is genuinely irreducible with public data.",
+      "The concern was real: a single hour could lose 7% of the strategy's entire multi-year profit. Mitigations cut that worst hour by 67% while improving Sharpe. All four early-warning attempts (a statistical test, a candidate feature, a full ML classifier, high-resolution real-time data) failed to predict DK1's instantaneous shocks, strong evidence the risk is genuinely irreducible with public data.",
     image: { src: '/energy-forecasting/nb08-tail-risk-mitigation.png', alt: 'Worst single-hour loss and Sharpe, before and after tail-risk mitigation' },
   },
   {
@@ -106,9 +106,9 @@ const notebooks: NotebookEntry[] = [
     file: '09_15min_divergence_model.ipynb',
     title: 'Native 15-Minute Divergence Model',
     methodology:
-      "A live data check found Denmark's balancing market has actually settled every 15 minutes since 2023, not hourly — every earlier notebook had been trained on hourly averages of a finer-grained market. Rebuilds the model at native 15-minute resolution, extends training data through the full history, re-applies the tail-risk mitigations, checks transaction costs and probability of strategy failure, and refines a walk-backward causality test to isolate a calendar-window confound.",
+      "A live data check found Denmark's balancing market has actually settled every 15 minutes since 2023, not hourly, so every earlier notebook had been trained on hourly averages of a finer-grained market. Rebuilds the model at native 15-minute resolution, extends training data through the full history, re-applies the tail-risk mitigations, checks transaction costs and probability of strategy failure, and refines a walk-backward causality test to isolate a calendar-window confound.",
     finding:
-      "A materially stronger edge than the hourly model — hourly averaging was hiding real signal, not manufacturing a false one. A $1M portfolio at a market-impact-safe position would average ~€37,300/month, but real risk-sizing should anchor to the Extreme-Value-Theory worst case (€4,300-18,000 in a single 15-minute window), 14-57x larger than anything the backtest's own limited history happened to show.",
+      "A materially stronger edge than the hourly model: hourly averaging was hiding real signal, not manufacturing a false one. A $1M portfolio at a market-impact-safe position would average ~€37,300/month, but real risk-sizing should anchor to the Extreme-Value-Theory worst case (€4,300-18,000 in a single 15-minute window), 14-57x larger than anything the backtest's own limited history happened to show.",
     image: { src: '/energy-forecasting/nb09-capital-sizing.png', alt: 'Average monthly P&L vs. EVT-anchored worst-case, $1M portfolio' },
   },
 ];
@@ -161,7 +161,7 @@ export default function EnergyForecastingPage() {
         <p className="text-slate-400 leading-relaxed mb-4">
           The project ended up with two genuinely separate, independently-validated models, not one
           merged pipeline. They coexist because Denmark&apos;s day-ahead auction only started
-          clearing every 15 minutes on 2025-09-30 — before that, only one position per hour was ever
+          clearing every 15 minutes on 2025-09-30. Before that, only one position per hour was ever
           achievable, even though the underlying imbalance settlement has been 15-minute since 2023.
         </p>
         <div className="overflow-x-auto">
@@ -187,7 +187,7 @@ export default function EnergyForecastingPage() {
               <tr>
                 <td className="py-2 pr-4 text-slate-100">Edge size</td>
                 <td className="py-2 pr-4">Real, but smaller</td>
-                <td className="py-2">Materially stronger — hourly averaging was hiding signal</td>
+                <td className="py-2">Materially stronger; hourly averaging was hiding signal</td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 text-slate-100">Best for</td>
@@ -250,7 +250,7 @@ export default function EnergyForecastingPage() {
             end on public data alone. The answer here is a qualified yes: the edge is real, not an
             artifact of one clever model or a lucky backtest window. It held up under a blind
             holdout, fifteen independently resampled test paths, and an unmodified replication in a
-            second, physically different price zone. Its source is intuitive, too — grid imbalance
+            second, physically different price zone. Its source is intuitive, too: grid imbalance
             is persistent minute to minute, so recent regulation activity is genuinely informative
             about what happens next, a real physical mechanism rather than a statistical
             coincidence.
@@ -261,7 +261,7 @@ export default function EnergyForecastingPage() {
             comes bundled with real, structurally unavoidable tail risk: a handful of instantaneous
             price shocks that no amount of public data can currently predict in advance. A viable
             version of this strategy looks less like &quot;find the signal, deploy it&quot; and more
-            like a risk-management discipline — sizing positions off the worst case a statistical
+            like a risk-management discipline: sizing positions off the worst case a statistical
             tail model implies, not the best case a backtest happens to show.
           </p>
           <p>
@@ -271,7 +271,7 @@ export default function EnergyForecastingPage() {
             stronger edge than the coarser view ever showed. Hourly aggregation wasn&apos;t just
             imprecise, it was actively destroying signal that the real-time market carries. That&apos;s
             a broader lesson for modeling any market that settles faster than the data conventionally
-            used to study it: the resolution you choose isn&apos;t a neutral implementation detail —
+            used to study it: the resolution you choose isn&apos;t a neutral implementation detail;
             it can determine whether you find the edge at all.
           </p>
         </div>

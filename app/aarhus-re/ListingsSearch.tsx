@@ -30,7 +30,7 @@ interface SnapshotData {
 }
 
 function formatDkk(n: number | null): string {
-  if (n === null) return '—';
+  if (n === null) return 'N/A';
   return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' kr';
 }
 
@@ -74,13 +74,13 @@ export default function ListingsSearch() {
         <h3 className="text-lg font-semibold text-slate-100">Try the Search</h3>
         {data && (
           <span className="text-xs text-slate-500">
-            Snapshot from {data.snapshotDate} — {filtered.length} of {data.listings.length} matching
+            Snapshot from {data.snapshotDate}: {filtered.length} of {data.listings.length} matching
           </span>
         )}
       </div>
 
       <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-4 text-xs text-amber-300">
-        This is a frozen demo snapshot, not a live feed — the data pipeline that refreshes it
+        This is a frozen demo snapshot, not a live feed. The data pipeline that refreshes it
         weekly runs on infrastructure that&apos;s currently offline. Filtering below is real and
         instant, the listings themselves are a point-in-time example.
       </div>

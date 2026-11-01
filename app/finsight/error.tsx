@@ -24,7 +24,8 @@ export default function FinSightError({
           </p>
           {error.message?.includes('Failed to fetch') && (
             <p className="text-sm text-slate-400 mb-6">
-              Make sure the Flask API is running at http://localhost:5000
+              The API runs on a scale-to-zero free tier, so the first request after a quiet
+              period can time out while it wakes. Give it a few seconds and try again.
             </p>
           )}
           <div className="flex gap-4">

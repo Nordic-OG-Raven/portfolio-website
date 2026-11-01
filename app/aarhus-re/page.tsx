@@ -10,12 +10,12 @@ export default function AarhusRePage() {
       {/* TITLE */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
-          Aarhus RE Scanner — Automated Property Valuation Model
+          Aarhus RE Scanner: Automated Property Valuation Model
         </h1>
         <p className="text-lg text-slate-400 leading-relaxed">
           A solo-built automated valuation model (AVM) for Aarhus residential real estate,
           benchmarked directly against the accuracy figures published by the Danish tax
-          authority&apos;s own model-development process — the one at the center of Denmark&apos;s
+          authority&apos;s own model-development process, the one at the center of Denmark&apos;s
           2013 ejendomsvurderingsskandale. Five reverse-engineered and public data sources feed a
           5-model stacking ensemble, validated on a strict temporal holdout so the reported accuracy
           reflects genuine forward-looking generalization, not a favorable random split.
@@ -35,7 +35,7 @@ export default function AarhusRePage() {
           </div>
           <div className="bg-amber-500/20 border border-amber-500/50 p-4 rounded-lg text-center">
             <p className="text-slate-400 text-sm mb-1">Data Sources</p>
-            <p className="text-3xl font-bold text-amber-500">7</p>
+            <p className="text-3xl font-bold text-amber-500">5</p>
           </div>
           <div className="bg-orange-500/20 border border-orange-500/50 p-4 rounded-lg text-center">
             <p className="text-slate-400 text-sm mb-1">Holdout Test Rows</p>
@@ -52,16 +52,16 @@ export default function AarhusRePage() {
           CatBoost) combined via a Ridge meta-learner trained on out-of-fold predictions. Data is
           joined from Datafordeler BBR (structural attributes), OSM Overpass (spatial amenities),
           Statistics Denmark (macro/fiscal context), and two undocumented sources reverse-engineered
-          from scratch — a historical sale-price API and an energy-certificate lookup, neither of
+          from scratch: a historical sale-price API and an energy-certificate lookup, neither of
           which has an official public endpoint.
         </p>
         <p className="text-slate-400 leading-relaxed">
           Validation is a single temporal holdout: every model is trained only on transactions
-          before a fixed cutoff date and tested only on transactions after it, never seen during
-          training or tuning — the same discipline used across every project on this site. A/B
-          feature and architecture experiments are accepted only when they improve the net holdout
-          RMSE summed across all three property segments (condo, house, apartment), no
-          per-segment cherry-picking.
+          before 2025-04-18 (~114,600 rows) and tested only on the ~6,458 transactions after that
+          date, never seen during training or tuning, the same discipline used across every
+          project on this site. A/B feature and architecture experiments are accepted only when
+          they improve the net holdout RMSE summed across all three property segments (condo,
+          house, apartment), no per-segment cherry-picking.
         </p>
       </Card>
 
@@ -72,7 +72,7 @@ export default function AarhusRePage() {
       <Card className="mb-8">
         <p className="text-slate-400 leading-relaxed mb-4">
           Denmark suspended its public property valuations in 2013 after a damning Rigsrevisionen
-          audit and spent the following years building a statistical replacement — documented in a
+          audit and spent the following years building a statistical replacement, documented in a
           2014 expert-committee report (Engberg-udvalget) and a 2016 refinement (Skatteministeriet
           / ICE). Both publish the accuracy metric Danish valuation law actually targets: the
           percentage of assessments landing within ±20% of the real sale price. Pulled directly from
@@ -87,6 +87,7 @@ export default function AarhusRePage() {
                 <th className="py-2 pr-4">SKAT, old system (2014)</th>
                 <th className="py-2 pr-4">Engberg prototype (2014)</th>
                 <th className="py-2 pr-4">ICE refined (2016)</th>
+                <th className="py-2 pr-4">Vurdst. production (2024)</th>
                 <th className="py-2">This model (2026)</th>
               </tr>
             </thead>
@@ -96,23 +97,28 @@ export default function AarhusRePage() {
                 <td className="py-2 pr-4">62.9%</td>
                 <td className="py-2 pr-4">67.5%</td>
                 <td className="py-2 pr-4">~71%</td>
+                <td className="py-2 pr-4">~80% (parcelhuse+rækkehuse blend)</td>
                 <td className="py-2 text-emerald-400 font-semibold">81.3%</td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 text-slate-100">Condos</td>
-                <td className="py-2 pr-4">—</td>
+                <td className="py-2 pr-4">N/A</td>
                 <td className="py-2 pr-4">83.4%</td>
                 <td className="py-2 pr-4">~85%</td>
+                <td className="py-2 pr-4">not published</td>
                 <td className="py-2 text-emerald-400 font-semibold">83.7%</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p className="text-slate-500 text-xs leading-relaxed mt-4">
-          Both government figures are pre-launch, development-stage numbers (2014/2016), not the
-          system&apos;s real-world post-2019 production accuracy, which isn&apos;t publicly
-          available — the honest framing is &quot;beats every documented iteration of the
-          government&apos;s own model development,&quot; not &quot;beats the current system.&quot;
+          Vurderingsstyrelsen did publish real production-system accuracy for houses in June 2024
+          (&quot;Høj træfsikkerhed i de nye ejendomsvurderinger&quot;): ~81% within ±20% across
+          ~500,000 2020-valuations (rising to ~82% with a 200,000 DKK bagatelgrænse), of which only
+          ~12% had an actual sale to test against. That report covers parcelhuse and rækkehuse
+          only; it does not cover condos (ejerlejligheder) or commercial land, so the condo
+          comparison above still rests on pre-launch 2014/2016 development-stage figures, with no
+          published production-system number to benchmark against.
         </p>
       </Card>
 
@@ -121,7 +127,7 @@ export default function AarhusRePage() {
 
       {/* NOTE */}
       <div className="text-center text-sm text-slate-500 mb-8">
-        Private repository — proprietary model, not open-sourced like this site&apos;s other
+        Private repository: proprietary model, not open-sourced like this site&apos;s other
         projects. Happy to walk through the code and methodology directly.
       </div>
     </LayoutShell>

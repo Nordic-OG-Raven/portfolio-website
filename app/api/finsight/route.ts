@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// FinSight backend URL — env var with fallback to the live Fly.io API (Neon-backed).
+// FinSight backend URL. Env var with fallback to the live Fly.io API (Neon-backed).
 let FINSIGHT_API = process.env.NEXT_PUBLIC_FINSIGHT_API || 'https://finsight-api-verdant-log-1735.fly.dev';
 // Ensure URL has protocol
 if (!FINSIGHT_API.startsWith('http://') && !FINSIGHT_API.startsWith('https://')) {

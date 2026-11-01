@@ -796,7 +796,7 @@ After implementing this two-tier approach:
 7. **Comprehensive Income Separation**: Filters out OCI items from income statement
 
 ### 🔄 **In Progress**
-1. **Frontend Header Display**: Headers are displayed with italic styling and "—" for values
+1. **Frontend Header Display**: Headers are displayed with italic styling and "N/A" for values
 2. **Order Verification**: Ensuring all 15 items appear in correct order matching Novo's actual presentation
 
 ### 📋 **Remaining Tasks**
@@ -838,7 +838,7 @@ This implementation works for **all companies** because:
 - **Approach**: Hardcoded logic that inserts "Earnings per share" header before EPS items
 - **Trigger**: Checks if `basic_earnings_loss_per_share` or `diluted_earnings_loss_per_share` exist
 - **Positioning**: Inserts header after net income items (searches for net income labels)
-- **Display**: Frontend renders headers with italic styling and "—" for values
+- **Display**: Frontend renders headers with italic styling and "N/A" for values
 
 **2. Ordering (Special Case Handling)**
 - **Location**: SQL query ORDER BY clause (`api/main.py` lines 1082-1087)
