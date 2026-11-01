@@ -11,6 +11,7 @@ interface QueryResult {
   columns: string[];
   row_count: number;
   sql: string;
+  narration?: string | null;
   detected_companies: string[];
   execution_time: number;
   error?: string;
@@ -278,6 +279,13 @@ export default function NaturalLanguageQuery({ API_BASE }: NaturalLanguageQueryP
       {/* Results */}
       {result && (
         <div className="space-y-4">
+          {/* Plain-language answer: the summary before the detail, grounded in the returned rows */}
+          {result.narration && (
+            <Card className="p-5 border-l-2 border-purple-500/70">
+              <p className="text-[15px] leading-relaxed text-slate-100">{result.narration}</p>
+            </Card>
+          )}
+
           {/* Result Metadata */}
           <Card className="p-4 bg-slate-800/50">
             <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">
