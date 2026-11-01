@@ -55,7 +55,7 @@ export default function Sidebar({ view, onSelect }: SidebarProps) {
             Overview
           </button>
           <div className="space-y-5">
-            {NAV_DISPLAY.map((group, gi) => {
+            {NAV_DISPLAY.map((group) => {
               const accent = LAYER_ACCENT[group.layer];
               return (
                 <div key={group.layer}>
@@ -87,9 +87,6 @@ export default function Sidebar({ view, onSelect }: SidebarProps) {
                       );
                     })}
                   </ul>
-                  {gi < NAV_DISPLAY.length - 1 && (
-                    <div className="mt-4 ml-3 border-l border-slate-700 h-3" aria-hidden="true" />
-                  )}
                 </div>
               );
             })}
