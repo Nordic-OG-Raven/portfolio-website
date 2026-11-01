@@ -11,8 +11,8 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 const projects = [
   {
     id: 4,
-    title: 'FinSight',
-    subtitle: 'Financial Data Warehouse & BI',
+    title: 'Turn raw SEC filings into analysis and forecasts',
+    subtitle: 'Every number traces to its source filing, with automated forecasts near analyst-level accuracy',
     description: 'Lets anyone analyze a public company\'s fundamentals from the raw regulatory filings. Built the full ETL pipeline that extracts, normalizes, and validates financial facts (XBRL) from thousands of SEC/ESEF filings into a PostgreSQL warehouse, with an interactive dashboard on top.',
     image: '/finsight.png',
     skills: ['ETL/ELT', 'Data Modeling', 'PostgreSQL', 'XBRL Parsing (Arelle)', 'Python', 'Flask', 'Next.js', 'Recharts'],
@@ -22,8 +22,8 @@ const projects = [
   },
   {
     id: 3,
-    title: 'Ejendomsopslag',
-    subtitle: 'Real-Time Danish Property Data Enrichment',
+    title: 'Instant data lookup for any Danish address',
+    subtitle: 'Combines 5 government and public sources in seconds, including 2 undocumented APIs I reverse-engineered',
     description: 'Gives anyone a full picture of a Danish address in seconds. Enriches any address with data from five government and public sources (BBR building records, historical sale prices, and energy certificates), including reverse-engineering two undocumented APIs where no official access existed. Deployed with full test coverage, structured logging, and GraphQL/REST integration against Denmark\'s national data-distribution platform.',
     image: '/ejendomsopslag.jpg',
     skills: ['Python', 'Streamlit', 'GraphQL', 'REST API Integration', 'Reverse Engineering', 'pytest', 'BeautifulSoup', 'Danish Open Data'],
@@ -33,8 +33,8 @@ const projects = [
   },
   {
     id: 5,
-    title: 'Novo Nordisk Analysis',
-    subtitle: 'Financial & Competitive BI Dashboard',
+    title: 'BI dashboard benchmarking Novo Nordisk vs its peers',
+    subtitle: 'Five years of financial fundamentals, innovation returns, and market position in one view',
     description: 'Helps answer how Novo Nordisk is really performing against its peers. A Superset dashboard with comprehensive financial metrics, peer comparison, and 5-year trend analysis covering market positioning, financial fundamentals, R&D efficiency, and innovation returns.',
     image: '/novoanalysis.jpg',
     skills: ['Financial Analysis', 'Data Visualization', 'PostgreSQL', 'Apache Superset', 'Python', 'yfinance'],
@@ -44,8 +44,8 @@ const projects = [
   },
   {
     id: 9,
-    title: 'Aarhus RE Scanner',
-    subtitle: 'Automated Property Valuation, Benchmarked Against the Government',
+    title: 'Automated home price prediction and valuation for Aarhus',
+    subtitle: 'More accurate than every version of the government\'s own valuation model as of 2026.',
     description: 'Estimates what an Aarhus home is really worth, and shows its working. A 5-model stacking ensemble on a hedonic log-price target, validated on a strict temporal holdout. Benchmarked against the accuracy figures from Denmark\'s own tax-authority model-development process (2014 Engberg-udvalget, 2016 ICE refinement): predictions land within ±20% of the real sale price 81.3% of the time, beating every documented iteration of the government\'s own development-stage numbers.',
     image: '/aarhus-re.jpg',
     skills: ['LightGBM', 'XGBoost', 'CatBoost', 'Stacking Ensemble', 'GraphQL', 'Temporal Holdout Validation', 'Python', 'Datafordeler API'],
@@ -55,8 +55,8 @@ const projects = [
   },
   {
     id: 8,
-    title: 'DK1/DK2 Power Price Forecasting',
-    subtitle: 'Day-Ahead Forecasting + Backtested Divergence Strategy',
+    title: 'Day-ahead power price forecasting and backtesting',
+    subtitle: 'A forecast accurate enough to build a trading edge that held up on a blind holdout',
     description: 'Built a day-ahead electricity price forecasting pipeline for the Danish power market using Energinet\'s free API, with walk-forward (not shuffled) cross-validation and leakage-checked features (55% RMSE reduction over seasonal-naive). Extended it into a backtested day-ahead-vs-imbalance-price trading strategy: an initial honest negative result led to richer regulation-state features that turned into a real, statistically significant edge, stress-tested with a blind holdout, Combinatorial Purged CV, tail-risk/Extreme Value Theory analysis, and cross-zone replication (DK1 + DK2). Full reasoning, including the negative results and corrections along the way, in the notebooks on GitHub.',
     image: '/energy-price-forecasting.jpg',
     skills: ['Time-Series Forecasting', 'Walk-Forward CV', 'CPCV', 'LightGBM', 'XGBoost', 'Ridge/Lasso', 'Backtesting', 'Tail-Risk/EVT', 'Python', 'Energinet API'],
@@ -66,8 +66,8 @@ const projects = [
   },
   {
     id: 0,
-    title: 'House Prices Prediction',
-    subtitle: 'Real Estate Economics Meets Machine Learning',
+    title: 'Kaggle ML house price prediction',
+    subtitle: 'Global top 8.1% of 5,887 competitors',
     description: 'Achieved top 8.1% performance (rank 476/5,887) in a Kaggle competition by combining hedonic pricing theory with modern ML techniques. Built an 8-model hybrid ensemble with 2-level stacking, demonstrating how domain knowledge guides feature engineering.',
     image: '/kagglecomp.jpg',
     skills: ['Ensemble Learning', 'Feature Engineering', 'scikit-learn', 'XGBoost', 'LightGBM', 'CatBoost', 'Python'],
@@ -77,8 +77,8 @@ const projects = [
   },
   {
     id: 7,
-    title: 'Job Search & Career Toolkit',
-    subtitle: 'From Daily Scanning to Tailored Applications to Interview Prep',
+    title: 'End-to-end job-search automation',
+    subtitle: 'One system that scans, applies, preps for interviews, and identifies upskilling focus areas',
     description: 'An end-to-end system that scans 8 job portals across 5 countries daily, mines years of old CVs into one fact-checked master profile, drafts tailored applications grounded strictly in it, preps for the resulting interviews, and ranks the highest-ROI way to spend spare time based on what employers are actually asking for. Built for real, ongoing use, including a full reliability pass after a genuine production backlog.',
     image: '/job-search.jpg',
     skills: ['Python', 'SQLite', 'Claude API', 'Bun/TypeScript', 'Process Management', 'launchd', 'Prompt Engineering'],
@@ -88,8 +88,8 @@ const projects = [
   },
   {
     id: 2,
-    title: 'AI News Digest',
-    subtitle: 'Multi-Agent News Curation System',
+    title: 'Automated research and news curation',
+    subtitle: 'A multi-agent pipeline that finds, dedupes, and quality-scores 150 AI research and news articles down to the 6 best each run, for under $0.50',
     description: 'Developed a multi-agent system (ReACT/RAG) for automated, quality-scored curation of AI research news, complete with LangSmith observability. Features RAG-based deduplication, ReACT agents with tool use, and weekly themed execution.',
     image: '/AInews.png',
     skills: ['Multi-Agent Systems', 'RAG', 'ReACT', 'LangChain', 'ChromaDB', 'LangSmith', 'Python'],
@@ -99,8 +99,8 @@ const projects = [
   },
   {
     id: 1,
-    title: 'CodePractice.AI',
-    subtitle: 'Full-Stack AI-Powered Data Tutoring Platform',
+    title: 'In-browser AI tutor for Python and SQL',
+    subtitle: 'Runs your code and gives real-time AI feedback',
     description: 'Built a mobile-first application using Gemini 1.5 to provide intelligent, real-time feedback on user-submitted Python and SQL code. Enables full code execution in the browser without backend dependencies.',
     image: '/codetutor.png',
     skills: ['Gen-AI (Gemini 1.5)', 'NLP', 'React', 'Vite', 'Tailwind CSS', 'Pyodide', 'SQL.js'],
@@ -110,8 +110,8 @@ const projects = [
   },
   {
     id: 6,
-    title: 'CurRag',
-    subtitle: 'RAG System for University Notes',
+    title: 'RAG system for searching through lecture notes',
+    subtitle: 'Ask a question in natural language, get an answer pulled straight from thousands of pages of my university course material',
     description: 'Built a Retrieval-Augmented Generation system for querying university lecture notes using LangChain, ChromaDB, and OpenAI. Features semantic search with natural language queries and a Streamlit web interface.',
     image: '/currag.png',
     skills: ['RAG', 'LangChain', 'ChromaDB', 'OpenAI GPT-4', 'LCEL', 'Python', 'Streamlit'],
@@ -177,18 +177,6 @@ export default function Projects() {
 
                   {/* Description */}
                   <p className="text-sm text-slate-400 leading-relaxed mb-4">{project.description}</p>
-
-                  {/* Skills & Tech Stack - Combined */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="text-xs px-2 py-1 bg-slate-700 text-slate-300 rounded-md"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
                 </div>
 
                 {/* CTA Button */}
