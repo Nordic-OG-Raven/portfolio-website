@@ -81,6 +81,14 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
     );
   }
 
+  if (!data.scorecard.length) {
+    return (
+      <div className="rounded-xl border border-slate-700 bg-slate-800 p-8 text-center">
+        <p className="text-sm text-slate-400">No graded forecasts yet. They appear here once the companies they cover report.</p>
+      </div>
+    );
+  }
+
   const cell = (our: number | null, cons: number | null, which: 'our' | 'cons') => {
     const val = which === 'our' ? our : cons;
     const better = our !== null && cons !== null && (which === 'our' ? our <= cons : cons < our);
@@ -106,7 +114,7 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
             <Card key={o.metric} hover={false}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold text-slate-200">{metricName(o.metric)}</span>
-                <Badge variant="default">{o.n} graded</Badge>
+                <Badge variant="default">{o.n.toLocaleString()} graded</Badge>
               </div>
               <div className="flex items-end justify-between gap-2">
                 <div>
@@ -132,7 +140,7 @@ export default function TrackRecord({ API_BASE }: TrackRecordProps) {
               <div className="max-w-md">
                 <div className="text-sm font-semibold text-slate-200">{metricName(o.metric)} where guidance was available</div>
                 <div className="text-xs text-slate-500 mt-0.5">
-                  The like-for-like comparison: the {o.n} quarters where we could extract company guidance, the same input analysts build on.
+                  The like-for-like comparison: the {o.n.toLocaleString()} quarter{o.n === 1 ? '' : 's'} where we could extract company guidance, the same input analysts build on.
                 </div>
               </div>
               <div className="flex items-end gap-6">

@@ -33,9 +33,19 @@ const STAGES: { k: StageKey; layer: Layer; name: string; role: string; codeId?: 
   { k: 'forecast', layer: 'intelligence', name: 'Forecast', role: 'Leakage-safe next-quarter model with a calibrated interval, graded against the street.', codeId: 'intelligence' },
 ];
 
-const abbrev = (n: number): string =>
-  n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : String(n);
-const usdB = (n: number): string => `$${(n / 1e9).toFixed(1)}B`;
+const abbrev = (n: number | null | undefined): string =>
+  (n == null || Number.isNaN(n)) ? 'N/A'
+    : n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : n.toLocaleString();
+// Adaptive USD: a billions-only formatter showed "$0.0B" for any sub-$1B company (the "works with
+// any public company" claim). Handle B/M/K + small values, and guard null/NaN.
+const usdB = (n: number | null | undefined): string => {
+  if (n == null || Number.isNaN(n)) return 'N/A';
+  const a = Math.abs(n);
+  if (a >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
+  if (a >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
+  if (a >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
+  return `$${n.toFixed(0)}`;
+};
 
 // Medallion is ELT: Bronze EXTRACTS + loads raw filings (no transformation); Silver and Gold are
 // the actual transforms. Label each layer's code by what it really does.
@@ -137,8 +147,8 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
   function buildLog(k: StageKey): { cls: string; text: string }[] {
     if (k === 'bronze') return [
       { cls: 'faint', text: `connect to SEC EDGAR · ${ticker}` },
-      { cls: 'faint', text: `pulled ${filings?.count ?? '…'} filings (10-K, 10-Q)` },
-      { cls: 'ok', text: `landed ${rawFacts != null ? abbrev(rawFacts) : '…'} raw facts — nothing dropped` },
+      { cls: 'faint', text: `pulled ${filings?.count?.toLocaleString() ?? '…'} filings (10-K, 10-Q)` },
+      { cls: 'ok', text: `landed ${rawFacts != null ? abbrev(rawFacts) : '…'} raw facts, nothing dropped` },
     ];
     if (k === 'silver') return [
       { cls: 'faint', text: 'dedupe restated vintages → newest filing wins' },
@@ -177,7 +187,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
             onChange={e => setTicker(e.target.value)}
             className="font-mono text-sm bg-slate-900 text-slate-100 border border-slate-600 rounded-lg px-3 py-2 min-w-[180px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-500"
           >
-            {companies.map(c => <option key={c.ticker} value={c.ticker}>{c.ticker} — {c.name}</option>)}
+            {companies.map(c => <option key={c.ticker} value={c.ticker}>{c.ticker} · {c.name}</option>)}
           </select>
         </label>
       </div>
@@ -291,10 +301,10 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
       if (!filings) return <div className="text-xs font-mono text-slate-500">loading…</div>;
       return (
         <div className="text-xs font-mono">
-          <div className="text-slate-200"><span className="text-amber-500 font-semibold">{abbrev(rawFacts || 0)}</span> raw facts · {filings.count} filings</div>
+          <div className="text-slate-200"><span className="text-amber-500 font-semibold">{abbrev(rawFacts || 0)}</span> raw facts · {filings.count.toLocaleString()} filings</div>
           <div className="mt-1 space-y-0.5 text-slate-500">
             {filings.filings.slice(0, 3).map(f => (
-              <div key={f.accession} className="truncate">{f.form} · {f.filing_date} · {f.fact_count} facts</div>
+              <div key={f.accession} className="truncate">{f.form} · {f.filing_date} · {f.fact_count.toLocaleString()} facts</div>
             ))}
           </div>
         </div>
@@ -316,7 +326,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
           <div className="text-slate-200"><span className="text-yellow-400 font-semibold">{revHist.length}</span> clean revenue quarters</div>
           <div className="mt-1 space-y-0.5 text-slate-500">
             {recent.map(h => (
-              <div key={`${h.fiscal_year}Q${h.quarter}`}>FY{h.fiscal_year} Q{h.quarter} · {h.actual != null ? usdB(h.actual) : '—'}</div>
+              <div key={`${h.fiscal_year}Q${h.quarter}`}>FY{h.fiscal_year} Q{h.quarter} · {h.actual != null ? usdB(h.actual) : '-'}</div>
             ))}
           </div>
         </div>
@@ -329,7 +339,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
       <div className="text-xs font-mono">
         <div className="text-slate-200">FY{revPending.fiscal_year} Q{revPending.quarter}: <span className="text-purple-400 font-semibold">{usdB(revPending.forecast)}</span></div>
         <div className="text-slate-500 mt-0.5">80% band {usdB(revPending.interval_80[0])} – {usdB(revPending.interval_80[1])}</div>
-        {acc && <div className="text-slate-500 mt-0.5">track record: {acc.our_mape}% vs street {acc.consensus_mape ?? '—'}% (n={acc.n})</div>}
+        {acc && <div className="text-slate-500 mt-0.5">track record: {acc.our_mape}% vs street {acc.consensus_mape ?? '-'}% (n={acc.n})</div>}
       </div>
     );
   }
