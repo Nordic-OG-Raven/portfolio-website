@@ -29,7 +29,7 @@ const projects = [
     skills: ['Python', 'Streamlit', 'GraphQL', 'REST API Integration', 'Reverse Engineering', 'pytest', 'BeautifulSoup', 'Danish Open Data'],
     status: 'Live Demo',
     statusVariant: 'success' as const,
-    link: 'https://bde-ejendomsopslag.streamlit.app',
+    link: '/ejendomsopslag',
   },
   {
     id: 5,
@@ -106,7 +106,7 @@ const projects = [
     skills: ['Gen-AI (Gemini 1.5)', 'NLP', 'React', 'Vite', 'Tailwind CSS', 'Pyodide', 'SQL.js'],
     status: 'Live Demo',
     statusVariant: 'success' as const,
-    link: 'https://codetutor.jonashaahr.com',
+    link: '/codepractice',
   },
   {
     id: 6,
@@ -117,7 +117,7 @@ const projects = [
     skills: ['RAG', 'LangChain', 'ChromaDB', 'OpenAI GPT-4', 'LCEL', 'Python', 'Streamlit'],
     status: 'Live Demo',
     statusVariant: 'success' as const,
-    link: 'https://knowledgetutor.jonashaahr.com',
+    link: '/currag',
   },
 ];
 
