@@ -54,7 +54,7 @@ export default function CodeModal({ doc, subtitle, accentDot, onClose }: CodeMod
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={doc.title}>
       <div className="absolute inset-0 bg-black/70" onClick={onClose} aria-hidden="true" />
-      <div className="relative bg-slate-900 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[86vh] flex flex-col shadow-2xl">
+      <div className="relative bg-slate-900 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[86dvh] flex flex-col shadow-2xl">
         <div className="px-5 py-3 border-b border-slate-700 shrink-0 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
             <span className={`inline-block w-2.5 h-2.5 rounded-full shrink-0 ${accentDot}`} />

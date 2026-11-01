@@ -85,3 +85,21 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Mobile-native baseline (Emil Kowalski / mobile-native skill) ───────────── */
+html {
+  -webkit-tap-highlight-color: transparent;   /* no gray flash on tap */
+  -webkit-text-size-adjust: 100%;              /* no font inflation in landscape */
+}
+/* iOS zooms the page when a focused input's font-size is < 16px (and doesn't zoom back).
+   Bump inputs on touch pointers only, so desktop keeps its smaller control text. */
+@media (pointer: coarse) {
+  input, textarea, select { font-size: 16px; }
+}
+/* Controls: kill the 300ms tap delay / double-tap zoom, and stop long-press from selecting
+   a button's label. Never on body — that's content. */
+button, a, [role="button"] { touch-action: manipulation; }
+button, [role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+}
