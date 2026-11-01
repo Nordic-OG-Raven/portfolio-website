@@ -173,10 +173,7 @@ export default function Projects() {
                   <h3 className="text-xl font-bold text-slate-100 mb-2">{project.title}</h3>
                   
                   {/* Subtitle */}
-                  <p className="text-sm text-purple-700 font-medium mb-3">{project.subtitle}</p>
-
-                  {/* Description */}
-                  <p className="text-sm text-slate-400 leading-relaxed mb-4">{project.description}</p>
+                  <p className="text-sm text-purple-700 font-medium">{project.subtitle}</p>
                 </div>
 
                 {/* CTA Button */}
