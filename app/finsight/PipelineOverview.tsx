@@ -38,6 +38,10 @@ const abbrev = (n: number): string =>
   n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : String(n);
 const usdB = (n: number): string => `$${(n / 1e9).toFixed(1)}B`;
 
+// Medallion is ELT: Bronze EXTRACTS + loads raw filings (no transformation); Silver and Gold are
+// the actual transforms. Label each layer's code by what it really does.
+const VERB: Record<string, string> = { bronze: 'extraction', silver: 'transform', gold: 'transform' };
+
 export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: Props) {
   const [stats, setStats] = useState<PipelineStats | null>(null);
   const [codes, setCodes] = useState<Record<string, string>>({});
@@ -77,6 +81,14 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
   }, [ticker]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight; }, [log]);
+
+  // Esc closes the code modal.
+  useEffect(() => {
+    if (!openCode) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenCode(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [openCode]);
 
   // Auto-play the walk once, on first load, so the front door is alive instead of idle. Respects
   // reduced-motion (jumps straight to the finished state). Switching companies afterward is manual.
@@ -234,18 +246,11 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
                 {/* output */}
                 <div className="mt-3 min-h-[40px]">{done ? renderOutput(s.k) : <div className="text-xs font-mono text-slate-600">output appears after you run this layer</div>}</div>
 
-                {/* code toggle */}
+                {/* code: opens a large, scrollable modal (the stage card is too small to read in) */}
                 {s.codeId && (
-                  <>
-                    <button onClick={() => setOpenCode(openCode === s.k ? null : s.k)} className={`mt-3 text-[11px] font-mono ${a.text} hover:underline`}>
-                      {openCode === s.k ? '▾ hide transform' : '▸ show transform'}
-                    </button>
-                    {openCode === s.k && (
-                      <pre className="mt-2 p-3 rounded-lg bg-[#0a0d13] border border-slate-700 text-[11px] leading-relaxed text-slate-300 font-mono overflow-x-auto max-h-64 whitespace-pre">
-                        {codes[s.codeId] ?? 'Loading…'}
-                      </pre>
-                    )}
-                  </>
+                  <button onClick={() => setOpenCode(s.k)} className={`mt-3 text-[11px] font-mono ${a.text} hover:underline`}>
+                    ▸ show the {VERB[s.codeId]}
+                  </button>
                 )}
               </div>
             </div>
@@ -273,6 +278,30 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
           <button onClick={() => onGoToLayer('intelligence')} className="px-3 py-2 rounded-lg text-sm font-medium bg-slate-700 text-slate-100 hover:bg-slate-600 transition-colors">Jump to the forecast →</button>
         </div>
       </div>
+
+      {/* code modal — large + scrollable so the real extraction/transform is actually readable */}
+      {openCode && (() => {
+        const st = STAGES.find(s => s.k === openCode);
+        if (!st || !st.codeId) return null;
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={`${st.name} ${VERB[st.codeId]} code`}>
+            <div className="absolute inset-0 bg-black/70" onClick={() => setOpenCode(null)} aria-hidden="true" />
+            <div className="relative bg-slate-900 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[82vh] flex flex-col shadow-2xl">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-slate-700 shrink-0">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className={`inline-block w-2.5 h-2.5 rounded-full shrink-0 ${LAYER_ACCENT[st.layer].dot}`} />
+                  <span className="font-mono text-sm text-slate-200">{st.name} · {VERB[st.codeId]}</span>
+                  <span className="font-mono text-xs text-slate-500 truncate">the code that runs</span>
+                </div>
+                <button onClick={() => setOpenCode(null)} aria-label="Close" className="shrink-0 text-slate-400 hover:text-slate-200 transition-colors">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+              <pre className="flex-1 overflow-auto p-5 text-[13px] leading-relaxed text-slate-200 font-mono whitespace-pre">{codes[st.codeId] ?? 'Loading…'}</pre>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 

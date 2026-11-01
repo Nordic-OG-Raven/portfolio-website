@@ -22,6 +22,9 @@ const EXPLAIN: Record<Layer, string> = {
 // id used by /api/lineage/layers (intelligence has no transform code)
 const CODE_ID: Partial<Record<Layer, string>> = { bronze: 'bronze', silver: 'silver', gold: 'gold' };
 
+// ELT: Bronze EXTRACTS + loads (no transform); Silver/Gold are the transforms. Label accordingly.
+const VERB: Partial<Record<Layer, string>> = { bronze: 'extraction', silver: 'transform', gold: 'transform' };
+
 interface PipelineStats {
   bronze: { filings: number; raw_facts: number; companies: number };
   silver: { conformed_facts: number };
@@ -113,7 +116,7 @@ export default function LayerIntro({ layer, API_BASE }: LayerIntroProps) {
               onClick={toggle}
               className={`mt-2 text-xs font-medium ${accent.text} hover:underline`}
             >
-              {open ? 'Hide the transform' : 'Show the transform'}
+              {open ? `Hide the ${VERB[layer]}` : `Show the ${VERB[layer]}`}
             </button>
             {open && (
               <div className="mt-2 overflow-x-auto rounded-lg border border-slate-700 bg-slate-900">
