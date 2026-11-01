@@ -168,7 +168,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
         <div>
           <div className="text-xs font-mono uppercase tracking-[0.18em] text-purple-400 mb-1.5">The pipeline</div>
           <h2 className="text-lg font-bold text-slate-100">One company, every layer, left to right</h2>
-          <p className="text-sm text-slate-400 mt-1 max-w-xl text-balance">Run each layer in turn. The code shown under each step is what actually runs, on live numbers.</p>
+          <p className="text-sm text-slate-400 mt-1">Run each layer in turn. Real code, live numbers.</p>
         </div>
         <label className="flex flex-col gap-1 text-right">
           <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500">Company</span>
