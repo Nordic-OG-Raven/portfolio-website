@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { LAYER_ACCENT, type Layer } from './finsightNav';
 import type { Company } from './types';
+import CodeModal, { type LayerDoc } from './CodeModal';
 
 // ---- shapes of the live endpoints this walk reads (all real data, nothing mocked) ----
 interface PipelineStats {
@@ -18,8 +19,6 @@ interface HistRow { fiscal_year: number; quarter: number; metric: string; actual
 interface Accuracy { [metric: string]: { our_mape: number; consensus_mape: number | null; n: number }; }
 interface ForecastResp { pending: Pending[]; history: HistRow[]; accuracy: Accuracy; }
 
-interface LayerCode { id: string; code: string; }
-
 interface Props {
   API_BASE: string;
   companies: Company[];
@@ -31,7 +30,7 @@ const STAGES: { k: StageKey; layer: Layer; name: string; role: string; codeId?: 
   { k: 'bronze', layer: 'bronze', name: 'Bronze', role: 'Every XBRL fact the company has filed with the SEC, exactly as filed.', codeId: 'bronze' },
   { k: 'silver', layer: 'silver', name: 'Silver', role: 'Deduped to the latest filing, currency-normalized, synonym tags reconciled to one canonical line.', codeId: 'silver' },
   { k: 'gold', layer: 'gold', name: 'Gold', role: 'The clean quarterly series the apps query. Q1–Q3 are filed; Q4 is derived from the annual.', codeId: 'gold' },
-  { k: 'forecast', layer: 'intelligence', name: 'Forecast', role: 'Leakage-safe next-quarter model with a calibrated interval, graded against the street.' },
+  { k: 'forecast', layer: 'intelligence', name: 'Forecast', role: 'Leakage-safe next-quarter model with a calibrated interval, graded against the street.', codeId: 'intelligence' },
 ];
 
 const abbrev = (n: number): string =>
@@ -40,11 +39,11 @@ const usdB = (n: number): string => `$${(n / 1e9).toFixed(1)}B`;
 
 // Medallion is ELT: Bronze EXTRACTS + loads raw filings (no transformation); Silver and Gold are
 // the actual transforms. Label each layer's code by what it really does.
-const VERB: Record<string, string> = { bronze: 'extraction', silver: 'transform', gold: 'transform' };
+const VERB: Record<string, string> = { bronze: 'extraction', silver: 'transform', gold: 'transform', intelligence: 'model' };
 
 export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: Props) {
   const [stats, setStats] = useState<PipelineStats | null>(null);
-  const [codes, setCodes] = useState<Record<string, string>>({});
+  const [docs, setDocs] = useState<Record<string, LayerDoc>>({});
   const [ticker, setTicker] = useState<string>('NVDA'); // open on our strongest case (beats consensus)
   const [filings, setFilings] = useState<FilingsResp | null>(null);
   const [fc, setFc] = useState<ForecastResp | null>(null);
@@ -63,7 +62,7 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
   useEffect(() => {
     get('/api/pipeline-stats').then(d => { if (d && !d.error) setStats(d); }).catch(() => {});
     get('/api/lineage/layers').then(d => {
-      if (d?.layers) setCodes(Object.fromEntries(d.layers.map((l: LayerCode) => [l.id, l.code])));
+      if (d?.layers) setDocs(Object.fromEntries(d.layers.map((l: LayerDoc) => [l.id, l])));
     }).catch(() => {});
   }, [API_BASE]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -81,14 +80,6 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
   }, [ticker]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight; }, [log]);
-
-  // Esc closes the code modal.
-  useEffect(() => {
-    if (!openCode) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenCode(null); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [openCode]);
 
   // Auto-play the walk once, on first load, so the front door is alive instead of idle. Respects
   // reduced-motion (jumps straight to the finished state). Switching companies afterward is manual.
@@ -279,27 +270,17 @@ export default function PipelineOverview({ API_BASE, companies, onGoToLayer }: P
         </div>
       </div>
 
-      {/* code modal — large + scrollable so the real extraction/transform is actually readable */}
+      {/* code modal — full, documented, core lines highlighted */}
       {openCode && (() => {
         const st = STAGES.find(s => s.k === openCode);
-        if (!st || !st.codeId) return null;
+        if (!st || !st.codeId || !docs[st.codeId]) return null;
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={`${st.name} ${VERB[st.codeId]} code`}>
-            <div className="absolute inset-0 bg-black/70" onClick={() => setOpenCode(null)} aria-hidden="true" />
-            <div className="relative bg-slate-900 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[82vh] flex flex-col shadow-2xl">
-              <div className="flex items-center justify-between px-5 py-3 border-b border-slate-700 shrink-0">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className={`inline-block w-2.5 h-2.5 rounded-full shrink-0 ${LAYER_ACCENT[st.layer].dot}`} />
-                  <span className="font-mono text-sm text-slate-200">{st.name} · {VERB[st.codeId]}</span>
-                  <span className="font-mono text-xs text-slate-500 truncate">the code that runs</span>
-                </div>
-                <button onClick={() => setOpenCode(null)} aria-label="Close" className="shrink-0 text-slate-400 hover:text-slate-200 transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
-              <pre className="flex-1 overflow-auto p-5 text-[13px] leading-relaxed text-slate-200 font-mono whitespace-pre">{codes[st.codeId] ?? 'Loading…'}</pre>
-            </div>
-          </div>
+          <CodeModal
+            doc={docs[st.codeId]}
+            subtitle={VERB[st.codeId]}
+            accentDot={LAYER_ACCENT[st.layer].dot}
+            onClose={() => setOpenCode(null)}
+          />
         );
       })()}
     </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { LAYER_ACCENT, type Layer } from './finsightNav';
 import TagConvergence from './TagConvergence';
+import CodeModal, { type LayerDoc } from './CodeModal';
 
 const ORDER: Layer[] = ['bronze', 'silver', 'gold', 'intelligence'];
 
@@ -19,11 +20,9 @@ const EXPLAIN: Record<Layer, string> = {
   intelligence: 'The apps built on the data: ask a question, forecast earnings, and the live track record.',
 };
 
-// id used by /api/lineage/layers (intelligence has no transform code)
-const CODE_ID: Partial<Record<Layer, string>> = { bronze: 'bronze', silver: 'silver', gold: 'gold' };
-
-// ELT: Bronze EXTRACTS + loads (no transform); Silver/Gold are the transforms. Label accordingly.
-const VERB: Partial<Record<Layer, string>> = { bronze: 'extraction', silver: 'transform', gold: 'transform' };
+// id in /api/lineage/layers + the ELT verb shown on the code button (Bronze extracts, not transforms).
+const CODE_ID: Record<Layer, string> = { bronze: 'bronze', silver: 'silver', gold: 'gold', intelligence: 'intelligence' };
+const VERB: Record<Layer, string> = { bronze: 'extraction', silver: 'transform', gold: 'transform', intelligence: 'model' };
 
 interface PipelineStats {
   bronze: { filings: number; raw_facts: number; companies: number };
@@ -50,34 +49,22 @@ interface LayerIntroProps {
 }
 
 export default function LayerIntro({ layer, API_BASE }: LayerIntroProps) {
-  const [open, setOpen] = useState(false);
-  const [code, setCode] = useState<string | null>(null);
   const [stats, setStats] = useState<PipelineStats | null>(null);
+  const [docs, setDocs] = useState<Record<string, LayerDoc>>({});
+  const [modalOpen, setModalOpen] = useState(false);
   const accent = LAYER_ACCENT[layer];
-  const codeId = CODE_ID[layer];
+  const doc = docs[CODE_ID[layer]];
 
   useEffect(() => {
-    const controller = new AbortController();
-    fetch(`${API_BASE}?path=${encodeURIComponent('/api/pipeline-stats')}`, { signal: controller.signal })
-      .then(res => (res.ok ? res.json() : null))
-      .then(d => { if (d && !d.error) setStats(d); })
+    const c = new AbortController();
+    fetch(`${API_BASE}?path=${encodeURIComponent('/api/pipeline-stats')}`, { signal: c.signal })
+      .then(r => (r.ok ? r.json() : null)).then(d => { if (d && !d.error) setStats(d); }).catch(() => {});
+    fetch(`${API_BASE}?path=${encodeURIComponent('/api/lineage/layers')}`, { signal: c.signal })
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => { if (d?.layers) setDocs(Object.fromEntries(d.layers.map((l: LayerDoc) => [l.id, l]))); })
       .catch(() => {});
-    return () => controller.abort();
+    return () => c.abort();
   }, [API_BASE]);
-
-  const toggle = () => {
-    const next = !open;
-    setOpen(next);
-    if (next && code === null && codeId) {
-      fetch(`${API_BASE}?path=${encodeURIComponent('/api/lineage/layers')}`)
-        .then(res => (res.ok ? res.json() : null))
-        .then(d => {
-          const entry = d?.layers?.find((l: { id: string }) => l.id === codeId);
-          setCode(entry?.code || 'unavailable');
-        })
-        .catch(() => setCode('unavailable'));
-    }
-  };
 
   return (
     <>
@@ -105,32 +92,26 @@ export default function LayerIntro({ layer, API_BASE }: LayerIntroProps) {
 
         <p className="text-sm text-slate-300 leading-relaxed">{EXPLAIN[layer]}</p>
 
-        {/* live counts for this layer */}
         {stats && (
           <p className={`mt-2 text-xs font-mono tabular-nums ${accent.text}`}>{statLine(layer, stats)}</p>
         )}
 
-        {codeId && (
-          <>
-            <button
-              onClick={toggle}
-              className={`mt-2 text-xs font-medium ${accent.text} hover:underline`}
-            >
-              {open ? `Hide the ${VERB[layer]}` : `Show the ${VERB[layer]}`}
-            </button>
-            {open && (
-              <div className="mt-2 overflow-x-auto rounded-lg border border-slate-700 bg-slate-900">
-                <pre className="p-3 text-xs leading-relaxed text-slate-300 font-mono whitespace-pre">
-                  {code ?? 'Loading…'}
-                </pre>
-              </div>
-            )}
-          </>
+        {doc && (
+          <button
+            onClick={() => setModalOpen(true)}
+            className={`mt-2 text-xs font-medium ${accent.text} hover:underline`}
+          >
+            Show the {VERB[layer]}
+          </button>
         )}
       </div>
 
       {/* Silver demonstration: the "many messy tags → one clean number" illustration. */}
       {layer === 'silver' && <TagConvergence />}
+
+      {modalOpen && doc && (
+        <CodeModal doc={doc} subtitle={VERB[layer]} accentDot={accent.dot} onClose={() => setModalOpen(false)} />
+      )}
     </>
   );
 }
